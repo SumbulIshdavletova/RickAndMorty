@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground" type="color">#FFFFFFFF</item>
+        <item name="windowSplashScreenAnimatedIcon" type="drawable">
+            @drawable/ic_baseline_play_arrow_24
+        </item>
+        <item name="postSplashScreenTheme">@style/Theme.SplashScreenApp</item>
+    </style>
+</resources>
