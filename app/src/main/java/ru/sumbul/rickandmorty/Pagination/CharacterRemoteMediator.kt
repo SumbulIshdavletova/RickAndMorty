@@ -38,9 +38,10 @@ class CharacterRemoteMediator(
                     }
                 }
             }
-            val characters = characterApi.getCharacters(
+            val body = characterApi.getCharacters(
                 page = loadKey
             )
+            val characters = body
             characterDb.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     characterDb.characterDao().clearAll()

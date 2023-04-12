@@ -2,7 +2,10 @@ package ru.sumbul.rickandmorty.characters
 
 import android.os.Parcelable
 
-sealed interface InfoCharacter {}
+data class InfoCharacter(
+    val info: Info,
+    val characters: List<ru.sumbul.rickandmorty.characters.Character>
+) {}
 
 data class Character(
     val id: Int,
@@ -17,7 +20,7 @@ data class Character(
     // val episode: List<String> = listOf(),
     val url: String,
     val created: String,
-) : InfoCharacter
+)
 
 data class NameUrl(
     val name1: String,
@@ -29,4 +32,4 @@ data class Info(
     val pages: Int,
     val next: String,
     val prev: String,
-) : InfoCharacter
+)
