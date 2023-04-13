@@ -1,8 +1,10 @@
 package ru.sumbul.rickandmorty.characters
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity
 data class CharacterEntity(
@@ -14,11 +16,11 @@ data class CharacterEntity(
     val type: String,
     val gender: String,
     @Embedded
-    val origin: NameUrlEmbedded,
-    @Embedded(prefix = "prefix_")
-    val location: NameUrlEmbedded,
+    val origin: OriginEmbedded,
+    @Embedded
+    val location: LocationEmbedded,
     val image: String,
- //   val episode: List<String>,
+    //   val episode: List<String>,
     val url: String,
     val created: String,
 ) {
@@ -32,7 +34,7 @@ data class CharacterEntity(
         origin.toDto(),
         location.toDto(),
         image,
-   //     episode,
+        //     episode,
         url,
         created
     )
@@ -46,10 +48,10 @@ data class CharacterEntity(
                 dto.species,
                 dto.type,
                 dto.gender,
-                NameUrlEmbedded.fromDto(dto.origin),
-                NameUrlEmbedded.fromDto(dto.location),
+                OriginEmbedded.fromDto(dto.origin),
+                LocationEmbedded.fromDto(dto.location),
                 dto.image,
-      //          dto.episode,
+                //          dto.episode,
                 dto.url,
                 dto.created,
 
@@ -57,15 +59,34 @@ data class CharacterEntity(
     }
 }
 
-data class NameUrlEmbedded(
-    val name1: String,
-    val url2: String,
+data class OriginEmbedded(
+    @ColumnInfo(name = "origin_name")
+    val name: String,
+
+    @ColumnInfo(name = "origin_url")
+    val url: String,
 ) {
-    fun toDto() = NameUrl(name1, url2)
+    fun toDto() = Origin(name, url)
 
     companion object {
-        fun fromDto(dto: NameUrl) = dto.let {
-            NameUrlEmbedded(it.name1, it.url2)
+        fun fromDto(dto: Origin) = dto.let {
+            OriginEmbedded(it.name, it.url)
+        }
+    }
+}
+
+data class LocationEmbedded(
+    @ColumnInfo(name = "location_name")
+    val name: String,
+
+    @ColumnInfo(name = "location_url")
+    val url: String,
+) {
+    fun toDto() = Location(name, url)
+
+    companion object {
+        fun fromDto(dto: Location) = dto.let {
+            LocationEmbedded(it.name, it.url)
         }
     }
 }

@@ -9,4 +9,7 @@
     <string name="type">type</string>
     <string name="species">species</string>
     <string name="gender">gender</string>
+    <string name="empty_list">There are no characters. Check your internet connecting to get the collection of Characters</string>
+    <string name="error_loading">Error loading data</string>
+    <string name="retry_loading">Retry</string>
 </resources>

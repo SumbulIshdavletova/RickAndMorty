@@ -8,10 +8,10 @@ import ru.sumbul.rickandmorty.characters.Character
 
 @Dao
 interface CharacterDao {
-    @Query("SELECT * FROM CharacterEntity ORDER BY id DESC")
+    @Query("SELECT * FROM CharacterEntity")
     fun getAll(): Flow<List<CharacterEntity>>
 
-    @Query("SELECT * FROM CharacterEntity ORDER BY id DESC")
+    @Query("SELECT * FROM CharacterEntity")
     fun getPagingSource(): PagingSource<Int, CharacterEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

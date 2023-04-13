@@ -41,15 +41,22 @@ class CharacterRemoteMediator(
             val body = characterApi.getCharacters(
                 page = loadKey
             )
-            val characters = body
+            val info = body.body()?.info
+            val characters = body.body()?.results ?: emptyList()
+            val responseData = mutableListOf<ru.sumbul.rickandmorty.characters.Character>()
+            responseData.addAll(characters)
+
+            val nextPage = info?.next
+            val prevPage = info?.prev
+
             characterDb.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     characterDb.characterDao().clearAll()
                 }
-                characterDb.characterDao().upsertAll(characters.toEntity())
+                characterDb.characterDao().upsertAll(responseData!!.toEntity())
             }
             MediatorResult.Success(
-                endOfPaginationReached = characters.isEmpty()
+                endOfPaginationReached = responseData!!.isEmpty()
             )
         } catch (e: IOException) {
             MediatorResult.Error(e)

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.sumbul.rickandmorty.BuildConfig
 import ru.sumbul.rickandmorty.databinding.CardCharacterBinding
+import ru.sumbul.rickandmorty.view.load
 import ru.sumbul.rickandmorty.view.loadCircleCrop
 
 class CharacterAdapter() :
@@ -36,7 +37,7 @@ class CharacterViewHolder(
         binding.gender.text = character.gender
         binding.species.text = character.species
         binding.status.text = character.status
-        binding.avatar.loadCircleCrop(character.image)
+        binding.avatar.load(character.image)
 
     }
 }

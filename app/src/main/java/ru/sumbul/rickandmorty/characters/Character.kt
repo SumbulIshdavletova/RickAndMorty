@@ -1,11 +1,8 @@
 package ru.sumbul.rickandmorty.characters
 
-import android.os.Parcelable
-
-data class InfoCharacter(
-    val info: Info,
-    val characters: List<ru.sumbul.rickandmorty.characters.Character>
-) {}
+import android.location.Location
+import androidx.room.ColumnInfo
+import com.google.gson.annotations.SerializedName
 
 data class Character(
     val id: Int,
@@ -14,22 +11,30 @@ data class Character(
     val species: String,
     val type: String,
     val gender: String,
-    val origin: NameUrl,
-    val location: NameUrl,
+   val origin: Origin,
+    val location: ru.sumbul.rickandmorty.characters.Location,
     val image: String,
-    // val episode: List<String> = listOf(),
+  // val episode: List<String>,
     val url: String,
     val created: String,
 )
 
-data class NameUrl(
-    val name1: String,
-    val url2: String,
+data class Origin(
+    @ColumnInfo(name = "origin_name")
+    @SerializedName("name")
+    val name: String,
+
+    @ColumnInfo(name = "origin_url")
+    @SerializedName("url")
+    val url: String,
 )
 
-data class Info(
-    val count: Int,
-    val pages: Int,
-    val next: String,
-    val prev: String,
+data class Location(
+    @ColumnInfo(name = "location_name")
+    @SerializedName("name")
+    val name: String,
+
+    @ColumnInfo(name = "location_url")
+    @SerializedName("url")
+    val url: String,
 )
