@@ -11,6 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import ru.sumbul.rickandmorty.BuildConfig
 import ru.sumbul.rickandmorty.characters.api.CharacterApi
+import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
+import ru.sumbul.rickandmorty.locations.api.LocationApi
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -52,5 +54,14 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideApiService(retrofit: Retrofit): CharacterApi = retrofit.create()
+
+    @Singleton
+    @Provides
+    fun provideApiServiceEpisode(retrofit: Retrofit): EpisodeApi = retrofit.create()
+
+    @Singleton
+    @Provides
+    fun provideApiServiceLocation(retrofit: Retrofit): LocationApi = retrofit.create()
+
 }
 

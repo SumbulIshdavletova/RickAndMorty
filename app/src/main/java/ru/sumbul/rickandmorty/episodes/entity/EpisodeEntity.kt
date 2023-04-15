@@ -15,7 +15,7 @@ class EpisodeEntity(
     val name: String,
     val air_date: String,
     val episode: String,
-    @TypeConverters(StringListTypeConverter::class)
+    @field:TypeConverters(StringListTypeConverter::class)
     val characters: List<String> = emptyList(),
     val url: String,
     val created: String,

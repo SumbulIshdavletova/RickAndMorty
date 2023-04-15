@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.episodes.ui
+package ru.sumbul.rickandmorty.locations.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,17 +16,20 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
-import ru.sumbul.rickandmorty.databinding.FragmentEpisodesListBinding
+import ru.sumbul.rickandmorty.databinding.FragmentLocationsListBinding
 import ru.sumbul.rickandmorty.episodes.EpisodeViewModel
+import ru.sumbul.rickandmorty.episodes.ui.EpisodeAdapter
+import ru.sumbul.rickandmorty.locations.LocationViewModel
 
 @AndroidEntryPoint
-class EpisodesListFragment : Fragment() {
+class LocationsListFragment : Fragment() {
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val viewModel: EpisodeViewModel by viewModels()
+    private val viewModel: LocationViewModel by viewModels()
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        EpisodeAdapter()
+        LocationAdapter()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -34,12 +37,12 @@ class EpisodesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentEpisodesListBinding.inflate(inflater, container, false)
+        val binding = FragmentLocationsListBinding.inflate(inflater, container, false)
 
         binding.list.adapter = adapter
 
         lifecycleScope.launch {
-            viewModel.episodePagingFlow.collect { pagingData ->
+            viewModel.locationPagingFlow.collect { pagingData ->
                 adapter.submitData(pagingData)
             }
         }
@@ -50,7 +53,7 @@ class EpisodesListFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
 
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 adapter.loadStateFlow.collectLatest { state ->
                     binding.swipeRefresh.isRefreshing = state.refresh is LoadState.Loading
@@ -61,5 +64,6 @@ class EpisodesListFragment : Fragment() {
 
         return binding.root
     }
+
 
 }

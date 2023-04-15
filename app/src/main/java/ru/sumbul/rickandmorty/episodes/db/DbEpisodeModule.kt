@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characters.db
+package ru.sumbul.rickandmorty.episodes.db
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
@@ -10,26 +10,22 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.sumbul.rickandmorty.characters.CharacterRemoteMediator
-import ru.sumbul.rickandmorty.characters.api.CharacterApi
-import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 import ru.sumbul.rickandmorty.episodes.EpisodeRemoteMediator
 import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
-import ru.sumbul.rickandmorty.episodes.db.EpisodeDb
 import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity
 import javax.inject.Singleton
 
 @OptIn(ExperimentalPagingApi::class)
 @InstallIn(SingletonComponent::class)
 @Module
-class DbModule {
+class DbEpisodeModule {
 
     @Singleton
     @Provides
     fun provideDb(
         @ApplicationContext
         context: Context
-    ): CharacterDb = Room.databaseBuilder(context, CharacterDb::class.java, "app.db")
+    ): EpisodeDb = Room.databaseBuilder(context, EpisodeDb::class.java, "app.db")
         .fallbackToDestructiveMigration()
         .build()
 
@@ -37,20 +33,18 @@ class DbModule {
     @OptIn(ExperimentalPagingApi::class)
     @Provides
     @Singleton
-    fun provideCharacterPager(
-        characterDb: CharacterDb,
-        characterApi: CharacterApi
-    ): Pager<Int, CharacterEntity> {
+    fun provideEpisodePager(
+        episodeDb: EpisodeDb,
+        episodeApi: EpisodeApi
+    ): Pager<Int, EpisodeEntity> {
         return Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = CharacterRemoteMediator(
-                characterDb, characterApi
+            remoteMediator = EpisodeRemoteMediator(
+                episodeDb, episodeApi
             ),
             pagingSourceFactory = {
-                characterDb.characterDao().getPagingSource()
+                episodeDb.episodeDao().pagingSource()
             }
         )
     }
-
-
 }

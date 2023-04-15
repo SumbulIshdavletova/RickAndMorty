@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.sumbul.rickandmorty.databinding.ActivityMainBinding
 import ru.sumbul.rickandmorty.characters.ui.CharactersListFragment
 import ru.sumbul.rickandmorty.episodes.ui.EpisodesListFragment
-import ru.sumbul.rickandmorty.ui.LocationsListFragment
+import ru.sumbul.rickandmorty.locations.ui.LocationsListFragment
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

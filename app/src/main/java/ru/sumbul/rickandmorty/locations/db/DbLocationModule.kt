@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characters.db
+package ru.sumbul.rickandmorty.locations.db
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
@@ -10,47 +10,42 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.sumbul.rickandmorty.characters.CharacterRemoteMediator
-import ru.sumbul.rickandmorty.characters.api.CharacterApi
-import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 import ru.sumbul.rickandmorty.episodes.EpisodeRemoteMediator
-import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
-import ru.sumbul.rickandmorty.episodes.db.EpisodeDb
-import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity
+import ru.sumbul.rickandmorty.locations.LocationRemoteMediator
+import ru.sumbul.rickandmorty.locations.api.LocationApi
+import ru.sumbul.rickandmorty.locations.entity.LocationEntity
 import javax.inject.Singleton
 
 @OptIn(ExperimentalPagingApi::class)
 @InstallIn(SingletonComponent::class)
 @Module
-class DbModule {
+class DbLocationModule {
 
     @Singleton
     @Provides
     fun provideDb(
         @ApplicationContext
         context: Context
-    ): CharacterDb = Room.databaseBuilder(context, CharacterDb::class.java, "app.db")
+    ): LocationDb = Room.databaseBuilder(context, LocationDb::class.java, "app.db")
         .fallbackToDestructiveMigration()
         .build()
-
 
     @OptIn(ExperimentalPagingApi::class)
     @Provides
     @Singleton
-    fun provideCharacterPager(
-        characterDb: CharacterDb,
-        characterApi: CharacterApi
-    ): Pager<Int, CharacterEntity> {
+    fun provideLocationPager(
+        locationDb: LocationDb,
+        locationApi: LocationApi
+    ): Pager<Int, LocationEntity> {
         return Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = CharacterRemoteMediator(
-                characterDb, characterApi
+            remoteMediator = LocationRemoteMediator(
+                locationDb, locationApi
             ),
             pagingSourceFactory = {
-                characterDb.characterDao().getPagingSource()
+                locationDb.locationDao().pagingSource()
             }
         )
     }
-
 
 }
