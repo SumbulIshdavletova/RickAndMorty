@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 import ru.sumbul.rickandmorty.model.ListModelState
 import javax.inject.Inject
 

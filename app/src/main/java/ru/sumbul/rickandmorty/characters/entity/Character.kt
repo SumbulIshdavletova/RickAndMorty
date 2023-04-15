@@ -1,20 +1,24 @@
-package ru.sumbul.rickandmorty.characters
+package ru.sumbul.rickandmorty.characters.entity
 
-import android.location.Location
 import androidx.room.ColumnInfo
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
+import ru.sumbul.rickandmorty.util.StringListTypeConverter
+import java.util.*
 
 data class Character(
-    val id: Int,
+    val id: Int = 0,
     val name: String,
     val status: String,
     val species: String,
     val type: String,
     val gender: String,
-   val origin: Origin,
-    val location: ru.sumbul.rickandmorty.characters.Location,
+    val origin: Origin,
+    val location: ru.sumbul.rickandmorty.characters.entity.Location,
     val image: String,
-  // val episode: List<String>,
+    @TypeConverters(StringListTypeConverter::class)
+    val episode: List<String> = emptyList(),
     val url: String,
     val created: String,
 )
@@ -38,3 +42,5 @@ data class Location(
     @SerializedName("url")
     val url: String,
 )
+
+

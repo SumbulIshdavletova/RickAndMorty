@@ -1,15 +1,15 @@
-package ru.sumbul.rickandmorty.api
+package ru.sumbul.rickandmorty.characters.api
 
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import ru.sumbul.rickandmorty.Pagination.ResponseApi
+import ru.sumbul.rickandmorty.pagination.ResponseApi
 
 interface CharacterApi {
 
     @GET("character/{id}")
-    suspend fun getById(@Path("id") id: Long): Response<ru.sumbul.rickandmorty.characters.Character>
+    suspend fun getById(@Path("id") id: Long): Response<ru.sumbul.rickandmorty.characters.entity.Character>
 
     @GET("character/{ids}")
     suspend fun getMultipleCharacters(ids: List<Int>)
@@ -18,7 +18,6 @@ interface CharacterApi {
     suspend fun getCharacters(
         @Query("page") page: Int
     ): Response<ResponseApi>
-            //List<ru.sumbul.rickandmorty.characters.Character>
 
     suspend fun filterCharacters(
         name: String,

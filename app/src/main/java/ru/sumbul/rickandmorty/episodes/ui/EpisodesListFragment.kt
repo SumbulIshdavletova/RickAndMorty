@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.ui
+package ru.sumbul.rickandmorty.episodes.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

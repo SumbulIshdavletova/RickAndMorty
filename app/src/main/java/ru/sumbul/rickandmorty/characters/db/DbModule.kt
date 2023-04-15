@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characters
+package ru.sumbul.rickandmorty.characters.db
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
@@ -10,8 +10,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.sumbul.rickandmorty.Pagination.CharacterRemoteMediator
-import ru.sumbul.rickandmorty.api.CharacterApi
+import ru.sumbul.rickandmorty.characters.CharacterRemoteMediator
+import ru.sumbul.rickandmorty.characters.api.CharacterApi
+import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 import javax.inject.Singleton
 
 @OptIn(ExperimentalPagingApi::class)
@@ -28,10 +29,11 @@ class DbModule {
         .fallbackToDestructiveMigration()
         .build()
 
+
     @OptIn(ExperimentalPagingApi::class)
     @Provides
     @Singleton
-    fun provideBeerPager(
+    fun provideCharacterPager(
         characterDb: CharacterDb,
         characterApi: CharacterApi
     ): Pager<Int, CharacterEntity> {

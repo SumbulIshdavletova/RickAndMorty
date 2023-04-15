@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.Pagination
+package ru.sumbul.rickandmorty.characters
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -6,10 +6,10 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import retrofit2.HttpException
-import ru.sumbul.rickandmorty.api.CharacterApi
-import ru.sumbul.rickandmorty.characters.CharacterDb
-import ru.sumbul.rickandmorty.characters.CharacterEntity
-import ru.sumbul.rickandmorty.characters.toEntity
+import ru.sumbul.rickandmorty.characters.api.CharacterApi
+import ru.sumbul.rickandmorty.characters.db.CharacterDb
+import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
+import ru.sumbul.rickandmorty.characters.entity.toEntity
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
@@ -43,7 +43,7 @@ class CharacterRemoteMediator(
             )
             val info = body.body()?.info
             val characters = body.body()?.results ?: emptyList()
-            val responseData = mutableListOf<ru.sumbul.rickandmorty.characters.Character>()
+            val responseData = mutableListOf<ru.sumbul.rickandmorty.characters.entity.Character>()
             responseData.addAll(characters)
 
             val nextPage = info?.next
@@ -53,10 +53,10 @@ class CharacterRemoteMediator(
                 if (loadType == LoadType.REFRESH) {
                     characterDb.characterDao().clearAll()
                 }
-                characterDb.characterDao().upsertAll(responseData!!.toEntity())
+                characterDb.characterDao().upsertAll(responseData.toEntity())
             }
             MediatorResult.Success(
-                endOfPaginationReached = responseData!!.isEmpty()
+                endOfPaginationReached = responseData.isEmpty()
             )
         } catch (e: IOException) {
             MediatorResult.Error(e)

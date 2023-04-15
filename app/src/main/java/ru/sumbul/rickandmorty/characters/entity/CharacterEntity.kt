@@ -1,10 +1,7 @@
-package ru.sumbul.rickandmorty.characters
+package ru.sumbul.rickandmorty.characters.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import androidx.room.*
+import ru.sumbul.rickandmorty.util.StringListTypeConverter
 
 @Entity
 data class CharacterEntity(
@@ -20,11 +17,12 @@ data class CharacterEntity(
     @Embedded
     val location: LocationEmbedded,
     val image: String,
-    //   val episode: List<String>,
+    @field:TypeConverters(StringListTypeConverter::class)
+    val episode: List<String>,
     val url: String,
     val created: String,
 ) {
-    fun toDto() = ru.sumbul.rickandmorty.characters.Character(
+    fun toDto() = ru.sumbul.rickandmorty.characters.entity.Character(
         id,
         name,
         status,
@@ -34,13 +32,13 @@ data class CharacterEntity(
         origin.toDto(),
         location.toDto(),
         image,
-        //     episode,
+        episode,
         url,
         created
     )
 
     companion object {
-        fun fromDto(dto: ru.sumbul.rickandmorty.characters.Character) =
+        fun fromDto(dto: ru.sumbul.rickandmorty.characters.entity.Character) =
             CharacterEntity(
                 dto.id,
                 dto.name,
@@ -51,11 +49,10 @@ data class CharacterEntity(
                 OriginEmbedded.fromDto(dto.origin),
                 LocationEmbedded.fromDto(dto.location),
                 dto.image,
-                //          dto.episode,
+                dto.episode,
                 dto.url,
                 dto.created,
-
-                )
+            )
     }
 }
 
@@ -92,5 +89,5 @@ data class LocationEmbedded(
 }
 
 fun List<CharacterEntity>.toDto(): List<Character> = map(CharacterEntity::toDto)
-fun List<ru.sumbul.rickandmorty.characters.Character>.toEntity(): List<CharacterEntity> =
+fun List<ru.sumbul.rickandmorty.characters.entity.Character>.toEntity(): List<CharacterEntity> =
     map(CharacterEntity::fromDto)

@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import ru.sumbul.rickandmorty.BuildConfig
-import ru.sumbul.rickandmorty.api.ApiModule.Companion.BASE_URL
+import ru.sumbul.rickandmorty.characters.api.CharacterApi
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)

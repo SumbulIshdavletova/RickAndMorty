@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.Pagination
+package ru.sumbul.rickandmorty.pagination
 
 data class Info
     (

@@ -1,10 +1,9 @@
-package ru.sumbul.rickandmorty.characters
+package ru.sumbul.rickandmorty.characters.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.DELETE
-import ru.sumbul.rickandmorty.characters.Character
+import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 
 @Dao
 interface CharacterDao {

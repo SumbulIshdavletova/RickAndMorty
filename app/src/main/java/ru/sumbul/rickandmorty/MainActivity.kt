@@ -1,12 +1,14 @@
-package ru.sumbul.rickandmorty.ui
+package ru.sumbul.rickandmorty
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
-import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.databinding.ActivityMainBinding
+import ru.sumbul.rickandmorty.characters.ui.CharactersListFragment
+import ru.sumbul.rickandmorty.episodes.ui.EpisodesListFragment
+import ru.sumbul.rickandmorty.ui.LocationsListFragment
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
