@@ -7,17 +7,20 @@ import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 
 @Dao
 interface CharacterDao {
-    @Query("SELECT * FROM CharacterEntity")
-    fun getAll(): Flow<List<CharacterEntity>>
-
+//    @Query("SELECT * FROM CharacterEntity")
+//    fun getAll(): Flow<List<CharacterEntity>>
+//
     @Query("SELECT * FROM CharacterEntity")
     fun getPagingSource(): PagingSource<Int, CharacterEntity>
+//
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insert(character: CharacterEntity)
+//
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insert(character: List<CharacterEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(character: CharacterEntity)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(character: List<CharacterEntity>)
+    @Upsert
+    suspend fun upsert(character: CharacterEntity)
 
     @Upsert
     suspend fun upsertAll(character: List<CharacterEntity>)

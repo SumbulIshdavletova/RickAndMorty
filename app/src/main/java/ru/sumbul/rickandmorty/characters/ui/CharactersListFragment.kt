@@ -1,30 +1,25 @@
 package ru.sumbul.rickandmorty.characters.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
-import ru.sumbul.rickandmorty.characters.ui.CharacterAdapter
+import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.characters.CharacterViewModel
+import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.databinding.FragmentCharactersListBinding
-import ru.sumbul.rickandmorty.databinding.LoadStateBinding
-import javax.inject.Inject
-import javax.inject.Provider
 
 @AndroidEntryPoint
 class CharactersListFragment : Fragment() {
@@ -32,9 +27,26 @@ class CharactersListFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: CharacterViewModel by viewModels()
 
+    val characterDetailsFragment: CharacterDetailsFragment = CharacterDetailsFragment()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        CharacterAdapter()
+        CharacterAdapter(object : OnInteractionListener {
+            override fun onClick(character: Character) {
+          viewModel.getById(character.id)
+                val bundle2 = Bundle()
+                bundle2.putSerializable("requestKey", character)
+                parentFragmentManager.setFragmentResult("requestKey", bundle2)
+                parentFragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.frame_layout, characterDetailsFragment)
+                    .addToBackStack("details")
+                    .commit()
+            }
+        })
     }
+
+    //  var listener: OnFragmentInteractionListener? = null
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
@@ -57,27 +69,18 @@ class CharactersListFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
 
         lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 adapter.loadStateFlow.collectLatest { state ->
                     binding.swipeRefresh.isRefreshing = state.refresh is LoadState.Loading
                     state.append is LoadState.Loading || state.prepend is LoadState.Loading
-
                 }
             }
         }
 
-//        viewModel.dataState.observe(viewLifecycleOwner) { state ->
-//            binding.progress.isVisible = state.loading
-//            binding.swipeRefresh.isVisible = state.refreshing
-//            if (state.error) {
-//                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
-//                    .setAction(R.string.retry_loading) { viewModel.loadPosts() }
-//                    .show()
-//            }
-//        }
 
 
         return binding.root
     }
+
 
 }

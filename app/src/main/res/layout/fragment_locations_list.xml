@@ -46,7 +46,8 @@
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:paddingVertical="@dimen/min_margin"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
                 tools:listitem="@layout/card_location" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

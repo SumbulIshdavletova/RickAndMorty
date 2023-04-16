@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="common_margin">16dp</dimen>
-    <dimen name="avatar_size">96dp</dimen>
+    <dimen name="avatar_size">150dp</dimen>
     <dimen name="checkbox_padding_start">8dp</dimen>
     <dimen name="min_margin">8dp</dimen>
     <dimen name="icon_button_min_size">48dp</dimen>

@@ -27,8 +27,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="@dimen/min_margin"
             android:text="@string/name"
-            app:layout_constraintStart_toEndOf="@id/avatar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/avatar" />
 
         <TextView
             android:id="@+id/species"
@@ -37,7 +37,7 @@
             android:layout_marginVertical="@dimen/min_margin"
             android:layout_marginStart="@dimen/common_margin"
             android:text="@string/species"
-            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_marginVertical="@dimen/min_margin"
             android:layout_marginStart="@dimen/common_margin"
             android:text="@string/status"
-            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/species" />
 
 
@@ -58,7 +58,7 @@
             android:layout_marginStart="@dimen/common_margin"
             android:layout_marginTop="@dimen/min_margin"
             android:text="@string/gender"
-            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/status" />
 
 

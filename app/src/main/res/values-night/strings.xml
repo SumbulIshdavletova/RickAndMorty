@@ -16,4 +16,7 @@
     <string name="air_date">Air date</string>
     <string name="dimension">Dimension</string>
     <string name="type_location">Type</string>
+    <string name="type_view">Type:</string>
+    <string name="type_hint">type</string>
+    <string name="location">Location:</string>
 </resources>

@@ -6,11 +6,18 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.sumbul.rickandmorty.BuildConfig
+import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.databinding.CardCharacterBinding
 import ru.sumbul.rickandmorty.view.load
 import ru.sumbul.rickandmorty.view.loadCircleCrop
 
-class CharacterAdapter() :
+interface OnInteractionListener {
+    fun onClick(character: Character) {}
+}
+
+class CharacterAdapter(
+    private val onInteractionListener: OnInteractionListener,
+) :
     PagingDataAdapter<ru.sumbul.rickandmorty.characters.entity.Character, RecyclerView.ViewHolder>(
         CharacterDiffCallback()
     ) {
@@ -18,7 +25,7 @@ class CharacterAdapter() :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
             CardCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CharacterViewHolder(binding)
+        return CharacterViewHolder( onInteractionListener, binding,)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -30,6 +37,7 @@ class CharacterAdapter() :
 }
 
 class CharacterViewHolder(
+    private val onInteractionListener: OnInteractionListener,
     private val binding: CardCharacterBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(character: ru.sumbul.rickandmorty.characters.entity.Character) {
@@ -39,6 +47,9 @@ class CharacterViewHolder(
         binding.status.text = character.status
         binding.avatar.load(character.image)
 
+        itemView.setOnClickListener {
+            onInteractionListener.onClick(character)
+        }
     }
 }
 

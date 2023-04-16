@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName
 import ru.sumbul.rickandmorty.util.StringListTypeConverter
 import java.util.*
 
+
+@kotlinx.serialization.Serializable
 data class Character(
     val id: Int = 0,
     val name: String,
@@ -21,7 +23,7 @@ data class Character(
     val episode: List<String> = emptyList(),
     val url: String,
     val created: String,
-)
+) : java.io.Serializable
 
 data class Origin(
     @ColumnInfo(name = "origin_name")

@@ -7,7 +7,7 @@ import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 
 @Database(
     entities = [CharacterEntity::class],
-    version = 2
+    version = 3
 )
 
 abstract class CharacterDb : RoomDatabase() {
