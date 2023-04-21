@@ -24,4 +24,7 @@
     <string name="created">Created: </string>
     <string name="origin">Origin:</string>
     <string name="location">Location:</string>
+    <string name="air_date_text">Air date:</string>
+    <string name="episode_text">Episode:</string>
+    <string name="created_text">Created:</string>
 </resources>

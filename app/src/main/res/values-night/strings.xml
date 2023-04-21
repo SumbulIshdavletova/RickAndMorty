@@ -19,4 +19,7 @@
     <string name="type_view">Type:</string>
     <string name="type_hint">type</string>
     <string name="location">Location:</string>
+    <string name="air_date_text">Air date:</string>
+    <string name="episode_text">Episode:</string>
+    <string name="created_text">Created:</string>
 </resources>

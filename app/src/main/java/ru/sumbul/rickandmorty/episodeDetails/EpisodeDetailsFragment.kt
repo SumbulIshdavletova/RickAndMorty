@@ -1,60 +1,74 @@
 package ru.sumbul.rickandmorty.episodeDetails
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.sumbul.rickandmorty.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.sumbul.rickandmorty.characterDetails.CharacterDetailViewModel
+import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
+import ru.sumbul.rickandmorty.characterDetails.EpisodesInDetailsAdapter
+import ru.sumbul.rickandmorty.characters.character
+import ru.sumbul.rickandmorty.databinding.FragmentEpisodeDetailsBinding
+import ru.sumbul.rickandmorty.episodes.entity.Episode
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [EpisodeDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@ExperimentalCoroutinesApi
 class EpisodeDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
+    @kotlin.OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_episode_details, container, false)
+    ): View {
+        val binding = FragmentEpisodeDetailsBinding.inflate(inflater, container, false)
+        //    val viewModel: EpisodeDetailsViewModel by viewModels()
+        val viewModel = ViewModelProvider(requireActivity())[EpisodeDetailsViewModel::class.java]
+        val recyclerView = binding.list
+        val adapter = CharactersInDetailsAdapter()
+        recyclerView.adapter = adapter
+
+
+        parentFragmentManager.setFragmentResultListener(
+            "requestKey", this
+        ) { requestKey, bundle ->
+            val episode: Episode = bundle.getSerializable("requestKey") as Episode
+            binding.id.text = episode.id.toString()
+            binding.name.text = episode.name
+            binding.airDate.text = episode.air_date
+            binding.created.text = episode.created
+            binding.episode.text = episode.episode
+
+            val charactersUrls: List<String> = episode.characters
+
+            viewModel.getCharacters(charactersUrls)
+            viewModel.getData()?.observe(viewLifecycleOwner) { characters ->
+                adapter.submitList(characters)
+            }
+
+        }
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EpisodeDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EpisodeDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+//    companion object {
+//
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) =
+//            EpisodeDetailsFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
+//                }
+//            }
+//    }
 }
+

@@ -75,34 +75,31 @@ public class CharacterDetailsFragment extends Fragment {
         CharacterDetailViewModel characterDetailViewModel = new ViewModelProvider(requireActivity()).get(CharacterDetailViewModel.class);
 
 
-        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                character = (Character) bundle.getSerializable("requestKey");
-                int id = character.getId();
-                String name = character.getName();
-                binding.id.setText(String.valueOf(id));
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, (requestKey, bundle) -> {
+            character = (Character) bundle.getSerializable("requestKey");
+            int id = character.getId();
+            String name = character.getName();
+            binding.id.setText(String.valueOf(id));
 
-                binding.name.setText(name);
-                binding.species.setText(character.getSpecies());
-                binding.status.setText(character.getStatus());
-                binding.gender.setText(character.getGender());
-                String type = character.getType();
-                if (type.equals("")) {
-                    binding.type.setText("unknown");
-                } else {
-                    binding.type.setText(character.getType());
-                }
-                binding.created.setText(character.getCreated());
-                binding.originName.setText(character.getOrigin().getName());
-                binding.locationName.setText(character.getLocation().getName());
-                episodes = character.getEpisode();
-                characterDetailViewModel.getEpisodes(episodes);
-
-
-                characterDetailViewModel.getData1().observe(getViewLifecycleOwner(), adapter::submitList);
-
+            binding.name.setText(name);
+            binding.species.setText(character.getSpecies());
+            binding.status.setText(character.getStatus());
+            binding.gender.setText(character.getGender());
+            String type = character.getType();
+            if (type.equals("")) {
+                binding.type.setText("unknown");
+            } else {
+                binding.type.setText(character.getType());
             }
+            binding.created.setText(character.getCreated());
+            binding.originName.setText(character.getOrigin().getName());
+            binding.locationName.setText(character.getLocation().getName());
+            episodes = character.getEpisode();
+            characterDetailViewModel.getEpisodes(episodes);
+
+
+            characterDetailViewModel.getData1().observe(getViewLifecycleOwner(), adapter::submitList);
+
         });
 
         return view;

@@ -17,7 +17,9 @@ import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
 import ru.sumbul.rickandmorty.databinding.FragmentEpisodesListBinding
+import ru.sumbul.rickandmorty.episodeDetails.EpisodeDetailsFragment
 import ru.sumbul.rickandmorty.episodes.EpisodeViewModel
+import ru.sumbul.rickandmorty.episodes.entity.Episode
 
 @AndroidEntryPoint
 class EpisodesListFragment : Fragment() {
@@ -25,8 +27,24 @@ class EpisodesListFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: EpisodeViewModel by viewModels()
 
+
+    val episodeDetailsFragment: EpisodeDetailsFragment = EpisodeDetailsFragment()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        EpisodeAdapter()
+        EpisodeAdapter(object : OnInteractionListenerCharacter {
+            override fun onClick(episode: Episode) {
+                viewModel.getById(episode.id)
+                val bundle2 = Bundle()
+                bundle2.putSerializable("requestKey", episode)
+                parentFragmentManager.setFragmentResult("requestKey", bundle2)
+                parentFragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.frame_layout, episodeDetailsFragment)
+                    .addToBackStack("details")
+                    .commit()
+            }
+        })
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
