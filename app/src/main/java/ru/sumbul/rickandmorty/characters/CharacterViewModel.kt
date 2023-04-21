@@ -17,6 +17,7 @@ import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 import ru.sumbul.rickandmorty.characters.entity.Location
 import ru.sumbul.rickandmorty.characters.entity.Origin
+import ru.sumbul.rickandmorty.episodes.entity.Episode
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
 import ru.sumbul.rickandmorty.model.ListModelState
@@ -44,6 +45,8 @@ var character: Character = Character(
     url = "",
     created = "",
 )
+
+var episode: Episode = Episode(id = 0, name = "", air_date = "", "", emptyList(), "", "")
 
 @HiltViewModel
 @ExperimentalCoroutinesApi
@@ -120,5 +123,7 @@ class CharacterViewModel @Inject constructor(
         }
         return character
     }
+
+
 
 }

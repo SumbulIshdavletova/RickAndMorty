@@ -43,6 +43,7 @@
         android:layout_marginVertical="@dimen/min_margin"
         android:layout_marginStart="@dimen/common_margin"
         android:text="@string/species"
+        android:textColor="#546E7A"
         app:layout_constraintStart_toEndOf="@id/avatar"
         app:layout_constraintTop_toBottomOf="@id/name" />
 
@@ -74,6 +75,7 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/min_margin"
         android:text="@string/type_view"
+        android:textColor="#546E7A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/avatar" />
 
@@ -94,6 +96,7 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/min_margin"
         android:text="@string/created"
+        android:textColor="#546E7A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/type_view" />
 
@@ -104,7 +107,7 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/min_margin"
         android:text="@string/created"
-        app:layout_constraintStart_toEndOf="@id/type_view"
+        app:layout_constraintStart_toEndOf="@id/created_view"
         app:layout_constraintTop_toBottomOf="@id/type" />
 
     <TextView
@@ -114,6 +117,7 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/min_margin"
         android:text="@string/origin"
+        android:textColor="#546E7A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/created_view" />
 
@@ -124,6 +128,7 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/min_margin"
         android:text="@string/origin"
+        android:textColor="#546E7A"
         app:layout_constraintStart_toEndOf="@id/origin_view"
         app:layout_constraintTop_toBottomOf="@id/created" />
 
@@ -145,6 +150,7 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/min_margin"
         android:text="@string/location"
+        android:textColor="#546E7A"
         app:layout_constraintStart_toEndOf="@id/location"
         app:layout_constraintTop_toBottomOf="@id/origin_name" />
 
@@ -156,13 +162,21 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="location_name" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        tools:listitem="@layout/card_episode" />
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            tools:listitem="@layout/card_episode" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
