@@ -8,7 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.sumbul.rickandmorty.databinding.CardLocationBinding
 import ru.sumbul.rickandmorty.locations.entity.Location
 
-class LocationAdapter :
+interface OnInteractionListenerLocation {
+    fun onClick(location: Location) {}
+}
+
+class LocationAdapter(
+    private val onInteractionListener: OnInteractionListenerLocation
+) :
     PagingDataAdapter<Location, RecyclerView.ViewHolder>(
         LocationDiffCallback()
     ) {
@@ -16,7 +22,7 @@ class LocationAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
             CardLocationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return LocationViewHolder(binding)
+        return LocationViewHolder(onInteractionListener, binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -28,12 +34,16 @@ class LocationAdapter :
 }
 
 class LocationViewHolder(
+    private val onInteractionListener: OnInteractionListenerLocation,
     private val binding: CardLocationBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(location: Location) {
         binding.name.text = location.name
         binding.dimension.text = location.dimension
         binding.type.text = location.type
+        itemView.setOnClickListener {
+            onInteractionListener.onClick(location)
+        }
 
     }
 }

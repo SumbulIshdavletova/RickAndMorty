@@ -7,6 +7,8 @@ import dagger.hilt.components.SingletonComponent
 import ru.sumbul.rickandmorty.characters.db.CharacterDb
 import ru.sumbul.rickandmorty.episodes.dao.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.db.EpisodeDb
+import ru.sumbul.rickandmorty.locations.dao.LocationDao
+import ru.sumbul.rickandmorty.locations.db.LocationDb
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -17,4 +19,8 @@ object DaoModule {
 
     @Provides
     fun provideEpisodeDao(db: EpisodeDb): EpisodeDao = db.episodeDao()
+
+    @Provides
+    fun provideLocationDao(db: LocationDb): LocationDao = db.locationDao()
+
 }

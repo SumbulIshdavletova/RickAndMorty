@@ -11,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import ru.sumbul.rickandmorty.characters.episode
 import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.dao.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.entity.Episode
@@ -21,6 +20,8 @@ import ru.sumbul.rickandmorty.error.NetworkError
 import ru.sumbul.rickandmorty.model.ListModelState
 import java.io.IOException
 import javax.inject.Inject
+
+var episode: Episode = Episode(id = 0, name = "", air_date = "", "", emptyList(), "", "")
 
 @HiltViewModel
 @ExperimentalCoroutinesApi

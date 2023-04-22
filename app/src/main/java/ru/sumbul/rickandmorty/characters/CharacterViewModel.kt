@@ -46,7 +46,7 @@ var character: Character = Character(
     created = "",
 )
 
-var episode: Episode = Episode(id = 0, name = "", air_date = "", "", emptyList(), "", "")
+
 
 @HiltViewModel
 @ExperimentalCoroutinesApi

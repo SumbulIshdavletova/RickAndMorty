@@ -1,6 +1,7 @@
 package ru.sumbul.rickandmorty.locations.dao
 
 import android.location.Location
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
@@ -20,4 +21,9 @@ interface LocationDao {
     @Query("DELETE FROM LocationEntity")
     suspend fun clearAll()
 
+    @Query("SELECT * FROM LocationEntity")
+    fun getAll(): LiveData<List<LocationEntity>>
+
+    @Upsert
+    suspend fun upsert(location: LocationEntity)
 }

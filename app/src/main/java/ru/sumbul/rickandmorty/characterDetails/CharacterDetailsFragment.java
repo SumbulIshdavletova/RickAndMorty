@@ -45,25 +45,20 @@ import ru.sumbul.rickandmorty.episodes.ui.EpisodeAdapter;
 
 @ExperimentalCoroutinesApi
 public class CharacterDetailsFragment extends Fragment {
-    private static final String TAG = "Log";
+
     Character character = new Character(0, "", "", "", "", "",
             new Origin("", ""), new Location("", ""), "", new ArrayList<>(), "", "");
 
-    private CharacterViewModel characterViewModel;
 
     List<String> episodes = new ArrayList<>();
-
     public FragmentCharacterDetailsBinding binding;
-
     public CharacterDetailsFragment() {
         super(R.layout.fragment_character_details);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
     }
 
     @OptIn(markerClass = ExperimentalCoroutinesApi.class)

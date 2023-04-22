@@ -22,4 +22,8 @@
     <string name="air_date_text">Air date:</string>
     <string name="episode_text">Episode:</string>
     <string name="created_text">Created:</string>
+    <string name="unknown">unknown</string>
+    <string name="dimension_text">Dimension:</string>
+    <string name="type_text">Type:</string>
+    <string name="residents">Residents:</string>
 </resources>

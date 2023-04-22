@@ -19,7 +19,9 @@ import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
 import ru.sumbul.rickandmorty.databinding.FragmentLocationsListBinding
 import ru.sumbul.rickandmorty.episodes.EpisodeViewModel
 import ru.sumbul.rickandmorty.episodes.ui.EpisodeAdapter
+import ru.sumbul.rickandmorty.locationDetails.LocationDetailsFragment
 import ru.sumbul.rickandmorty.locations.LocationViewModel
+import ru.sumbul.rickandmorty.locations.entity.Location
 
 @AndroidEntryPoint
 class LocationsListFragment : Fragment() {
@@ -28,8 +30,23 @@ class LocationsListFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: LocationViewModel by viewModels()
 
+    val locationDetailsFragment: LocationDetailsFragment = LocationDetailsFragment()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        LocationAdapter()
+        LocationAdapter(object : OnInteractionListenerLocation {
+            override fun onClick(location: Location) {
+                viewModel.getById(location.id)
+                val bundle2 = Bundle()
+                bundle2.putSerializable("requestKey", location)
+                parentFragmentManager.setFragmentResult("requestKey", bundle2)
+                parentFragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.frame_layout, locationDetailsFragment)
+                    .addToBackStack("details")
+                    .commit()
+            }
+        })
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

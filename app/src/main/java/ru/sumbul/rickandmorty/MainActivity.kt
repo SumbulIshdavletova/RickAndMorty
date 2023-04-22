@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.characters.ui.CharactersListFragment
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun onCharacterSelected(character: Character?) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
