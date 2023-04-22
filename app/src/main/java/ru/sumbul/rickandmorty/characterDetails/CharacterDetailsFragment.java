@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 
+import com.bumptech.glide.Glide;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,9 +96,44 @@ public class CharacterDetailsFragment extends Fragment {
             binding.created.setText(character.getCreated());
             binding.originName.setText(character.getOrigin().getName());
             binding.locationName.setText(character.getLocation().getName());
+            String url = character.getImage();
+            Glide.with(this)
+                    .load(url)
+                    .into(binding.avatar);
             episodes = character.getEpisode();
             characterDetailViewModel.getEpisodes(episodes);
 
+
+            characterDetailViewModel.getData1().observe(getViewLifecycleOwner(), adapter::submitList);
+
+        });
+
+        getParentFragmentManager().setFragmentResultListener("requestKey2", this, (requestKey, bundle) -> {
+            character = (Character) bundle.getSerializable("requestKey2");
+            int id = character.getId();
+            String name = character.getName();
+            binding.id.setText(String.valueOf(id));
+
+            binding.name.setText(name);
+            binding.species.setText(character.getSpecies());
+            binding.status.setText(character.getStatus());
+            binding.gender.setText(character.getGender());
+            String type = character.getType();
+            if (type.equals("")) {
+                binding.type.setText("unknown");
+            } else {
+                binding.type.setText(character.getType());
+            }
+            String url = character.getImage();
+            Glide.with(this)
+                    .load(url)
+                    .into(binding.avatar);
+
+            binding.created.setText(character.getCreated());
+            binding.originName.setText(character.getOrigin().getName());
+            binding.locationName.setText(character.getLocation().getName());
+            episodes = character.getEpisode();
+            characterDetailViewModel.getEpisodes(episodes);
 
             characterDetailViewModel.getData1().observe(getViewLifecycleOwner(), adapter::submitList);
 

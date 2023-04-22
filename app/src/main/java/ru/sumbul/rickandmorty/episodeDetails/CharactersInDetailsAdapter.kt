@@ -9,11 +9,18 @@ import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.databinding.CardCharacterBinding
 import ru.sumbul.rickandmorty.view.load
 
-class CharactersInDetailsAdapter () : ListAdapter<ru.sumbul.rickandmorty.characters.entity.Character,
+
+interface OnInteractionListenerCharacter {
+    fun onClick(character: ru.sumbul.rickandmorty.characters.entity.Character) {}
+}
+
+class CharactersInDetailsAdapter (
+    private val onInteractionListener: OnInteractionListenerCharacter,
+)  : ListAdapter<ru.sumbul.rickandmorty.characters.entity.Character,
         CharactersViewHolder>(DetailsEpisodeDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder {
         val binding = CardCharacterBinding.inflate(LayoutInflater.from(parent.context), parent,false)
-        return CharactersViewHolder(binding)
+        return CharactersViewHolder(onInteractionListener, binding)
     }
 
     override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
@@ -25,6 +32,7 @@ class CharactersInDetailsAdapter () : ListAdapter<ru.sumbul.rickandmorty.charact
 }
 
 class CharactersViewHolder(
+    private val onInteractionListener: OnInteractionListenerCharacter,
     val binding: CardCharacterBinding
 ): RecyclerView.ViewHolder(binding.root) {
 
@@ -36,6 +44,9 @@ class CharactersViewHolder(
             binding.status.text = character.status
             binding.avatar.load(character.image)
 
+            itemView.setOnClickListener {
+                onInteractionListener.onClick(character)
+            }
         }
     }
 }
