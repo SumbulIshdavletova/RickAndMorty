@@ -23,8 +23,8 @@ import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
 import ru.sumbul.rickandmorty.R;
 import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment;
-import ru.sumbul.rickandmorty.characters.CharacterViewModel;
-import ru.sumbul.rickandmorty.characters.entity.Character;
+import ru.sumbul.rickandmorty.characters.domain.model.Character;
+import ru.sumbul.rickandmorty.characters.presentation.list.CharacterViewModel;
 import ru.sumbul.rickandmorty.databinding.FragmentLocationDetailsBinding;
 import ru.sumbul.rickandmorty.episodeDetails.CharactersInDetailsAdapter;
 import ru.sumbul.rickandmorty.episodeDetails.EpisodeDetailsFragment;
@@ -58,7 +58,7 @@ public class LocationDetailsFragment extends Fragment {
         CharactersInDetailsAdapter adapter = new CharactersInDetailsAdapter((OnInteractionListenerCharacter) (new OnInteractionListenerCharacter() {
             public void onClick(@NotNull Character character) {
                 Intrinsics.checkNotNullParameter(character, "character");
-                characterViewModel.getById(character.getId());
+            //    characterViewModel.getById(character.getId());
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("requestKey2", (Serializable) character);
                 getParentFragmentManager().setFragmentResult("requestKey2", bundle2);

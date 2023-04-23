@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characters.ui
+package ru.sumbul.rickandmorty.characters.presentation.list.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
 import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
-import ru.sumbul.rickandmorty.characters.CharacterViewModel
-import ru.sumbul.rickandmorty.characters.entity.Character
+import ru.sumbul.rickandmorty.characters.domain.model.CharacterDomain
+import ru.sumbul.rickandmorty.characters.presentation.list.CharacterViewModel
 import ru.sumbul.rickandmorty.databinding.FragmentCharactersListBinding
 
 @AndroidEntryPoint
@@ -27,13 +27,14 @@ class CharactersListFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: CharacterViewModel by viewModels()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val characterDetailsFragment: CharacterDetailsFragment = CharacterDetailsFragment()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         CharacterAdapter(object : OnInteractionListener {
-            override fun onClick(character: Character) {
-          viewModel.getById(character.id)
+            override fun onClick(character: CharacterDomain) {
+       //   viewModel.getById(character.id)
                 val bundle2 = Bundle()
                 bundle2.putSerializable("requestKey", character)
                 parentFragmentManager.setFragmentResult("requestKey", bundle2)
@@ -45,8 +46,6 @@ class CharactersListFragment : Fragment() {
             }
         })
     }
-
-    //  var listener: OnFragmentInteractionListener? = null
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(

@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.characters.entity.toDto
 import ru.sumbul.rickandmorty.characters.entity.toEntity
 import ru.sumbul.rickandmorty.error.ApiError
@@ -28,10 +27,10 @@ class LocationDetailsViewModel @Inject constructor(
     private val dao: LocationDao
 ) : ViewModel() {
 
-    private var data: MutableLiveData<List<Character>?>? =
-        MutableLiveData<List<ru.sumbul.rickandmorty.characters.entity.Character>?>()
+    private var data: MutableLiveData<List<ru.sumbul.rickandmorty.characters.domain.model.Character>?>? =
+        MutableLiveData<List<ru.sumbul.rickandmorty.characters.domain.model.Character>?>()
 
-    fun getData(): MutableLiveData<List<ru.sumbul.rickandmorty.characters.entity.Character>?>? {
+    fun getData(): MutableLiveData<List<ru.sumbul.rickandmorty.characters.domain.model.Character>?>? {
         return data
     }
 

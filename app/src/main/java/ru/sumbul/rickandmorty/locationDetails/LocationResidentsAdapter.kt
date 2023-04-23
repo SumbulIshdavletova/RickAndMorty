@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.databinding.CardCharacterBinding
 
 //class LocationResidentsAdapter : ListAdapter<Character, ResidentsViewHolder>(DetailsEpisodeDiffCallback()) {

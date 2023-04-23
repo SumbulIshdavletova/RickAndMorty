@@ -1,24 +1,22 @@
-package ru.sumbul.rickandmorty.characters.ui
+package ru.sumbul.rickandmorty.characters.presentation.list.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.sumbul.rickandmorty.BuildConfig
-import ru.sumbul.rickandmorty.characters.entity.Character
+import ru.sumbul.rickandmorty.characters.domain.model.CharacterDomain
 import ru.sumbul.rickandmorty.databinding.CardCharacterBinding
 import ru.sumbul.rickandmorty.view.load
-import ru.sumbul.rickandmorty.view.loadCircleCrop
 
 interface OnInteractionListener {
-    fun onClick(character: Character) {}
+    fun onClick(character: CharacterDomain) {}
 }
 
 class CharacterAdapter(
     private val onInteractionListener: OnInteractionListener,
 ) :
-    PagingDataAdapter<ru.sumbul.rickandmorty.characters.entity.Character, RecyclerView.ViewHolder>(
+    PagingDataAdapter<CharacterDomain, RecyclerView.ViewHolder>(
         CharacterDiffCallback()
     ) {
 
@@ -40,7 +38,7 @@ class CharacterViewHolder(
     private val onInteractionListener: OnInteractionListener,
     private val binding: CardCharacterBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(character: ru.sumbul.rickandmorty.characters.entity.Character) {
+    fun bind(character: CharacterDomain) {
         binding.name.text = character.name
         binding.gender.text = character.gender
         binding.species.text = character.species
@@ -53,10 +51,10 @@ class CharacterViewHolder(
     }
 }
 
-class CharacterDiffCallback : DiffUtil.ItemCallback<ru.sumbul.rickandmorty.characters.entity.Character>() {
+class CharacterDiffCallback : DiffUtil.ItemCallback<CharacterDomain>() {
     override fun areItemsTheSame(
-        oldItem: ru.sumbul.rickandmorty.characters.entity.Character,
-        newItem: ru.sumbul.rickandmorty.characters.entity.Character
+        oldItem: CharacterDomain,
+        newItem: CharacterDomain
     ): Boolean {
         if (oldItem::class != newItem::class) {
             return false
@@ -65,8 +63,8 @@ class CharacterDiffCallback : DiffUtil.ItemCallback<ru.sumbul.rickandmorty.chara
     }
 
     override fun areContentsTheSame(
-        oldItem: ru.sumbul.rickandmorty.characters.entity.Character,
-        newItem: ru.sumbul.rickandmorty.characters.entity.Character
+        oldItem: CharacterDomain,
+        newItem: CharacterDomain
     ): Boolean {
         return oldItem == newItem
     }

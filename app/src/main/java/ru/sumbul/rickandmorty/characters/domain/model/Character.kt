@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characters.entity
+package ru.sumbul.rickandmorty.characters.domain.model
 
 import androidx.room.ColumnInfo
 import androidx.room.TypeConverter
@@ -9,15 +9,15 @@ import java.util.*
 
 
 @kotlinx.serialization.Serializable
-data class Character(
+data class CharacterDomain(
     val id: Int = 0,
     val name: String,
     val status: String,
     val species: String,
     val type: String,
     val gender: String,
-    val origin: Origin,
-    val location: ru.sumbul.rickandmorty.characters.entity.Location,
+    val origin: CharacterOrigin,
+    val location: CharacterLocation,
     val image: String,
     @TypeConverters(StringListTypeConverter::class)
     val episode: List<String> = emptyList(),
@@ -25,7 +25,7 @@ data class Character(
     val created: String,
 ) : java.io.Serializable
 
-data class Origin(
+data class CharacterOrigin(
     @ColumnInfo(name = "origin_name")
     @SerializedName("name")
     val name: String,
@@ -35,7 +35,7 @@ data class Origin(
     val url: String,
 )
 
-data class Location(
+data class CharacterLocation(
     @ColumnInfo(name = "location_name")
     @SerializedName("name")
     val name: String,

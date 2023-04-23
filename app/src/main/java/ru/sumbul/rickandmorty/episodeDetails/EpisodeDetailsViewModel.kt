@@ -22,10 +22,10 @@ class EpisodeDetailsViewModel @Inject constructor(
     private val dao: EpisodeDao
 ) : ViewModel() {
 
-    private var data: MutableLiveData<List<ru.sumbul.rickandmorty.characters.entity.Character>?>? =
-        MutableLiveData<List<ru.sumbul.rickandmorty.characters.entity.Character>?>()
+    private var data: MutableLiveData<List<ru.sumbul.rickandmorty.characters.domain.model.Character>?>? =
+        MutableLiveData<List<ru.sumbul.rickandmorty.characters.domain.model.Character>?>()
 
-    fun getData(): MutableLiveData<List<ru.sumbul.rickandmorty.characters.entity.Character>?>? {
+    fun getData(): MutableLiveData<List<ru.sumbul.rickandmorty.characters.domain.model.Character>?>? {
         return data
     }
 

@@ -10,8 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
-import ru.sumbul.rickandmorty.characters.CharacterViewModel
-import ru.sumbul.rickandmorty.characters.entity.Character
+import ru.sumbul.rickandmorty.characters.presentation.list.CharacterViewModel
 import ru.sumbul.rickandmorty.databinding.FragmentEpisodeDetailsBinding
 import ru.sumbul.rickandmorty.episodes.entity.Episode
 
@@ -40,8 +39,8 @@ class EpisodeDetailsFragment : Fragment() {
 
         val adapter = CharactersInDetailsAdapter(
             (object : OnInteractionListenerCharacter {
-                override fun onClick(character: Character) {
-                    characterListViewModel.getById(character.id)
+                override fun onClick(character: ru.sumbul.rickandmorty.characters.domain.model.Character) {
+                 //   characterListViewModel.getById(character.id)
                     val bundle2 = Bundle()
                     bundle2.putSerializable("requestKey2", character)
                     parentFragmentManager.setFragmentResult("requestKey2", bundle2)

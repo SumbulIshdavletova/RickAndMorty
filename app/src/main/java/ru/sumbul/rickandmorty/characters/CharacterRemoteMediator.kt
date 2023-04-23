@@ -8,6 +8,7 @@ import androidx.room.withTransaction
 import retrofit2.HttpException
 import ru.sumbul.rickandmorty.characters.api.CharacterApi
 import ru.sumbul.rickandmorty.characters.db.CharacterDb
+import ru.sumbul.rickandmorty.characters.domain.model.CharacterDomain
 import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 import ru.sumbul.rickandmorty.characters.entity.toEntity
 import java.io.IOException
@@ -43,7 +44,7 @@ class CharacterRemoteMediator(
             )
             val info = body.body()?.info
             val characters = body.body()?.results ?: emptyList()
-            val responseData = mutableListOf<ru.sumbul.rickandmorty.characters.entity.Character>()
+            val responseData = mutableListOf<CharacterDomain>()
             responseData.addAll(characters)
 
             val nextPage = info?.next

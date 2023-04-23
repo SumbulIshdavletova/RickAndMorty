@@ -1,6 +1,9 @@
 package ru.sumbul.rickandmorty.characters.entity
 
 import androidx.room.*
+import ru.sumbul.rickandmorty.characters.domain.model.CharacterDomain
+import ru.sumbul.rickandmorty.characters.domain.model.CharacterLocation
+import ru.sumbul.rickandmorty.characters.domain.model.CharacterOrigin
 import ru.sumbul.rickandmorty.util.StringListTypeConverter
 
 @Entity
@@ -22,7 +25,7 @@ data class CharacterEntity(
     val url: String,
     val created: String,
 ) {
-    fun toDto() = ru.sumbul.rickandmorty.characters.entity.Character(
+    fun toDto() = CharacterDomain(
         id,
         name,
         status,
@@ -38,7 +41,7 @@ data class CharacterEntity(
     )
 
     companion object {
-        fun fromDto(dto: ru.sumbul.rickandmorty.characters.entity.Character) =
+        fun fromDto(dto:CharacterDomain) =
             CharacterEntity(
                 dto.id,
                 dto.name,
@@ -63,10 +66,10 @@ data class OriginEmbedded(
     @ColumnInfo(name = "origin_url")
     val url: String,
 ) {
-    fun toDto() = Origin(name, url)
+    fun toDto() = CharacterOrigin(name, url)
 
     companion object {
-        fun fromDto(dto: Origin) = dto.let {
+        fun fromDto(dto: CharacterOrigin) = dto.let {
             OriginEmbedded(it.name, it.url)
         }
     }
@@ -79,15 +82,15 @@ data class LocationEmbedded(
     @ColumnInfo(name = "location_url")
     val url: String,
 ) {
-    fun toDto() = Location(name, url)
+    fun toDto() = CharacterLocation(name, url)
 
     companion object {
-        fun fromDto(dto: Location) = dto.let {
+        fun fromDto(dto: CharacterLocation) = dto.let {
             LocationEmbedded(it.name, it.url)
         }
     }
 }
 
-fun List<CharacterEntity>.toDto(): List<Character> = map(CharacterEntity::toDto)
-fun List<ru.sumbul.rickandmorty.characters.entity.Character>.toEntity(): List<CharacterEntity> =
+fun List<CharacterEntity>.toDto(): List<CharacterDomain> = map(CharacterEntity::toDto)
+fun List<CharacterDomain>.toEntity(): List<CharacterEntity> =
     map(CharacterEntity::fromDto)
