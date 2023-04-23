@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
@@ -73,9 +74,9 @@ public class LocationDetailsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        getParentFragmentManager().setFragmentResultListener("requestKey", this, (requestKey, bundle) -> {
+        getParentFragmentManager().setFragmentResultListener("requestKey1", this, (requestKey, bundle) -> {
 
-            Location location = (Location) bundle.getSerializable("requestKey");
+            Location location = (Location) bundle.getSerializable("requestKey1");
             binding.id.setText(String.valueOf(location.getId()));
             binding.name.setText(location.getName());
             binding.type.setText(location.getType());
@@ -85,8 +86,25 @@ public class LocationDetailsFragment extends Fragment {
             viewModel.getCharacters(residents);
 
 
-            viewModel.getData().observe(getViewLifecycleOwner(), adapter::submitList);
+            Objects.requireNonNull(viewModel.getData()).observe(getViewLifecycleOwner(), adapter::submitList);
 
+        });
+
+        getParentFragmentManager().setFragmentResultListener("originUrl", this, (requestKey, bundle) -> {
+
+            // Location origin = (Location) bundle.getSerializable("originUrl");
+            String result = bundle.getString("originUrl");
+            viewModel.getLocationById(result);
+            viewModel.getLoc().observe(getViewLifecycleOwner(), origin -> {
+                binding.id.setText(String.valueOf(origin.getId()));
+                binding.name.setText(origin.getName());
+                binding.type.setText(origin.getType());
+                binding.dimension.setText(origin.getDimension());
+                binding.created.setText(origin.getCreated());
+                residents = origin.getResidents();
+                viewModel.getCharacters(residents);
+                viewModel.getData().observe(getViewLifecycleOwner(), adapter::submitList);
+            });
         });
 
 

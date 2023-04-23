@@ -12,6 +12,8 @@ import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.characters.ui.CharactersListFragment
 import ru.sumbul.rickandmorty.databinding.ActivityMainBinding
 import ru.sumbul.rickandmorty.episodes.ui.EpisodesListFragment
+import ru.sumbul.rickandmorty.locationDetails.LocationDetailsFragment
+import ru.sumbul.rickandmorty.locations.entity.Location
 import ru.sumbul.rickandmorty.locations.ui.LocationsListFragment
 
 @AndroidEntryPoint
@@ -66,6 +68,24 @@ class MainActivity : AppCompatActivity() {
         )
         fragmentTransaction.commit()
     }
+
+//    @OptIn(ExperimentalCoroutinesApi::class)
+//    fun onLocationSelected(location: Location) {
+//        val fragmentManager = supportFragmentManager
+//        val fragmentTransaction = fragmentManager.beginTransaction()
+//        var containerViewId: Int = R.id.frame_layout
+////        if (findViewById<View?>(R.id.framelayout_right) != null) containerViewId =
+////            R.id.framelayout_right
+//        val bundle = Bundle()
+//        bundle.putSerializable("requestKey4", location.id)
+//        val locationDetailsFragment = LocationDetailsFragment()
+//        locationDetailsFragment.arguments = bundle
+//        fragmentTransaction.replace(containerViewId, locationDetailsFragment)
+//        if (findViewById<View?>(R.id.frame_layout) == null) fragmentTransaction.addToBackStack(
+//            "null"
+//        )
+//        fragmentTransaction.commit()
+//    }
 
 
 }

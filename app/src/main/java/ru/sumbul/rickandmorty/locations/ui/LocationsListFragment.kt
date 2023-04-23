@@ -30,6 +30,7 @@ class LocationsListFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: LocationViewModel by viewModels()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val locationDetailsFragment: LocationDetailsFragment = LocationDetailsFragment()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -38,8 +39,8 @@ class LocationsListFragment : Fragment() {
             override fun onClick(location: Location) {
                 viewModel.getById(location.id)
                 val bundle2 = Bundle()
-                bundle2.putSerializable("requestKey", location)
-                parentFragmentManager.setFragmentResult("requestKey", bundle2)
+                bundle2.putSerializable("requestKey1", location)
+                parentFragmentManager.setFragmentResult("requestKey1", bundle2)
                 parentFragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.frame_layout, locationDetailsFragment)

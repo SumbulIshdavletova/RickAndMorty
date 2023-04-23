@@ -8,6 +8,7 @@ import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 import ru.sumbul.rickandmorty.characters.entity.ResponseApi
 import ru.sumbul.rickandmorty.episodes.entity.Episode
 import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity
+import ru.sumbul.rickandmorty.locations.entity.LocationEntity
 import rx.Observable
 
 interface CharacterApi {
@@ -27,6 +28,11 @@ interface CharacterApi {
 
     @GET("episode/{ids}")
     suspend fun getEpisodes(@Path("ids") ids: String): Response<List<Episode>>
+
+    @GET("location/")
+    suspend fun getLocationById(
+        @Query("id") id: Int
+    ): Response<LocationEntity>
 
     suspend fun filterCharacters(
         name: String,

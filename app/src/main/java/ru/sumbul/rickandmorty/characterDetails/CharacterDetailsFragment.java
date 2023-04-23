@@ -21,6 +21,8 @@ import android.widget.Adapter;
 
 import com.bumptech.glide.Glide;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +34,7 @@ import javax.annotation.Nullable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
 import ru.sumbul.rickandmorty.R;
 import ru.sumbul.rickandmorty.characters.CharacterViewModel;
@@ -39,8 +42,10 @@ import ru.sumbul.rickandmorty.characters.entity.Character;
 import ru.sumbul.rickandmorty.characters.entity.Location;
 import ru.sumbul.rickandmorty.characters.entity.Origin;
 import ru.sumbul.rickandmorty.databinding.FragmentCharacterDetailsBinding;
+import ru.sumbul.rickandmorty.episodeDetails.EpisodeDetailsFragment;
 import ru.sumbul.rickandmorty.episodes.entity.Episode;
 import ru.sumbul.rickandmorty.episodes.ui.EpisodeAdapter;
+import ru.sumbul.rickandmorty.locationDetails.LocationDetailsFragment;
 
 
 @ExperimentalCoroutinesApi
@@ -51,7 +56,19 @@ public class CharacterDetailsFragment extends Fragment {
 
 
     List<String> episodes = new ArrayList<>();
+    Origin origin = new Origin("", "");
+    Location location = new Location("", "");
+    ru.sumbul.rickandmorty.locations.entity.Location locationTOfOrigin = new ru.sumbul.rickandmorty.locations.entity.Location(
+            0,
+            "",
+            "",
+            "",
+            new ArrayList<>(),
+            "",
+            ""
+    );
     public FragmentCharacterDetailsBinding binding;
+
     public CharacterDetailsFragment() {
         super(R.layout.fragment_character_details);
     }
@@ -66,11 +83,27 @@ public class CharacterDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCharacterDetailsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        RecyclerView recyclerView = binding.list;
-        EpisodesInDetailsAdapter adapter = new EpisodesInDetailsAdapter();
-        recyclerView.setAdapter(adapter);
         CharacterDetailViewModel characterDetailViewModel = new ViewModelProvider(requireActivity()).get(CharacterDetailViewModel.class);
 
+        RecyclerView recyclerView = binding.list;
+        EpisodesInDetailsAdapter adapter = new EpisodesInDetailsAdapter((OnInteractionListenerFromCharacterToEpisode) (new OnInteractionListenerFromCharacterToEpisode() {
+            public void onClick(@NotNull Episode episode) {
+                Intrinsics.checkNotNullParameter(episode, "character");
+                characterDetailViewModel.getEpisodeById(episode.getId());
+                Bundle bundle2 = new Bundle();
+                bundle2.putSerializable("requestKey3", (Serializable) episode);
+                getParentFragmentManager().setFragmentResult("requestKey3", bundle2);
+                Fragment EpisodeDetailsFragment = new EpisodeDetailsFragment();
+                getParentFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.frame_layout, EpisodeDetailsFragment)
+                        .addToBackStack("details")
+                        .commit();
+            }
+        }
+
+        ));
+        recyclerView.setAdapter(adapter);
 
         getParentFragmentManager().setFragmentResultListener("requestKey", this, (requestKey, bundle) -> {
             character = (Character) bundle.getSerializable("requestKey");
@@ -89,6 +122,8 @@ public class CharacterDetailsFragment extends Fragment {
                 binding.type.setText(character.getType());
             }
             binding.created.setText(character.getCreated());
+            origin = character.getOrigin();
+            location = character.getLocation();
             binding.originName.setText(character.getOrigin().getName());
             binding.locationName.setText(character.getLocation().getName());
             String url = character.getImage();
@@ -97,6 +132,9 @@ public class CharacterDetailsFragment extends Fragment {
                     .into(binding.avatar);
             episodes = character.getEpisode();
             characterDetailViewModel.getEpisodes(episodes);
+
+            String originUrl = origin.getUrl();
+        //    locationTOfOrigin = characterDetailViewModel.getLocationById(originUrl);
 
 
             characterDetailViewModel.getData1().observe(getViewLifecycleOwner(), adapter::submitList);
@@ -127,11 +165,53 @@ public class CharacterDetailsFragment extends Fragment {
             binding.created.setText(character.getCreated());
             binding.originName.setText(character.getOrigin().getName());
             binding.locationName.setText(character.getLocation().getName());
+            origin = character.getOrigin();
+            location = character.getLocation();
             episodes = character.getEpisode();
             characterDetailViewModel.getEpisodes(episodes);
 
             characterDetailViewModel.getData1().observe(getViewLifecycleOwner(), adapter::submitList);
 
+        });
+
+        binding.originName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //      Intrinsics.checkNotNullParameter(origin, "character");
+
+                characterDetailViewModel.getLocationById(origin.getUrl());
+                String str = origin.getUrl();
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("originUrl", str);
+                //"originUrl", characterDetailViewModel.getLoc().observe(););
+                getParentFragmentManager().setFragmentResult("originUrl", bundle2);
+                Fragment LocationDetailsFragment = new LocationDetailsFragment();
+                getParentFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.frame_layout, LocationDetailsFragment)
+                        .addToBackStack("details")
+                        .commit();
+            }
+        });
+
+        binding.locationName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //      Intrinsics.checkNotNullParameter(origin, "character");
+
+                characterDetailViewModel.getLocationById(location.getUrl());
+                String str = location.getUrl();
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("originUrl", str);
+                //"originUrl", characterDetailViewModel.getLoc().observe(););
+                getParentFragmentManager().setFragmentResult("originUrl", bundle2);
+                Fragment LocationDetailsFragment = new LocationDetailsFragment();
+                getParentFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.frame_layout, LocationDetailsFragment)
+                        .addToBackStack("details")
+                        .commit();
+            }
         });
 
         return view;

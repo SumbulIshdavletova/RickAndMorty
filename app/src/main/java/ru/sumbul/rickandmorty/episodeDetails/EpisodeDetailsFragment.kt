@@ -75,6 +75,27 @@ class EpisodeDetailsFragment : Fragment() {
 
         }
 
+
+        parentFragmentManager.setFragmentResultListener(
+            "requestKey3", this
+        ) { _, bundle ->
+            val episode: Episode = bundle.getSerializable("requestKey3") as Episode
+            binding.id.text = episode.id.toString()
+            binding.name.text = episode.name
+            binding.airDate.text = episode.air_date
+            binding.created.text = episode.created
+            binding.episode.text = episode.episode
+
+            val charactersUrls: List<String> = episode.characters
+
+            viewModel.getCharacters(charactersUrls)
+            viewModel.getData()?.observe(viewLifecycleOwner) { characters ->
+                adapter.submitList(characters)
+            }
+
+        }
+
+
         return binding.root
     }
 

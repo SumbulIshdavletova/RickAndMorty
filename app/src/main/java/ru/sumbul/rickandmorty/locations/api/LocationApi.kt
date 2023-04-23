@@ -16,10 +16,16 @@ interface LocationApi {
         @Query("page") page: Int
     ): Response<ResponseApiLocation>
 
-    @GET("location/")
+    @GET("location/{id}")
     suspend fun getLocationById(
-        @Query("id") id: Int
+        @Path("id") id: Int
     ): Response<LocationEntity>
+
+
+//    @GET("location/{id}")
+//    suspend fun getLocationById2(
+//        @Path("id") id: Int
+//    ): Response<LocationEntity>
 
     @GET("character/{ids}")
     suspend fun getCharacters(@Path("ids") ids: String): Response<List<ru.sumbul.rickandmorty.characters.entity.Character>>
