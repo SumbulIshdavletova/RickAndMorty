@@ -72,29 +72,7 @@ class FilteredRemoteMediator(
                     characterApi.getCharacters(page, name, status, gender)
                 }
             }
-//                    val remoteKey = characterDb.withTransaction {
-//                        remoteKeyDao.remoteKeyByQuery(query)
-//                    }
-//                    if (remoteKey.nextPage == null) {
-//                        return MediatorResult.Success(
-//                            endOfPaginationReached = true
-//                        )
-//                    } else {
-//                        characterApi.getCharacters(remoteKey.nextPage, name, status, gender)
-//                    }
 
-//                    if (lastItem == null) {
-////                        val name: String = filterDao.getName()
-////                        val status: String = filterDao.getStatus()
-////                        val gender: String = filterDao.getGender()
-//                        characterApi.getCharacters(1, name, status, gender)
-//                    } else {
-//                        val page = (lastItem.id / state.config.pageSize) + 1
-////                        val name: String = filterDao.getName()
-////                        val status: String = filterDao.getStatus()
-////                        val gender: String = filterDao.getGender()
-//
-//                    }
 
             //  val result = characterApi.getCharacters(loadKey, name, status, gender)
             if (!result.isSuccessful) {
