@@ -53,5 +53,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/common_margin"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_baseline_filter_alt_24" />
+
 
 </FrameLayout>

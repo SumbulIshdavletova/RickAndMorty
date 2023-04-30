@@ -57,8 +57,6 @@ public class LocationDetailsFragment extends Fragment {
 
         CharactersInDetailsAdapter adapter = new CharactersInDetailsAdapter((OnInteractionListenerCharacter) (new OnInteractionListenerCharacter() {
             public void onClick(@NotNull Character character) {
-                Intrinsics.checkNotNullParameter(character, "character");
-                characterViewModel.getById(character.getId());
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("requestKey2", (Serializable) character);
                 getParentFragmentManager().setFragmentResult("requestKey2", bundle2);
@@ -92,7 +90,6 @@ public class LocationDetailsFragment extends Fragment {
 
         getParentFragmentManager().setFragmentResultListener("originUrl", this, (requestKey, bundle) -> {
 
-            // Location origin = (Location) bundle.getSerializable("originUrl");
             String result = bundle.getString("originUrl");
             viewModel.getLocationById(result);
             viewModel.getLoc().observe(getViewLifecycleOwner(), origin -> {
@@ -103,7 +100,7 @@ public class LocationDetailsFragment extends Fragment {
                 binding.created.setText(origin.getCreated());
                 residents = origin.getResidents();
                 viewModel.getCharacters(residents);
-                viewModel.getData().observe(getViewLifecycleOwner(), adapter::submitList);
+                Objects.requireNonNull(viewModel.getData()).observe(getViewLifecycleOwner(), adapter::submitList);
             });
         });
 

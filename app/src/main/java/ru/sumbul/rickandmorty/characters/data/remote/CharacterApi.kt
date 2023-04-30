@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characters.api
+package ru.sumbul.rickandmorty.characters.data.remote
 
 import retrofit2.Response
 import retrofit2.http.GET
@@ -7,15 +7,16 @@ import retrofit2.http.Query
 import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 import ru.sumbul.rickandmorty.characters.entity.ResponseApi
 import ru.sumbul.rickandmorty.episodes.entity.Episode
-import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity
 import ru.sumbul.rickandmorty.locations.entity.LocationEntity
-import rx.Observable
 
 interface CharacterApi {
 
     @GET("character/")
     suspend fun getCharacters(
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("name") name: String,
+        @Query("status") status: String,
+        @Query("gender") gender: String,
     ): Response<ResponseApi>
 
     @GET("character/")
@@ -34,11 +35,4 @@ interface CharacterApi {
         @Query("id") id: Int
     ): Response<LocationEntity>
 
-    suspend fun filterCharacters(
-        name: String,
-        status: String,
-        species: String,
-        type: String,
-        gender: String
-    )
 }

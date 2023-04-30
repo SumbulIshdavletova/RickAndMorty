@@ -177,13 +177,11 @@ public class CharacterDetailsFragment extends Fragment {
         binding.originName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //      Intrinsics.checkNotNullParameter(origin, "character");
 
                 characterDetailViewModel.getLocationById(origin.getUrl());
                 String str = origin.getUrl();
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("originUrl", str);
-                //"originUrl", characterDetailViewModel.getLoc().observe(););
                 getParentFragmentManager().setFragmentResult("originUrl", bundle2);
                 Fragment LocationDetailsFragment = new LocationDetailsFragment();
                 getParentFragmentManager().beginTransaction()
@@ -197,13 +195,10 @@ public class CharacterDetailsFragment extends Fragment {
         binding.locationName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //      Intrinsics.checkNotNullParameter(origin, "character");
-
                 characterDetailViewModel.getLocationById(location.getUrl());
                 String str = location.getUrl();
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("originUrl", str);
-                //"originUrl", characterDetailViewModel.getLoc().observe(););
                 getParentFragmentManager().setFragmentResult("originUrl", bundle2);
                 Fragment LocationDetailsFragment = new LocationDetailsFragment();
                 getParentFragmentManager().beginTransaction()
@@ -220,12 +215,9 @@ public class CharacterDetailsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        CharacterDetailViewModel characterDetailViewModel = new ViewModelProvider(requireActivity()).get(CharacterDetailViewModel.class);
-        characterDetailViewModel.getData1().removeObservers(getViewLifecycleOwner());
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                characterDetailViewModel.getData1().removeObservers(getViewLifecycleOwner());
 
             }
         };

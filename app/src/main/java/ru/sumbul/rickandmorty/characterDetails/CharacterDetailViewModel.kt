@@ -1,20 +1,23 @@
 package ru.sumbul.rickandmorty.characterDetails
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import ru.sumbul.rickandmorty.characters.api.CharacterApi
+import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
+import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.dao.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.entity.Episode
+import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity
 import ru.sumbul.rickandmorty.episodes.entity.toDto
 import ru.sumbul.rickandmorty.episodes.entity.toEntity
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
 import ru.sumbul.rickandmorty.locations.dao.LocationDao
 import ru.sumbul.rickandmorty.locations.entity.Location
-import ru.sumbul.rickandmorty.locations.location
 import ru.sumbul.rickandmorty.model.ListModelState
 import java.io.IOException
 import javax.inject.Inject
@@ -39,6 +42,7 @@ class CharacterDetailViewModel @Inject constructor(
     private val api: CharacterApi,
     private val locationDao: LocationDao,
     private val dao: EpisodeDao,
+    private val characterDao: CharacterDao,
     private val repository: CharacterDetailRepository,
     private val episodeApi: EpisodeApi,
 ) : ViewModel() {
@@ -75,8 +79,37 @@ class CharacterDetailViewModel @Inject constructor(
             data1?.value = null
             val body =
                 response.body()?.toEntity() ?: throw ApiError(response.code(), response.message())
-
+            dao.upsertAll(body)
             data1?.value = body.toDto()
+
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw NetworkError
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun getEpisodesFromDb(urls: MutableList<String>): Any = viewModelScope.launch {
+        ids.removeAll(ids)
+        for (url in urls) {
+            var result: String = url.substringAfterLast("/", "0")
+
+            ids.add(result.toInt())
+
+        }
+
+        val check = ids.toString()
+        try {
+            var filteredEp: MutableList<EpisodeEntity>?
+//            for (i in ids) {
+//                val ep = dao.getAll().value?.filter { episode ->
+//                    episode.id == i
+//                }
+//                filteredEp.replaceAll(ep.toList())
+//            }
+
+            //    data1?.value = filteredEp.toDto()
 
         } catch (e: IOException) {
             throw NetworkError

@@ -2,8 +2,7 @@ package ru.sumbul.rickandmorty.characterDetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import ru.sumbul.rickandmorty.characters.api.CharacterApi
-import ru.sumbul.rickandmorty.characters.dao.CharacterDao
+import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
 import ru.sumbul.rickandmorty.episodes.dao.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.entity.Episode
 import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity

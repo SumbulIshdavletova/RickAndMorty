@@ -11,9 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
 import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
@@ -27,13 +26,13 @@ class CharactersListFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: CharacterViewModel by viewModels()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val characterDetailsFragment: CharacterDetailsFragment = CharacterDetailsFragment()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         CharacterAdapter(object : OnInteractionListener {
             override fun onClick(character: Character) {
-          viewModel.getById(character.id)
                 val bundle2 = Bundle()
                 bundle2.putSerializable("requestKey", character)
                 parentFragmentManager.setFragmentResult("requestKey", bundle2)
@@ -46,16 +45,16 @@ class CharactersListFragment : Fragment() {
         })
     }
 
-    //  var listener: OnFragmentInteractionListener? = null
-
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentCharactersListBinding.inflate(inflater, container, false)
-
+        val binding = FragmentCharactersListBinding.inflate(
+            inflater,
+            container,
+            false
+        )
         binding.list.adapter = adapter
-
         lifecycleScope.launch {
             viewModel.characterPagingFlow.collect() { pagingData ->
                 adapter.submitData(pagingData)
@@ -66,7 +65,9 @@ class CharactersListFragment : Fragment() {
             adapter.withLoadStateHeaderAndFooter(header = LoadingStateAdapter { adapter.retry() },
                 footer = LoadingStateAdapter { adapter.retry() })
 
-        binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
+        binding.swipeRefresh.setOnRefreshListener {
+            adapter.refresh()
+        }
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -77,10 +78,35 @@ class CharactersListFragment : Fragment() {
             }
         }
 
+        //GO TO FILTER FRAGMENT
+        val filterFragment: CharacterFilterFragment = CharacterFilterFragment()
+        binding.filter.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.frame_layout, filterFragment)
+                .addToBackStack("toFilter")
+                .commit()
+        }
 
+//приходим с фрагмента с фильтрами
+        parentFragmentManager.setFragmentResultListener(
+            "filter", this
+        ) { _, bundle ->
+            val filterRequest = bundle.getBundle("filter")
+            val name = bundle.getString("name")
+            val gender = bundle.getString("gender")
+            val status = bundle.getString("status")
+            if (name != null) {
+                if (status != null) {
+                    if (gender != null) {
+                        viewModel.filterCharacters(name, status, gender)
+                    }
+                }
+            }
+            adapter.refresh()
+        }
 
         return binding.root
     }
-
 
 }

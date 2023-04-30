@@ -41,7 +41,7 @@ class EpisodeDetailsFragment : Fragment() {
         val adapter = CharactersInDetailsAdapter(
             (object : OnInteractionListenerCharacter {
                 override fun onClick(character: Character) {
-                    characterListViewModel.getById(character.id)
+                  //  characterListViewModel.getById(character.id)
                     val bundle2 = Bundle()
                     bundle2.putSerializable("requestKey2", character)
                     parentFragmentManager.setFragmentResult("requestKey2", bundle2)

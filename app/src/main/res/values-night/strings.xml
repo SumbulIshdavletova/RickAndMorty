@@ -26,4 +26,8 @@
     <string name="dimension_text">Dimension:</string>
     <string name="type_text">Type:</string>
     <string name="residents">Residents:</string>
+    <string name="enter_name">Enter name</string>
+    <string name="enter_species">Enter species</string>
+    <string name="enter_type">Enter type</string>
+    <string name="search">Search</string>
 </resources>

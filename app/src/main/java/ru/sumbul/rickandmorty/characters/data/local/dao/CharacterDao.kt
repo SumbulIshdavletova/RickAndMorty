@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characters.dao
+package ru.sumbul.rickandmorty.characters.data.local.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
@@ -7,17 +7,9 @@ import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
 
 @Dao
 interface CharacterDao {
-//    @Query("SELECT * FROM CharacterEntity")
-//    fun getAll(): Flow<List<CharacterEntity>>
-//
+
     @Query("SELECT * FROM CharacterEntity")
     fun getPagingSource(): PagingSource<Int, CharacterEntity>
-//
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insert(character: CharacterEntity)
-//
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insert(character: List<CharacterEntity>)
 
     @Upsert
     suspend fun upsert(character: CharacterEntity)

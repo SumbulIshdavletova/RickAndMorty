@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".characters.ui.CharacterFilterFragment">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/nameSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:gravity="center_horizontal"
+        android:hint="@string/enter_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/alive"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:visibility="visible"
+        app:icon="@drawable/ic_baseline_monitor_heart_24"
+        app:iconSize="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameSearch" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dead"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:visibility="visible"
+        app:icon="@drawable/ic_baseline_cancel_24"
+        app:iconSize="32dp"
+        app:layout_constraintStart_toEndOf="@id/alive"
+        app:layout_constraintTop_toBottomOf="@id/nameSearch" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/unknown"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:visibility="visible"
+        app:icon="@drawable/ic_baseline_call_split_24"
+        app:iconSize="32dp"
+        app:layout_constraintStart_toEndOf="@id/dead"
+        app:layout_constraintTop_toBottomOf="@id/nameSearch" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/speciesSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:gravity="center_horizontal"
+        android:hint="@string/enter_species"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dead" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/typeSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:gravity="center_horizontal"
+        android:hint="@string/enter_type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/speciesSearch" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/female"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:visibility="visible"
+        app:icon="@drawable/ic_baseline_female_24"
+        app:iconSize="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeSearch" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/male"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:visibility="visible"
+        app:icon="@drawable/ic_baseline_male_24"
+        app:iconSize="32dp"
+        app:layout_constraintStart_toEndOf="@id/female"
+        app:layout_constraintTop_toBottomOf="@id/typeSearch" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/genderless"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:visibility="visible"
+        app:icon="@drawable/ic_baseline_panorama_fish_eye_24"
+        app:iconSize="32dp"
+        app:layout_constraintStart_toEndOf="@id/male"
+        app:layout_constraintTop_toBottomOf="@id/typeSearch" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/unknownGender"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:visibility="visible"
+        app:icon="@drawable/ic_baseline_call_split_24"
+        app:iconSize="32dp"
+        app:layout_constraintStart_toEndOf="@id/genderless"
+        app:layout_constraintTop_toBottomOf="@id/typeSearch" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin"
+        android:gravity="center_horizontal"
+        android:text="@string/search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/unknownGender" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
