@@ -36,12 +36,12 @@ class CharacterRepositoryImpl @Inject constructor(
             it.map(CharacterEntity::toDto)
         }
 
-    override suspend fun filterCharacters(name: String, status: String, gender: String) {
-        val body: FilterEntity = FilterEntity(name, status, gender)
-        try {
-            filterDao.upsert(body)
-        } catch (e: Exception) {
-            throw e
-        }
-    }
+//    override suspend fun filterCharacters(name: String, status: String, gender: String) {
+//        val body: FilterEntity = FilterEntity(name, status, gender)
+//        try {
+//            filterDao.upsert(body)
+//        } catch (e: Exception) {
+//            throw e
+//        }
+//    }
 }

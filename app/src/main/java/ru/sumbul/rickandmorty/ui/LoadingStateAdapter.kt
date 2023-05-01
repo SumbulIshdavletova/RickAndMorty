@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.adapter
+package ru.sumbul.rickandmorty.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

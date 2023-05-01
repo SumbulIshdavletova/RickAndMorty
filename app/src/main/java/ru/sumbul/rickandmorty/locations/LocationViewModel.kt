@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -33,7 +32,6 @@ var location: Location = Location(
 )
 
 
-@HiltViewModel
 @ExperimentalCoroutinesApi
 class LocationViewModel @Inject constructor(
     pager: Pager<Int, LocationEntity>,

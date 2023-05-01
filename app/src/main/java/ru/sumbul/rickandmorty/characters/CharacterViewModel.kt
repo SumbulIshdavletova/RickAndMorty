@@ -2,7 +2,7 @@ package ru.sumbul.rickandmorty.characters
 
 import androidx.lifecycle.*
 import androidx.paging.*
-import dagger.hilt.android.lifecycle.HiltViewModel
+
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -35,7 +35,7 @@ var character: Character = Character(
 )
 
 
-@HiltViewModel
+
 @ExperimentalCoroutinesApi
 class CharacterViewModel @Inject constructor(
     pager: Pager<Int, CharacterEntity>,

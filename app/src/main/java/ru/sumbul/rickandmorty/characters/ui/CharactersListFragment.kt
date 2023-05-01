@@ -10,24 +10,24 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import ru.sumbul.rickandmorty.R
-import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
-import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
+import ru.sumbul.rickandmorty.ui.LoadingStateAdapter
+import ru.sumbul.rickandmorty.characters.details.ui.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.characters.CharacterViewModel
 import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.databinding.FragmentCharactersListBinding
 
-@AndroidEntryPoint
+
 class CharactersListFragment : Fragment() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: CharacterViewModel by viewModels()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val characterDetailsFragment: CharacterDetailsFragment = CharacterDetailsFragment()
+    val characterDetailsFragment: CharacterDetailsFragment =
+        CharacterDetailsFragment()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {

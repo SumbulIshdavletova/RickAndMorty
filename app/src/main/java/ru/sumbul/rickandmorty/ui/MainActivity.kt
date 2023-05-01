@@ -1,22 +1,20 @@
-package ru.sumbul.rickandmorty
+package ru.sumbul.rickandmorty.ui
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
+import ru.sumbul.rickandmorty.R
+import ru.sumbul.rickandmorty.characters.details.ui.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.characters.ui.CharactersListFragment
 import ru.sumbul.rickandmorty.databinding.ActivityMainBinding
 import ru.sumbul.rickandmorty.episodes.ui.EpisodesListFragment
-import ru.sumbul.rickandmorty.locationDetails.LocationDetailsFragment
-import ru.sumbul.rickandmorty.locations.entity.Location
 import ru.sumbul.rickandmorty.locations.ui.LocationsListFragment
 
-@AndroidEntryPoint
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -60,7 +58,8 @@ class MainActivity : AppCompatActivity() {
 //            R.id.framelayout_right
         val bundle = Bundle()
         bundle.putSerializable("requestKey", character?.id)
-        val characterDetailsFragment = CharacterDetailsFragment()
+        val characterDetailsFragment =
+            CharacterDetailsFragment()
         characterDetailsFragment.arguments = bundle
         fragmentTransaction.replace(containerViewId, characterDetailsFragment)
         if (findViewById<View?>(R.id.frame_layout) == null) fragmentTransaction.addToBackStack(

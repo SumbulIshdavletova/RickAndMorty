@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characterDetails.model
+package ru.sumbul.rickandmorty.characters.details.domain.model
 
 class LinkedEpisodes {
 }

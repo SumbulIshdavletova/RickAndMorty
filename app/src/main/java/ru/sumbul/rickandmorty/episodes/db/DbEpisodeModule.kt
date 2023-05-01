@@ -7,23 +7,18 @@ import androidx.paging.PagingConfig
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import ru.sumbul.rickandmorty.episodes.EpisodeRemoteMediator
 import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity
 import javax.inject.Singleton
 
 @OptIn(ExperimentalPagingApi::class)
-@InstallIn(SingletonComponent::class)
 @Module
 class DbEpisodeModule {
 
     @Singleton
     @Provides
     fun provideDb(
-        @ApplicationContext
         context: Context
     ): EpisodeDb = Room.databaseBuilder(context, EpisodeDb::class.java, "episodes.db")
         .fallbackToDestructiveMigration()

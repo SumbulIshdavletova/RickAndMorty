@@ -1,9 +1,7 @@
-package ru.sumbul.rickandmorty.api
+package ru.sumbul.rickandmorty.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,7 +13,7 @@ import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
 import ru.sumbul.rickandmorty.locations.api.LocationApi
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
+
 @Module
 class ApiModule {
 

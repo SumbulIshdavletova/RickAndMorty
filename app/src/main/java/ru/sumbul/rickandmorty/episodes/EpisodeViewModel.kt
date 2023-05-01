@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -23,7 +22,6 @@ import javax.inject.Inject
 
 var episode: Episode = Episode(id = 0, name = "", air_date = "", "", emptyList(), "", "")
 
-@HiltViewModel
 @ExperimentalCoroutinesApi
 class EpisodeViewModel @Inject constructor(
     pager: Pager<Int, EpisodeEntity>,

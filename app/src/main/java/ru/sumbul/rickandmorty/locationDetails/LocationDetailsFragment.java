@@ -19,17 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
 import ru.sumbul.rickandmorty.R;
-import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment;
+import ru.sumbul.rickandmorty.characters.details.ui.CharacterDetailsFragment;
 import ru.sumbul.rickandmorty.characters.CharacterViewModel;
 import ru.sumbul.rickandmorty.characters.entity.Character;
-import ru.sumbul.rickandmorty.databinding.FragmentLocationDetailsBinding;
 import ru.sumbul.rickandmorty.episodeDetails.CharactersInDetailsAdapter;
-import ru.sumbul.rickandmorty.episodeDetails.EpisodeDetailsFragment;
 import ru.sumbul.rickandmorty.episodeDetails.OnInteractionListenerCharacter;
-import ru.sumbul.rickandmorty.locations.LocationViewModel;
 import ru.sumbul.rickandmorty.locations.entity.Location;
 
 

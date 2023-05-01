@@ -3,7 +3,7 @@ package ru.sumbul.rickandmorty.episodeDetails
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.characters.entity.toDto
@@ -15,7 +15,7 @@ import ru.sumbul.rickandmorty.error.NetworkError
 import java.io.IOException
 import javax.inject.Inject
 
-@HiltViewModel
+
 @ExperimentalCoroutinesApi
 class EpisodeDetailsViewModel @Inject constructor(
     private val api: EpisodeApi,

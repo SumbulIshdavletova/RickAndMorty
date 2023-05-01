@@ -1,11 +1,11 @@
-package ru.sumbul.rickandmorty.characterDetails
+package ru.sumbul.rickandmorty.characters.details.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import ru.sumbul.rickandmorty.characters.details.data.CharacterDetailsRepository
 import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
@@ -35,15 +35,13 @@ var location: Location = Location(
     created = "",
 )
 
-
-@HiltViewModel
 @ExperimentalCoroutinesApi
 class CharacterDetailViewModel @Inject constructor(
     private val api: CharacterApi,
     private val locationDao: LocationDao,
     private val dao: EpisodeDao,
     private val characterDao: CharacterDao,
-    private val repository: CharacterDetailRepository,
+    private val repository: CharacterDetailsRepository,
     private val episodeApi: EpisodeApi,
 ) : ViewModel() {
 
@@ -175,7 +173,7 @@ class CharacterDetailViewModel @Inject constructor(
                     body.created
                 )
                 _dataState1.value = ListModelState()
-                ru.sumbul.rickandmorty.characterDetails.location = body.toDto()
+                location = body.toDto()
             } catch (e: IOException) {
                 throw NetworkError
             } catch (e: Exception) {

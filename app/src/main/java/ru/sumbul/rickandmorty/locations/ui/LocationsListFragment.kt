@@ -10,12 +10,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.R
-import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
+import ru.sumbul.rickandmorty.ui.LoadingStateAdapter
 import ru.sumbul.rickandmorty.databinding.FragmentLocationsListBinding
 import ru.sumbul.rickandmorty.episodes.EpisodeViewModel
 import ru.sumbul.rickandmorty.episodes.ui.EpisodeAdapter
@@ -23,7 +22,7 @@ import ru.sumbul.rickandmorty.locationDetails.LocationDetailsFragment
 import ru.sumbul.rickandmorty.locations.LocationViewModel
 import ru.sumbul.rickandmorty.locations.entity.Location
 
-@AndroidEntryPoint
+
 class LocationsListFragment : Fragment() {
 
 

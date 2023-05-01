@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.sumbul.rickandmorty.R
-import ru.sumbul.rickandmorty.characterDetails.CharacterDetailsFragment
+import ru.sumbul.rickandmorty.characters.details.ui.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.characters.CharacterViewModel
 import ru.sumbul.rickandmorty.characters.entity.Character
 import ru.sumbul.rickandmorty.databinding.FragmentEpisodeDetailsBinding
@@ -24,7 +23,8 @@ class EpisodeDetailsFragment : Fragment() {
 
     }
 
-    val characterDetailsFragment: CharacterDetailsFragment = CharacterDetailsFragment()
+    val characterDetailsFragment: CharacterDetailsFragment =
+        CharacterDetailsFragment()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(

@@ -10,18 +10,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.R
-import ru.sumbul.rickandmorty.adapter.LoadingStateAdapter
+import ru.sumbul.rickandmorty.ui.LoadingStateAdapter
 import ru.sumbul.rickandmorty.databinding.FragmentEpisodesListBinding
 import ru.sumbul.rickandmorty.episodeDetails.EpisodeDetailsFragment
 import ru.sumbul.rickandmorty.episodes.EpisodeViewModel
 import ru.sumbul.rickandmorty.episodes.entity.Episode
 
-@AndroidEntryPoint
 class EpisodesListFragment : Fragment() {
 
     @OptIn(ExperimentalCoroutinesApi::class)

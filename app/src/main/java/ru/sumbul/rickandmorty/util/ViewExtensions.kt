@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.view
+package ru.sumbul.rickandmorty.util
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

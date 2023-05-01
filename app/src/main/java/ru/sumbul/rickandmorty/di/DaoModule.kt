@@ -1,9 +1,7 @@
-package ru.sumbul.rickandmorty.characters.di
+package ru.sumbul.rickandmorty.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.FilterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.RemoteKeyDao
@@ -13,7 +11,7 @@ import ru.sumbul.rickandmorty.episodes.db.EpisodeDb
 import ru.sumbul.rickandmorty.locations.dao.LocationDao
 import ru.sumbul.rickandmorty.locations.db.LocationDb
 
-@InstallIn(SingletonComponent::class)
+
 @Module
 object DaoModule {
 

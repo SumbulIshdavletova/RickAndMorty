@@ -6,6 +6,6 @@ import ru.sumbul.rickandmorty.characters.entity.ResponseApi
 
 interface CharacterRepository {
     val characterPagingFlow: Flow<PagingData<ru.sumbul.rickandmorty.characters.entity.Character>>
-   // suspend fun filterCharacters(name: String?, status: String?, gender: String?)
-   suspend fun filterCharacters(name: String, status: String, gender: String)
+   
+  // suspend fun filterCharacters(name: String, status: String, gender: String)
 }

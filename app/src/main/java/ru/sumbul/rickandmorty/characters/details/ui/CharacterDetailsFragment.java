@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characterDetails;
+package ru.sumbul.rickandmorty.characters.details.ui;
 
 import android.os.Bundle;
 
@@ -6,45 +6,25 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-
 import com.bumptech.glide.Glide;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-
-import javax.annotation.Nullable;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
 import ru.sumbul.rickandmorty.R;
-import ru.sumbul.rickandmorty.characters.CharacterViewModel;
 import ru.sumbul.rickandmorty.characters.entity.Character;
 import ru.sumbul.rickandmorty.characters.entity.Location;
 import ru.sumbul.rickandmorty.characters.entity.Origin;
 import ru.sumbul.rickandmorty.databinding.FragmentCharacterDetailsBinding;
 import ru.sumbul.rickandmorty.episodeDetails.EpisodeDetailsFragment;
 import ru.sumbul.rickandmorty.episodes.entity.Episode;
-import ru.sumbul.rickandmorty.episodes.ui.EpisodeAdapter;
 import ru.sumbul.rickandmorty.locationDetails.LocationDetailsFragment;
 
 

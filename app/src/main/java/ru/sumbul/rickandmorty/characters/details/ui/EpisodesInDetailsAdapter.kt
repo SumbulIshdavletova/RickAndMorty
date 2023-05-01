@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.characterDetails
+package ru.sumbul.rickandmorty.characters.details.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,6 @@ import ru.sumbul.rickandmorty.episodes.ui.EpisodeDiffCallback
 interface OnInteractionListenerFromCharacterToEpisode {
     fun onClick(episode: Episode) {}
 }
-
 
 class EpisodesInDetailsAdapter(
     private val onInteractionListener: OnInteractionListenerFromCharacterToEpisode

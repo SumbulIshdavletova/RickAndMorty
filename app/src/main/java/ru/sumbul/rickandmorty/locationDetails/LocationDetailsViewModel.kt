@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,7 +20,7 @@ import ru.sumbul.rickandmorty.model.ListModelState
 import java.io.IOException
 import javax.inject.Inject
 
-@HiltViewModel
+
 @ExperimentalCoroutinesApi
 class LocationDetailsViewModel @Inject constructor(
     private val api: LocationApi,
