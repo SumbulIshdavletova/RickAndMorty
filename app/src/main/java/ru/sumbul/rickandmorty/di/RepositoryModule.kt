@@ -12,15 +12,11 @@ interface RepositoryModule {
 //TODO
 //    @Singleton
 //    @Binds
-//    abstract fun provideRepository(repository: RepositoryImpl): CharacterDetailsRepository
+//    abstract fun provideRepository(repository: RepositoryImpl): CharacterDetailsRepositoryImpl
 
     @Binds
     @Singleton
     fun bindsPostRepository(impl: CharacterRepositoryImpl): CharacterRepository
 
-
-    @Binds
-    @Singleton
-    fun bindsPostRepository(impl: ru.sumbul.rickandmorty.characters.details.data.CharacterDetailsRepository): ru.sumbul.rickandmorty.characters.details.domain.CharacterDetailsRepository
 
 }

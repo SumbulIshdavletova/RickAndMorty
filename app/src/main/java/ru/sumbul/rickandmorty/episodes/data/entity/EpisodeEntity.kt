@@ -1,0 +1,47 @@
+package ru.sumbul.rickandmorty.episodes.data.entity
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import ru.sumbul.rickandmorty.episodes.domain.model.Episode
+import ru.sumbul.rickandmorty.util.StringListTypeConverter
+
+@Entity
+class EpisodeEntity(
+    @PrimaryKey
+    val id: Int = 0,
+    val name: String,
+    val air_date: String,
+    val episode: String,
+    @field:TypeConverters(StringListTypeConverter::class)
+    val characters: List<String> = emptyList(),
+    val url: String,
+    val created: String,
+) {
+    fun toDto() = Episode(
+        id,
+        name,
+        air_date,
+        episode,
+        characters,
+        url,
+        created
+    )
+
+    companion object {
+        fun fromDto(dto: Episode) =
+            EpisodeEntity(
+                dto.id,
+                dto.name,
+                dto.air_date,
+                dto.episode,
+                dto.characters,
+                dto.url,
+                dto.created,
+            )
+    }
+}
+
+fun List<EpisodeEntity>.toDto(): List<Episode> = map(EpisodeEntity::toDto)
+fun List<Episode>.toEntity(): List<EpisodeEntity> =
+    map(EpisodeEntity.Companion::fromDto)

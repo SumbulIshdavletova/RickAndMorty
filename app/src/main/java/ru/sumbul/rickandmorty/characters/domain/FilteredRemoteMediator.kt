@@ -5,14 +5,17 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.Query
 import androidx.room.withTransaction
 import retrofit2.HttpException
+import ru.sumbul.rickandmorty.characters.data.entity.CharacterEntity
+import ru.sumbul.rickandmorty.characters.data.entity.FilterEntity
+import ru.sumbul.rickandmorty.characters.data.entity.RemoteKeyEntity
 import ru.sumbul.rickandmorty.characters.data.local.dao.FilterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.RemoteKeyDao
 import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
 import ru.sumbul.rickandmorty.characters.data.local.db.CharacterDb
-import ru.sumbul.rickandmorty.characters.entity.*
+import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
+import ru.sumbul.rickandmorty.characters.domain.model.*
 import ru.sumbul.rickandmorty.error.ApiError
 import java.io.IOException
 
@@ -23,6 +26,7 @@ class FilteredRemoteMediator(
     private val characterApi: CharacterApi,
     private val filterDao: FilterDao,
     private val remoteKeyDao: RemoteKeyDao,
+    private val mapper: CharacterMapper,
 ) : RemoteMediator<Int, CharacterEntity>() {
 
 
@@ -91,7 +95,7 @@ class FilteredRemoteMediator(
             val nextPageNumber = nextPageQuery?.toInt()
 
             val characters = body.results ?: emptyList()
-            val responseData = mutableListOf<ru.sumbul.rickandmorty.characters.entity.Character>()
+            val responseData = mutableListOf<Character>()
             responseData.addAll(characters)
 
             characterDb.filterDao().clear()
@@ -118,7 +122,8 @@ class FilteredRemoteMediator(
                         }
                     }
                 }
-                characterDb.characterDao().upsertAll(responseData.toEntity())
+
+                characterDb.characterDao().upsertAll(mapper.mapCharactersToDb(responseData))
             }
 
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".locations.ui.LocationsListFragment">
+    tools:context=".locations.ui.list.LocationsListFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

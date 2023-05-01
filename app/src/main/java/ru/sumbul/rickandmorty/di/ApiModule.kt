@@ -9,8 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import ru.sumbul.rickandmorty.BuildConfig
 import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
-import ru.sumbul.rickandmorty.episodes.api.EpisodeApi
-import ru.sumbul.rickandmorty.locations.api.LocationApi
+import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
+import ru.sumbul.rickandmorty.locations.data.remote.LocationApi
 import javax.inject.Singleton
 
 

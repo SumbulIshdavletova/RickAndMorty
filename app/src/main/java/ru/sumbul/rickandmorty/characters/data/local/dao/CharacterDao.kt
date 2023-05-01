@@ -2,8 +2,7 @@ package ru.sumbul.rickandmorty.characters.data.local.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
-import ru.sumbul.rickandmorty.characters.entity.CharacterEntity
+import ru.sumbul.rickandmorty.characters.data.entity.CharacterEntity
 
 @Dao
 interface CharacterDao {

@@ -3,7 +3,7 @@ package ru.sumbul.rickandmorty.characters.data.local.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import ru.sumbul.rickandmorty.characters.entity.FilterEntity
+import ru.sumbul.rickandmorty.characters.data.entity.FilterEntity
 
 @Dao
 interface FilterDao {

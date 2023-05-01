@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import ru.sumbul.rickandmorty.characters.entity.RemoteKeyEntity
+import ru.sumbul.rickandmorty.characters.data.entity.RemoteKeyEntity
 
 @Dao
 interface RemoteKeyDao {

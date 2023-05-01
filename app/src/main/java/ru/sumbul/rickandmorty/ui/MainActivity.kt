@@ -7,12 +7,12 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.sumbul.rickandmorty.R
-import ru.sumbul.rickandmorty.characters.details.ui.CharacterDetailsFragment
-import ru.sumbul.rickandmorty.characters.entity.Character
-import ru.sumbul.rickandmorty.characters.ui.CharactersListFragment
+import ru.sumbul.rickandmorty.characters.domain.model.Character
+import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment
+import ru.sumbul.rickandmorty.characters.ui.list.CharactersListFragment
 import ru.sumbul.rickandmorty.databinding.ActivityMainBinding
-import ru.sumbul.rickandmorty.episodes.ui.EpisodesListFragment
-import ru.sumbul.rickandmorty.locations.ui.LocationsListFragment
+import ru.sumbul.rickandmorty.episodes.ui.list.EpisodesListFragment
+import ru.sumbul.rickandmorty.locations.ui.list.LocationsListFragment
 
 
 class MainActivity : AppCompatActivity() {

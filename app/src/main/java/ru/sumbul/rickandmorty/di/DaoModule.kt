@@ -6,10 +6,10 @@ import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.FilterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.RemoteKeyDao
 import ru.sumbul.rickandmorty.characters.data.local.db.CharacterDb
-import ru.sumbul.rickandmorty.episodes.dao.EpisodeDao
-import ru.sumbul.rickandmorty.episodes.db.EpisodeDb
-import ru.sumbul.rickandmorty.locations.dao.LocationDao
-import ru.sumbul.rickandmorty.locations.db.LocationDb
+import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDao
+import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDb
+import ru.sumbul.rickandmorty.locations.data.local.LocationDao
+import ru.sumbul.rickandmorty.locations.data.local.LocationDb
 
 
 @Module
