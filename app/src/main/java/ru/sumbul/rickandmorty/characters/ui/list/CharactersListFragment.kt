@@ -78,6 +78,7 @@ class CharactersListFragment : Fragment() {
                 footer = LoadingStateAdapter { adapter.retry() })
 
         binding.swipeRefresh.setOnRefreshListener {
+            viewModel.filterCharacters("","","")
             adapter.refresh()
         }
 

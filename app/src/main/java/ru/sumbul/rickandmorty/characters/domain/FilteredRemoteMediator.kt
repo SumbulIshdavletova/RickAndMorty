@@ -41,33 +41,11 @@ class FilteredRemoteMediator @Inject constructor(
             val status: String = filterDao.getStatus()
             val gender: String = filterDao.getGender()
 
-//            val loadKey = when (loadType) {
-//                LoadType.REFRESH -> 1
-//                LoadType.PREPEND ->
-//                    return MediatorResult.Success(endOfPaginationReached = true)
-//                LoadType.APPEND -> {
-//                    val remoteKey = characterDb.withTransaction {
-//                        //    remoteKeyDao.remoteKeyByQuery(query)
-//                        remoteKeyDao.getNextPage()
-//                    }
-//                        ?: return MediatorResult.Success(
-//                            endOfPaginationReached = true
-//                        )
-////                    if (remoteKey.nextPage == null) {
-////                        return MediatorResult.Success(
-////                            endOfPaginationReached = true
-////                        )
-////                    }
-//                    remoteKey
-//                }
-//            }
-
             val result = when (loadType) {
                 LoadType.REFRESH -> {
                     characterApi.getCharacters(
                         1, name, status, gender
                     )
-
                 }
                 LoadType.PREPEND -> return MediatorResult.Success(
                     endOfPaginationReached = true
@@ -79,7 +57,7 @@ class FilteredRemoteMediator @Inject constructor(
             }
 
 
-            //  val result = characterApi.getCharacters(loadKey, name, status, gender)
+
             if (!result.isSuccessful) {
                 throw ApiError(result.code(), result.message())
             }
@@ -126,7 +104,6 @@ class FilteredRemoteMediator @Inject constructor(
 
                 characterDb.characterDao().upsertAll(mapper.mapToEntity(responseData))
             }
-
 
             MediatorResult.Success(
                 endOfPaginationReached = responseData.isEmpty()
