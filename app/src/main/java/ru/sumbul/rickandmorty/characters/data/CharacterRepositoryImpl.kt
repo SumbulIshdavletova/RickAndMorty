@@ -18,13 +18,12 @@ import ru.sumbul.rickandmorty.characters.domain.CharacterRepository
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDao
+import ru.sumbul.rickandmorty.episodes.data.mapper.EpisodeMapper
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
-import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity
-import ru.sumbul.rickandmorty.episodes.entity.toDto
-import ru.sumbul.rickandmorty.episodes.entity.toEntity
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
 import ru.sumbul.rickandmorty.locations.data.local.LocationDao
+import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
 import ru.sumbul.rickandmorty.locations.domain.model.Location
 import java.io.IOException
 import javax.inject.Inject
@@ -40,7 +39,9 @@ class CharacterRepositoryImpl @Inject constructor(
     private val locationDao: LocationDao,
     private val episodeDao: EpisodeDao,
     private val episodeApi: EpisodeApi,
-    private val mapper: CharacterMapper
+    private val mapper: CharacterMapper,
+    private val episodeMapper: EpisodeMapper,
+    private val locationMapper: LocationMapper
 ) : CharacterRepository {
 
 
@@ -67,7 +68,7 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
 
-    override val data: LiveData<List<Episode>> = episodeDao.getAll().map(List<EpisodeEntity>::toDto)
+    override val data: LiveData<List<Episode>> = episodeDao.getAll().map { episodeMapper.mapFromEntity(it) }
 
     private var data1: MutableLiveData<List<Episode>?>? =
         MutableLiveData<List<Episode>?>()
@@ -75,11 +76,7 @@ class CharacterRepositoryImpl @Inject constructor(
     fun getData1(): MutableLiveData<List<Episode>?>? {
         return data1
     }
-    //  var ids: MutableList<Int> = mutableListOf()
 
-    //    suspend fun getEpisodes(urls: MutableList<String>): Any {
-//
-//    }
     override suspend fun getEpisodes(ids: String) {
 //        ids.removeAll(ids)
 //        for (url in urls) {
@@ -95,9 +92,9 @@ class CharacterRepositoryImpl @Inject constructor(
             }
             data1?.value = null
             val body =
-                response.body()?.toEntity() ?: throw ApiError(response.code(), response.message())
-            episodeDao.upsertAll(body)
-            data1?.value = body.toDto()
+                response.body() ?: throw ApiError(response.code(), response.message())
+            episodeDao.upsertAll(episodeMapper.mapToEntity(body))
+            data1?.value = body
 
         } catch (e: IOException) {
             throw NetworkError
@@ -116,9 +113,9 @@ class CharacterRepositoryImpl @Inject constructor(
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             episodeDao.upsert(body)
-            episode = body.toDto()
+            episode = episodeMapper.mapToDb(body)
         } catch (e: Exception) {
-            episode = episodeDao.getEpisodeById(id).toDto()
+            episode = episodeMapper.mapToDb(episodeDao.getEpisodeById(id))
         }
         return episode
     }
@@ -132,9 +129,9 @@ class CharacterRepositoryImpl @Inject constructor(
             val response = api.getLocationById(id)
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             locationDao.upsert(body)
-            location = body.toDto()
+            location = locationMapper.mapFromEntity(body)
         } catch (e: Exception) {
-            location = locationDao.getLocationById(id).toDto()
+            location = locationMapper.mapFromEntity(locationDao.getLocationById(id))
         }
         return location
     }

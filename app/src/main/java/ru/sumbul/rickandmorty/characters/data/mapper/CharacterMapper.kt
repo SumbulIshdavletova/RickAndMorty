@@ -70,7 +70,7 @@ class CharacterMapper @Inject constructor() {
         }
     }
 
-    fun mapCharactersToDb(characters: List<ru.sumbul.rickandmorty.characters.domain.model.Character>): List<CharacterEntity> {
+    fun mapToEntity(characters: List<ru.sumbul.rickandmorty.characters.domain.model.Character>): List<CharacterEntity> {
         return characters.map {
             CharacterEntity(
                 id = it.id,

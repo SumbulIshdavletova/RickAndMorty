@@ -11,6 +11,7 @@ import ru.sumbul.rickandmorty.episodes.domain.EpisodeRemoteMediator
 import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDb
+import ru.sumbul.rickandmorty.episodes.data.mapper.EpisodeMapper
 import javax.inject.Singleton
 
 @OptIn(ExperimentalPagingApi::class)
@@ -31,12 +32,13 @@ class DbEpisodeModule {
     @Singleton
     fun provideEpisodePager(
         episodeDb: EpisodeDb,
-        episodeApi: EpisodeApi
+        episodeApi: EpisodeApi,
+        episodeMapper: EpisodeMapper
     ): Pager<Int, EpisodeEntity> {
         return Pager(
             config = PagingConfig(pageSize = 20),
             remoteMediator = EpisodeRemoteMediator(
-                episodeDb, episodeApi
+                episodeDb, episodeApi, episodeMapper
             ),
             pagingSourceFactory = {
                 episodeDb.episodeDao().pagingSource()

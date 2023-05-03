@@ -9,18 +9,20 @@ import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment
 import ru.sumbul.rickandmorty.characters.ui.list.CharacterViewModel
 import ru.sumbul.rickandmorty.characters.ui.list.CharactersListFragment
+import ru.sumbul.rickandmorty.episodes.di.DbEpisodeModule
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsFragment
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsViewModel
 import ru.sumbul.rickandmorty.episodes.ui.list.EpisodeViewModel
 import ru.sumbul.rickandmorty.episodes.ui.list.EpisodesListFragment
+import ru.sumbul.rickandmorty.locations.di.DbLocationModule
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsFragment
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsViewModel
-import ru.sumbul.rickandmorty.locations.LocationViewModel
+import ru.sumbul.rickandmorty.locations.ui.list.LocationViewModel
 import ru.sumbul.rickandmorty.locations.ui.list.LocationsListFragment
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ApiModule::class, DaoModule::class, AppModule::class, DbCharacterModule::class])
+@Component(modules = [ApiModule::class, DaoModule::class, AppModule::class, DbCharacterModule::class, DbEpisodeModule::class, DbLocationModule::class])
 interface AppComponent {
 
     fun inject(mainActivity: MainActivity)

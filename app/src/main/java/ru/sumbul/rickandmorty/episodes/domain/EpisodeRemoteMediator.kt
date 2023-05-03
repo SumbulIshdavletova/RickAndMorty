@@ -9,15 +9,17 @@ import retrofit2.HttpException
 import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDb
+import ru.sumbul.rickandmorty.episodes.data.mapper.EpisodeMapper
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
-import ru.sumbul.rickandmorty.episodes.entity.toEntity
 import java.io.IOException
+import javax.inject.Inject
 
 
 @OptIn(ExperimentalPagingApi::class)
-class EpisodeRemoteMediator(
+class EpisodeRemoteMediator @Inject constructor(
     private val episodeDb: EpisodeDb,
-    private val episodeApi: EpisodeApi
+    private val episodeApi: EpisodeApi,
+    private val episodeMapper: EpisodeMapper
 ) : RemoteMediator<Int, EpisodeEntity>() {
 
     override suspend fun load(
@@ -52,7 +54,7 @@ class EpisodeRemoteMediator(
                 if (loadType == LoadType.REFRESH) {
                     episodeDb.episodeDao().clearAll()
                 }
-                episodeDb.episodeDao().upsertAll(responseData.toEntity())
+                episodeDb.episodeDao().upsertAll(episodeMapper.mapToEntity(responseData))
             }
             MediatorResult.Success(
                 endOfPaginationReached = responseData.isEmpty()

@@ -16,31 +16,4 @@ class LocationEntity (
     val residents: List<String> = emptyList(),
     val url: String,
     val created: String,
-) {
-    fun toDto() = Location(
-        id,
-        name,
-        type,
-        dimension,
-        residents,
-        url,
-        created
-    )
-
-    companion object {
-        fun fromDto(dto: Location) =
-            LocationEntity(
-                dto.id,
-                dto.name,
-                dto.type,
-                dto.dimension,
-                dto.residents,
-                dto.url,
-                dto.created,
-            )
-    }
-}
-
-fun List<LocationEntity>.toDto(): List<Location> = map(LocationEntity::toDto)
-fun List<Location>.toEntity(): List<LocationEntity> =
-    map(LocationEntity::fromDto)
+)

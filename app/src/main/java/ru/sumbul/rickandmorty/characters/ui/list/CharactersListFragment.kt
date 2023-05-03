@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.paging.LoadState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
@@ -19,12 +21,16 @@ import ru.sumbul.rickandmorty.ui.LoadingStateAdapter
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.databinding.FragmentCharactersListBinding
+import ru.sumbul.rickandmorty.factory.CharactersViewModelFactory
+import javax.inject.Inject
 
 
 class CharactersListFragment : Fragment() {
 
+    @Inject
+    lateinit var factory: CharactersViewModelFactory
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val viewModel: CharacterViewModel by viewModels()
+    val viewModel by viewModels<CharacterViewModel>(factoryProducer = { factory })
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val characterDetailsFragment: CharacterDetailsFragment =

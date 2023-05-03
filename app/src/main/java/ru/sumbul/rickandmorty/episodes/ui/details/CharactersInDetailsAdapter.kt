@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.databinding.CardCharacterBinding
-import ru.sumbul.rickandmorty.view.load
+import ru.sumbul.rickandmorty.util.load
 
 
 interface OnInteractionListenerCharacter {

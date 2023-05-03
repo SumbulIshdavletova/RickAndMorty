@@ -9,10 +9,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.model.Character
+import ru.sumbul.rickandmorty.episodes.domain.EpisodeRepository
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
 import ru.sumbul.rickandmorty.locations.data.remote.LocationApi
 import ru.sumbul.rickandmorty.locations.data.local.LocationDao
+import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
+import ru.sumbul.rickandmorty.locations.domain.LocationRepository
 import ru.sumbul.rickandmorty.locations.domain.model.Location
 import ru.sumbul.rickandmorty.model.ListModelState
 import java.io.IOException
@@ -21,45 +24,26 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class LocationDetailsViewModel @Inject constructor(
-    private val api: LocationApi,
-    private val dao: LocationDao,
-    private val mapper: CharacterMapper,
+    private val repository: LocationRepository
 ) : ViewModel() {
 
-    private var data: MutableLiveData<List<Character>?>? =
-        MutableLiveData<List<Character>?>()
+    private var data: LiveData<List<Character>?>? = repository.charactersForLocation
 
-    fun getData(): MutableLiveData<List<Character>?>? {
+    fun getData(): LiveData<List<Character>?>? {
         return data
     }
 
     var ids: MutableList<Int> = mutableListOf()
 
-    fun getCharacters(urls: List<String>): Any = viewModelScope.launch {
+    fun getCharacters(urls: List<String>) {
         ids.removeAll(ids)
         for (url in urls) {
             var result: String = url.substringAfterLast("/", "0")
-
             ids.add(result.toInt())
-
         }
-        val check = ids.toString()
-        try {
-            delay(5_000L)
-            val response = api.getCharacters(ids.toString())
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            data?.value = null
-
-            val body = response.body()?.let { mapper.mapCharactersToDb(it) }
-
-            data?.value = body?.let { mapper.mapCharactersFromDb(it) }
-
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw NetworkError
+        viewModelScope.launch {
+            val check = ids.toString()
+            repository.getCharacters(ids.toString())
         }
     }
 
@@ -78,26 +62,12 @@ class LocationDetailsViewModel @Inject constructor(
     val dataState1: LiveData<ListModelState>
         get() = _dataState1
 
-    fun getLocationById(url: String): Any = viewModelScope.launch {
+    fun getLocationById(url: String) {
         var result: String = url.substringAfterLast("/", "0")
-        var id:Int = result.toInt()
-        try {
-            _dataState1.value = ListModelState(loading = true)
-            val response = api.getLocationById(id)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            loc.value = body.toDto()
-            dao.upsert(body)
-           _dataState1.value = ListModelState()
-          val location = body.toDto()
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            _dataState1.value = ListModelState(error = true)
+        var id: Int = result.toInt()
+        viewModelScope.launch {
+            loc.value = repository.getById(id)
         }
-
     }
 
 }

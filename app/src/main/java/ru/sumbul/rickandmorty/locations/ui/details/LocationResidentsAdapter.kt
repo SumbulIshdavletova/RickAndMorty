@@ -1,5 +1,6 @@
 package ru.sumbul.rickandmorty.locations.ui.details
 
+//TODO COPY THE CHARACTER IN DETAILS ADAPTER FROM EPISODES!!
 //class LocationResidentsAdapter : ListAdapter<Character, ResidentsViewHolder>(DetailsEpisodeDiffCallback()) {
 //    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResidentsViewHolder {
 //        val binding = CardCharacterBinding.inflate(LayoutInflater.from(parent.context), parent,false)

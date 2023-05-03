@@ -6,7 +6,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.locations.data.entity.LocationEntity
-import ru.sumbul.rickandmorty.locations.entity.ResponseApiLocation
+import ru.sumbul.rickandmorty.locations.domain.model.ResponseApiLocation
+
 
 interface LocationApi {
 

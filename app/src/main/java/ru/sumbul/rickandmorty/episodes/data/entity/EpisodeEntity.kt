@@ -17,31 +17,4 @@ class EpisodeEntity(
     val characters: List<String> = emptyList(),
     val url: String,
     val created: String,
-) {
-    fun toDto() = Episode(
-        id,
-        name,
-        air_date,
-        episode,
-        characters,
-        url,
-        created
-    )
-
-    companion object {
-        fun fromDto(dto: Episode) =
-            EpisodeEntity(
-                dto.id,
-                dto.name,
-                dto.air_date,
-                dto.episode,
-                dto.characters,
-                dto.url,
-                dto.created,
-            )
-    }
-}
-
-fun List<EpisodeEntity>.toDto(): List<Episode> = map(EpisodeEntity::toDto)
-fun List<Episode>.toEntity(): List<EpisodeEntity> =
-    map(EpisodeEntity.Companion::fromDto)
+)

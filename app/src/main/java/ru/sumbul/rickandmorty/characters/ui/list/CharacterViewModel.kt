@@ -16,34 +16,31 @@ import ru.sumbul.rickandmorty.characters.domain.model.Origin
 import ru.sumbul.rickandmorty.model.ListModelState
 import javax.inject.Inject
 
-var character: Character = Character(
-    id = 0,
-    name = "",
-    status = "",
-    species = "",
-    type = "",
-    gender = "",
-    origin = Origin(
-        name = "",
-        url = ""
-    ),
-    location = Location(
-        name = "",
-        url = ""
-    ),
-    image = "",
-    episode = emptyList(),
-    url = "",
-    created = "",
-)
+//var character: Character = Character(
+//    id = 0,
+//    name = "",
+//    status = "",
+//    species = "",
+//    type = "",
+//    gender = "",
+//    origin = Origin(
+//        name = "",
+//        url = ""
+//    ),
+//    location = Location(
+//        name = "",
+//        url = ""
+//    ),
+//    image = "",
+//    episode = emptyList(),
+//    url = "",
+//    created = "",
+//)
 
 
 @ExperimentalCoroutinesApi
 class CharacterViewModel @Inject constructor(
-    pager: Pager<Int, CharacterEntity>,
     private val repository: CharacterRepository,
-    private val api: CharacterApi,
-    private val dao: CharacterDao
 ) : ViewModel() {
 
     private val cached = repository

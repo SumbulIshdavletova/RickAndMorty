@@ -18,15 +18,20 @@ import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.application.appComponent
 import ru.sumbul.rickandmorty.ui.LoadingStateAdapter
 import ru.sumbul.rickandmorty.databinding.FragmentLocationsListBinding
+import ru.sumbul.rickandmorty.episodes.ui.list.EpisodeViewModel
+import ru.sumbul.rickandmorty.factory.EpisodesViewModelFactory
+import ru.sumbul.rickandmorty.factory.LocationViewModelFactory
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsFragment
 import ru.sumbul.rickandmorty.locations.domain.model.Location
+import javax.inject.Inject
 
 
 class LocationsListFragment : Fragment() {
 
-
+    @Inject
+    lateinit var factory: LocationViewModelFactory
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val viewModel: LocationViewModel by viewModels()
+    val viewModel by viewModels<LocationViewModel>(factoryProducer = { factory })
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val locationDetailsFragment: LocationDetailsFragment =
@@ -36,7 +41,7 @@ class LocationsListFragment : Fragment() {
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         LocationAdapter(object : OnInteractionListenerLocation {
             override fun onClick(location: Location) {
-                viewModel.getById(location.id)
+         //       viewModel.getById(location.id)
                 val bundle2 = Bundle()
                 bundle2.putSerializable("requestKey1", location)
                 parentFragmentManager.setFragmentResult("requestKey1", bundle2)

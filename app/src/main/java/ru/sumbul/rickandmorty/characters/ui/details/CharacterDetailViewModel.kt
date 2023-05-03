@@ -29,12 +29,7 @@ var location: Location = Location(
 
 @ExperimentalCoroutinesApi
 class CharacterDetailViewModel @Inject constructor(
-    private val api: CharacterApi,
-    private val locationDao: LocationDao,
-    private val dao: EpisodeDao,
-    private val characterDao: CharacterDao,
     private val repository: CharacterRepositoryImpl,
-    private val episodeApi: EpisodeApi,
 ) : ViewModel() {
 
     private val episodes: MutableLiveData<List<Episode>?>? = repository.getData1()

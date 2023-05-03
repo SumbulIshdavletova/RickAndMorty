@@ -11,9 +11,10 @@ import ru.sumbul.rickandmorty.locations.domain.LocationRemoteMediator
 import ru.sumbul.rickandmorty.locations.data.entity.LocationEntity
 import ru.sumbul.rickandmorty.locations.data.remote.LocationApi
 import ru.sumbul.rickandmorty.locations.data.local.LocationDb
+import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
 import javax.inject.Singleton
 
-@OptIn(ExperimentalPagingApi::class)
+
 @Module
 class DbLocationModule {
 
@@ -30,12 +31,13 @@ class DbLocationModule {
     @Singleton
     fun provideLocationPager(
         locationDb: LocationDb,
-        locationApi: LocationApi
+        locationApi: LocationApi,
+        mapper: LocationMapper
     ): Pager<Int, LocationEntity> {
         return Pager(
             config = PagingConfig(pageSize = 20),
             remoteMediator = LocationRemoteMediator(
-                locationDb, locationApi
+                locationDb, locationApi, mapper
             ),
             pagingSourceFactory = {
                 locationDb.locationDao().pagingSource()

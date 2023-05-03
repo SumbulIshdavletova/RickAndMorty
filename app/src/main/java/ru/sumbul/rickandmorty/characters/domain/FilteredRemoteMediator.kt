@@ -18,9 +18,10 @@ import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.model.*
 import ru.sumbul.rickandmorty.error.ApiError
 import java.io.IOException
+import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class FilteredRemoteMediator(
+class FilteredRemoteMediator @Inject constructor(
     // private val query: String,
     private val characterDb: CharacterDb,
     private val characterApi: CharacterApi,
@@ -123,7 +124,7 @@ class FilteredRemoteMediator(
                     }
                 }
 
-                characterDb.characterDao().upsertAll(mapper.mapCharactersToDb(responseData))
+                characterDb.characterDao().upsertAll(mapper.mapToEntity(responseData))
             }
 
 

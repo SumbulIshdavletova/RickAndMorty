@@ -5,8 +5,8 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.sumbul.rickandmorty.characters.domain.model.Character
-import ru.sumbul.rickandmorty.episodes.entity.EpisodeEntity
-import ru.sumbul.rickandmorty.episodes.entity.ResponseApiEpisode
+import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
+import ru.sumbul.rickandmorty.episodes.domain.model.ResponseApiEpisode
 
 interface EpisodeApi {
 

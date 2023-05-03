@@ -16,13 +16,13 @@ import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.FilteredRemoteMediator
 import javax.inject.Singleton
 
-@OptIn(ExperimentalPagingApi::class)
+
 @Module
 class DbCharacterModule {
 
     @Singleton
     @Provides
-    fun provideDb(
+    fun provideCharacterDb(
         context: Context
     ): CharacterDb = Room.databaseBuilder(context, CharacterDb::class.java, "app.db")
         .fallbackToDestructiveMigration()
@@ -49,6 +49,7 @@ class DbCharacterModule {
             }
         )
     }
+
 
 
 }

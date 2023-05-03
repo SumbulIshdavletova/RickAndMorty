@@ -1,5 +1,6 @@
 package ru.sumbul.rickandmorty.characters.ui.details;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -8,23 +9,33 @@ import androidx.annotation.OptIn;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.bumptech.glide.Glide;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
 import ru.sumbul.rickandmorty.R;
+import ru.sumbul.rickandmorty.application.AppKt;
 import ru.sumbul.rickandmorty.characters.domain.model.Character;
 import ru.sumbul.rickandmorty.characters.domain.model.Location;
 import ru.sumbul.rickandmorty.characters.domain.model.Origin;
 import ru.sumbul.rickandmorty.databinding.FragmentCharacterDetailsBinding;
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsFragment;
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode;
+import ru.sumbul.rickandmorty.factory.CharactersDetailsViewModelFactory;
+import ru.sumbul.rickandmorty.factory.CharactersViewModelFactory;
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsFragment;
 
 
@@ -53,6 +64,16 @@ public class CharacterDetailsFragment extends Fragment {
         super(R.layout.fragment_character_details);
     }
 
+    CharacterDetailViewModel characterDetailViewModel;
+
+    @Inject
+    CharactersDetailsViewModelFactory factory;
+
+    public void onAttach(@NotNull Context context) {
+        Intrinsics.checkNotNullParameter(context, "context");
+        AppKt.getAppComponent(context).inject(this);
+        super.onAttach(context);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +85,9 @@ public class CharacterDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCharacterDetailsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        CharacterDetailViewModel characterDetailViewModel = new ViewModelProvider(requireActivity()).get(CharacterDetailViewModel.class);
+
+        characterDetailViewModel = new ViewModelProvider(this, factory).get(CharacterDetailViewModel.class);
+        //     CharacterDetailViewModel characterDetailViewModel = new ViewModelProvider(requireActivity()).get(CharacterDetailViewModel.class);
 
         RecyclerView recyclerView = binding.list;
         EpisodesInDetailsAdapter adapter = new EpisodesInDetailsAdapter((OnInteractionListenerFromCharacterToEpisode) (new OnInteractionListenerFromCharacterToEpisode() {
@@ -115,7 +138,7 @@ public class CharacterDetailsFragment extends Fragment {
             characterDetailViewModel.getEpisodes(episodes);
 
             String originUrl = origin.getUrl();
-        //    locationTOfOrigin = characterDetailViewModel.getLocationById(originUrl);
+            //    locationTOfOrigin = characterDetailViewModel.getLocationById(originUrl);
 
 
             characterDetailViewModel.getEpisodes().observe(getViewLifecycleOwner(), adapter::submitList);

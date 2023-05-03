@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.sumbul.rickandmorty.R
@@ -15,23 +16,32 @@ import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.characters.ui.list.CharacterViewModel
 import ru.sumbul.rickandmorty.databinding.FragmentEpisodeDetailsBinding
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
+import ru.sumbul.rickandmorty.episodes.ui.list.EpisodeViewModel
+import ru.sumbul.rickandmorty.factory.EpisodeDetailsViewModelFactory
+import ru.sumbul.rickandmorty.factory.EpisodesViewModelFactory
+import javax.inject.Inject
 
 
 @ExperimentalCoroutinesApi
 class EpisodeDetailsFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-    val characterDetailsFragment: CharacterDetailsFragment =
-        CharacterDetailsFragment()
+    @Inject
+    lateinit var factory: EpisodeDetailsViewModelFactory
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val viewModel by viewModels<EpisodeDetailsViewModel>(factoryProducer = { factory })
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
         super.onAttach(context)
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    val characterDetailsFragment: CharacterDetailsFragment =
+        CharacterDetailsFragment()
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
@@ -39,10 +49,10 @@ class EpisodeDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentEpisodeDetailsBinding.inflate(inflater, container, false)
-        val viewModel = ViewModelProvider(requireActivity())[EpisodeDetailsViewModel::class.java]
+   //     val viewModel = ViewModelProvider(requireActivity())[EpisodeDetailsViewModel::class.java]
         val recyclerView = binding.list
-        val characterListViewModel =
-            ViewModelProvider(requireActivity())[CharacterViewModel::class.java]
+//        val characterListViewModel =
+//            ViewModelProvider(requireActivity())[CharacterViewModel::class.java]
 
 
         val adapter = CharactersInDetailsAdapter(
@@ -76,7 +86,7 @@ class EpisodeDetailsFragment : Fragment() {
             val charactersUrls: List<String> = episode.characters
 
             viewModel.getCharacters(charactersUrls)
-            viewModel.getData()?.observe(viewLifecycleOwner) { characters ->
+            viewModel.getCharacters().observe(viewLifecycleOwner) { characters ->
                 adapter.submitList(characters)
             }
 
@@ -96,7 +106,7 @@ class EpisodeDetailsFragment : Fragment() {
             val charactersUrls: List<String> = episode.characters
 
             viewModel.getCharacters(charactersUrls)
-            viewModel.getData()?.observe(viewLifecycleOwner) { characters ->
+            viewModel.getCharacters().observe(viewLifecycleOwner) { characters ->
                 adapter.submitList(characters)
             }
 

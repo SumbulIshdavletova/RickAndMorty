@@ -9,13 +9,16 @@ import retrofit2.HttpException
 import ru.sumbul.rickandmorty.locations.data.entity.LocationEntity
 import ru.sumbul.rickandmorty.locations.data.remote.LocationApi
 import ru.sumbul.rickandmorty.locations.data.local.LocationDb
+import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
 import ru.sumbul.rickandmorty.locations.domain.model.Location
 import java.io.IOException
+import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class LocationRemoteMediator(
+class LocationRemoteMediator @Inject constructor(
     private val locationDb: LocationDb,
-    private val locationApi: LocationApi
+    private val locationApi: LocationApi,
+    private val locationMapper: LocationMapper,
 ) : RemoteMediator<Int, LocationEntity>() {
     override suspend fun load(
         loadType: LoadType,
@@ -49,7 +52,7 @@ class LocationRemoteMediator(
                 if (loadType == LoadType.REFRESH) {
                     locationDb.locationDao().clearAll()
                 }
-                locationDb.locationDao().upsertAll(responseData.toEntity())
+                locationDb.locationDao().upsertAll(locationMapper.mapToListEntity(responseData))
             }
             MediatorResult.Success(
                 endOfPaginationReached = responseData.isEmpty()

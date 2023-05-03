@@ -20,14 +20,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
+import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
 import ru.sumbul.rickandmorty.R;
+import ru.sumbul.rickandmorty.application.AppKt;
 import ru.sumbul.rickandmorty.characters.domain.model.Character;
 import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment;
 import ru.sumbul.rickandmorty.characters.ui.list.CharacterViewModel;
 import ru.sumbul.rickandmorty.databinding.FragmentLocationDetailsBinding;
 import ru.sumbul.rickandmorty.episodes.ui.details.CharactersInDetailsAdapter;
 import ru.sumbul.rickandmorty.episodes.ui.details.OnInteractionListenerCharacter;
+import ru.sumbul.rickandmorty.factory.LocationDetailsViewModelFactory;
 import ru.sumbul.rickandmorty.locations.domain.model.Location;
 
 
@@ -38,12 +43,18 @@ public class LocationDetailsFragment extends Fragment {
     List<String> residents = new ArrayList<>();
 
     CharacterDetailsFragment characterDetailsFragment = new CharacterDetailsFragment();
+    LocationDetailsViewModel viewModel;
 
-    @Override
-    public void onAttach(@NonNull Context context) {
+    @Inject
+    LocationDetailsViewModelFactory factory;
+
+
+    public void onAttach(@NotNull Context context) {
+        Intrinsics.checkNotNullParameter(context, "context");
+        AppKt.getAppComponent(context).inject(this);
         super.onAttach(context);
-        context.appComponent.inject(this);
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +67,9 @@ public class LocationDetailsFragment extends Fragment {
         binding = FragmentLocationDetailsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         RecyclerView recyclerView = binding.list;
-        LocationDetailsViewModel viewModel = new ViewModelProvider(requireActivity()).get(LocationDetailsViewModel.class);
-        CharacterViewModel characterViewModel = new ViewModelProvider(requireActivity()).get(CharacterViewModel.class);
+
+        viewModel = new ViewModelProvider(this, factory).get(LocationDetailsViewModel.class);
+        //  LocationDetailsViewModel viewModel = new ViewModelProvider(requireActivity()).get(LocationDetailsViewModel.class);
 
         CharactersInDetailsAdapter adapter = new CharactersInDetailsAdapter((OnInteractionListenerCharacter) (new OnInteractionListenerCharacter() {
             public void onClick(@NotNull Character character) {
