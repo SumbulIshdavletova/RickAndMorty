@@ -62,11 +62,11 @@ class LocationRepositoryImpl @Inject constructor(
     private var data: MutableLiveData<List<Character>?>? =
         MutableLiveData<List<Character>?>()
 
-    fun getData(): MutableLiveData<List<Character>?>? {
+    override fun getData(): MutableLiveData<List<Character>?>? {
         return data
     }
 
-    override val charactersForLocation: LiveData<List<Character>?>? = liveData { data }
+   // override val charactersForLocation: LiveData<List<Character>?>? = liveData { data }
 
     override suspend fun getCharacters(ids: String) {
         try {

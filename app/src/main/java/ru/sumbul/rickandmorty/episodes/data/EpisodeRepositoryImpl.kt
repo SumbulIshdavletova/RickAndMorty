@@ -62,12 +62,12 @@ class EpisodeRepositoryImpl @Inject constructor(
     }
 
 
-    override val charactersData: LiveData<List<Character>> = liveData { data }
+   // override val charactersData: LiveData<List<Character>> = liveData { data }
 
     private var data: MutableLiveData<List<Character>?>? =
         MutableLiveData<List<Character>?>()
 
-    fun getData(): MutableLiveData<List<Character>?>? {
+    override fun getData(): MutableLiveData<List<Character>?>? {
         return data
     }
 

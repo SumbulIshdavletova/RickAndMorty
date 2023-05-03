@@ -68,12 +68,12 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
 
-    override val data: LiveData<List<Episode>> = episodeDao.getAll().map { episodeMapper.mapFromEntity(it) }
+   // override val data: LiveData<List<Episode>> = episodeDao.getAll().map { episodeMapper.mapFromEntity(it) }
 
     private var data1: MutableLiveData<List<Episode>?>? =
         MutableLiveData<List<Episode>?>()
 
-    fun getData1(): MutableLiveData<List<Episode>?>? {
+    override fun getData1(): MutableLiveData<List<Episode>?>? {
         return data1
     }
 

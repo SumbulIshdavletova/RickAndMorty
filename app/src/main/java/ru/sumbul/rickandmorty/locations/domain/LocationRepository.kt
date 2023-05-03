@@ -12,5 +12,6 @@ interface LocationRepository {
     val locationPagingFlow: Flow<PagingData<Location>>
     suspend fun getById(id: Int): Location
     suspend fun  getCharacters(ids: String)
-    val charactersForLocation: LiveData<List<Character>?>?
+    //val charactersForLocation: LiveData<List<Character>?>?
+    fun getData(): MutableLiveData<List<Character>?>?
 }

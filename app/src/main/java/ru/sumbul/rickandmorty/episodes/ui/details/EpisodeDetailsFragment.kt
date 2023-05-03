@@ -86,7 +86,7 @@ class EpisodeDetailsFragment : Fragment() {
             val charactersUrls: List<String> = episode.characters
 
             viewModel.getCharacters(charactersUrls)
-            viewModel.getCharacters().observe(viewLifecycleOwner) { characters ->
+            viewModel.getCharacters()?.observe(viewLifecycleOwner) { characters ->
                 adapter.submitList(characters)
             }
 
@@ -106,7 +106,7 @@ class EpisodeDetailsFragment : Fragment() {
             val charactersUrls: List<String> = episode.characters
 
             viewModel.getCharacters(charactersUrls)
-            viewModel.getCharacters().observe(viewLifecycleOwner) { characters ->
+            viewModel.getCharacters()?.observe(viewLifecycleOwner) { characters ->
                 adapter.submitList(characters)
             }
 

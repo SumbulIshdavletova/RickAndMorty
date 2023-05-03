@@ -27,7 +27,7 @@ class LocationDetailsViewModel @Inject constructor(
     private val repository: LocationRepository
 ) : ViewModel() {
 
-    private var data: LiveData<List<Character>?>? = repository.charactersForLocation
+    private var data: LiveData<List<Character>?>? = repository.getData()
 
     fun getData(): LiveData<List<Character>?>? {
         return data

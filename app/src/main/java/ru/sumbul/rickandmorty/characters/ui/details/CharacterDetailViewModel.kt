@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.characters.data.CharacterRepositoryImpl
 import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
+import ru.sumbul.rickandmorty.characters.domain.CharacterRepository
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
@@ -29,7 +30,7 @@ var location: Location = Location(
 
 @ExperimentalCoroutinesApi
 class CharacterDetailViewModel @Inject constructor(
-    private val repository: CharacterRepositoryImpl,
+    private val repository: CharacterRepository,
 ) : ViewModel() {
 
     private val episodes: MutableLiveData<List<Episode>?>? = repository.getData1()
