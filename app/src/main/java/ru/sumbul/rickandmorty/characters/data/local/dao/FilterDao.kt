@@ -20,6 +20,12 @@ interface FilterDao {
     @Query("SELECT gender FROM FilterEntity")
     suspend fun getGender(): String
 
+    @Query("SELECT species FROM FilterEntity")
+    suspend fun getSpecies(): String
+
+    @Query("SELECT type FROM FilterEntity")
+    suspend fun getType(): String
+
     @Query("DELETE FROM FilterEntity")
     suspend fun clear()
 }

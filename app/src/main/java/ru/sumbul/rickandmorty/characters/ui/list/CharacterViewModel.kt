@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import androidx.paging.*
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.characters.data.entity.CharacterEntity
@@ -47,17 +48,22 @@ class CharacterViewModel @Inject constructor(
         .characterPagingFlow
         .cachedIn(viewModelScope)
 
-    val characterPagingFlow: Flow<PagingData<Character>> =
-        cached
+    val characterPagingFlow: Flow<PagingData<Character>> = cached
 
     private val _dataState = MutableLiveData<ListModelState>()
     val dataState: LiveData<ListModelState>
         get() = _dataState
 
-    fun filterCharacters(name: String, status: String, gender: String) = viewModelScope.launch {
+    fun filterCharacters(
+        name: String,
+        status: String,
+        species: String,
+        type: String,
+        gender: String
+    ) = viewModelScope.launch {
         try {
             _dataState.value = ListModelState(refreshing = true)
-            repository.filterCharacters(name, status, gender)
+            repository.filterCharacters(name, status, species, type, gender)
             _dataState.value = ListModelState()
         } catch (e: Exception) {
             _dataState.value = ListModelState(error = true)

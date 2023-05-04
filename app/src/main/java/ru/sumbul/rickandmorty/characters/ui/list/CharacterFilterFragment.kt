@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import com.google.android.material.button.MaterialButton
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.application.appComponent
 import ru.sumbul.rickandmorty.databinding.FragmentCharacterFilterBinding
@@ -48,6 +50,8 @@ class CharacterFilterFragment : Fragment() {
         binding.unknownGender.setOnClickListener {
             gender = "unknown"
         }
+
+
         var status = ""
         binding.alive.setOnClickListener {
             status = "alive"
@@ -68,12 +72,14 @@ class CharacterFilterFragment : Fragment() {
             } else {
                 "$name"
             }
+
             var species = ""
             species = if (binding.speciesSearch.text.toString() == "") {
                 ""
             } else {
                 binding.speciesSearch.text.toString()
             }
+
             var type = ""
             type = if (binding.typeSearch.text.toString() == "") {
                 ""
@@ -85,8 +91,9 @@ class CharacterFilterFragment : Fragment() {
             bundle.apply {
                 putString("name", name)
                 putString("status", status)
+                putString("species", species)
                 putString("gender", gender)
-              //  putString()
+                putString("type", type)
             }
             parentFragmentManager.setFragmentResult("filter", bundle)
             parentFragmentManager.beginTransaction()

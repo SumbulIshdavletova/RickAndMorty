@@ -37,14 +37,16 @@ class FilteredRemoteMediator @Inject constructor(
     ): MediatorResult {
 
         return try {
-            val name: String = filterDao.getName()
-            val status: String = filterDao.getStatus()
-            val gender: String = filterDao.getGender()
+            val name: String? = filterDao.getName()
+            val status: String? = filterDao.getStatus()
+            val species: String? = filterDao.getSpecies()
+            val type: String? = filterDao.getType()
+            val gender: String? = filterDao.getGender()
 
             val result = when (loadType) {
                 LoadType.REFRESH -> {
                     characterApi.getCharacters(
-                        1, name, status, gender
+                        1, name, status, species, type, gender
                     )
                 }
                 LoadType.PREPEND -> return MediatorResult.Success(
@@ -52,7 +54,7 @@ class FilteredRemoteMediator @Inject constructor(
                 )
                 LoadType.APPEND -> {
                     val page = remoteKeyDao.getNextPage() ?: return MediatorResult.Success(false)
-                    characterApi.getCharacters(page, name, status, gender)
+                    characterApi.getCharacters(page, name, status, species, type, gender)
                 }
             }
 
@@ -65,17 +67,25 @@ class FilteredRemoteMediator @Inject constructor(
                 result.code(),
                 result.message(),
             )
-            var nextPage: String? = null
-            nextPage = body.info.next ?: return MediatorResult.Success(
-                endOfPaginationReached = true
-            )
-            val uri = Uri.parse(nextPage)
-            val nextPageQuery = uri.getQueryParameter("page")
+            var nextPage: Any? = null
+            if (body.info.next == null) {
+                nextPage = body.info.pages
+            } else {
+                nextPage = body.info.next
+            }
+            val uri = Uri.parse(nextPage.toString())
+            val nextPageQuery = uri?.getQueryParameter("page")
             val nextPageNumber = nextPageQuery?.toInt()
+
 
             val characters = body.results ?: emptyList()
             val responseData = mutableListOf<Character>()
             responseData.addAll(characters)
+
+//            if (characters.isEmpty()) {
+//                return MediatorResult.Success(
+//                    endOfPaginationReached = true)
+//            }
 
             characterDb.filterDao().clear()
             characterDb.withTransaction {
@@ -83,23 +93,18 @@ class FilteredRemoteMediator @Inject constructor(
                     characterDb.remoteKeyDao().clear()
                     characterDb.filterDao().clear()
                     characterDb.characterDao().clearAll()
-                    characterApi.getCharacters(1, "", "", "")
+                    //    characterApi.getCharacters(1, "", "", "", "", "")
                 }
 
-                //   characterDb.filterDao().clear()
-
-                if (nextPage != null) {
-                    characterDb.remoteKeyDao()
-                        .insert(RemoteKeyEntity("query", nextPageNumber))
-                }
+                //  if (nextPage != null) {
+                characterDb.remoteKeyDao()
+                    .insert(RemoteKeyEntity("query", nextPageNumber))
+                //  }
 
                 characterDb.filterDao().clear()
-                if (name != null) {
-                    if (status != null) {
-                        if (gender != null) {
-                            characterDb.filterDao().upsert(FilterEntity(name, status, gender))
-                        }
-                    }
+                name?.let { FilterEntity(it, status, species, type, gender) }?.let {
+                    characterDb.filterDao()
+                        .upsert(it)
                 }
 
                 characterDb.characterDao().upsertAll(mapper.mapToEntity(responseData))

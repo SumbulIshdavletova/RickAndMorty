@@ -11,7 +11,7 @@ import ru.sumbul.rickandmorty.characters.data.entity.RemoteKeyEntity
 
 @Database(
     entities = [CharacterEntity::class, FilterEntity::class, RemoteKeyEntity::class],
-    version = 3
+    version = 2
 )
 
 abstract class CharacterDb : RoomDatabase() {

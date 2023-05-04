@@ -1,10 +1,12 @@
 package ru.sumbul.rickandmorty.characters.ui.list
 
 import android.content.Context
+import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -29,6 +31,7 @@ class CharactersListFragment : Fragment() {
 
     @Inject
     lateinit var factory: CharactersViewModelFactory
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val viewModel by viewModels<CharacterViewModel>(factoryProducer = { factory })
 
@@ -78,7 +81,7 @@ class CharactersListFragment : Fragment() {
                 footer = LoadingStateAdapter { adapter.retry() })
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.filterCharacters("","","")
+            viewModel.filterCharacters("", "", "","","")
             adapter.refresh()
         }
 
@@ -94,6 +97,7 @@ class CharactersListFragment : Fragment() {
         //GO TO FILTER FRAGMENT
         val filterFragment: CharacterFilterFragment = CharacterFilterFragment()
         binding.filter.setOnClickListener {
+            viewModel.filterCharacters("", "", "","","")
             parentFragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.frame_layout, filterFragment)
@@ -101,18 +105,36 @@ class CharactersListFragment : Fragment() {
                 .commit()
         }
 
+        //search name
+        binding.textInputEdit.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val name = binding.textInputEdit.text.toString()
+                viewModel.filterCharacters(name, "", "","","")
+                adapter.refresh()
+            }
+            return@setOnEditorActionListener false
+        }
+
+
 //приходим с фрагмента с фильтрами
         parentFragmentManager.setFragmentResultListener(
             "filter", this
         ) { _, bundle ->
             val filterRequest = bundle.getBundle("filter")
             val name = bundle.getString("name")
-            val gender = bundle.getString("gender")
             val status = bundle.getString("status")
+            val species = bundle.getString("species")
+            val type = bundle.getString("type")
+            val gender = bundle.getString("gender")
             if (name != null) {
                 if (status != null) {
                     if (gender != null) {
-                        viewModel.filterCharacters(name, status, gender)
+                        if (species != null) {
+                            if (type != null) {
+                                viewModel.filterCharacters(name, status, species, type, gender)
+                            }
+                        }
+                        adapter.refresh()
                     }
                 }
             }

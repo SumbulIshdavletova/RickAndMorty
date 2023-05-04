@@ -6,7 +6,7 @@ import ru.sumbul.rickandmorty.locations.data.entity.LocationEntity
 
 @Database(
     entities = [LocationEntity::class],
-    version = 2
+    version = 1
 )
 
 abstract class LocationDb : RoomDatabase() {

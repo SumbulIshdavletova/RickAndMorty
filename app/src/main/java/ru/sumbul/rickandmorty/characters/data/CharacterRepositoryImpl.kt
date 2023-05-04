@@ -58,8 +58,11 @@ class CharacterRepositoryImpl @Inject constructor(
         }
 
     //change filter status etc
-    override suspend fun filterCharacters(name: String, status: String, gender: String) {
-        val body: FilterEntity = FilterEntity(name, status, gender)
+    override suspend fun filterCharacters(
+        name: String, status: String, species: String,
+        type: String, gender: String
+    ) {
+        val body: FilterEntity = FilterEntity(name, status, species, type, gender)
         try {
             filterDao.upsert(body)
         } catch (e: Exception) {
@@ -68,7 +71,7 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
 
-   // override val data: LiveData<List<Episode>> = episodeDao.getAll().map { episodeMapper.mapFromEntity(it) }
+    // override val data: LiveData<List<Episode>> = episodeDao.getAll().map { episodeMapper.mapFromEntity(it) }
 
     private var data1: MutableLiveData<List<Episode>?>? =
         MutableLiveData<List<Episode>?>()

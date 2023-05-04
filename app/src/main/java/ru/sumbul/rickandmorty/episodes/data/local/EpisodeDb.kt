@@ -7,7 +7,7 @@ import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDao
 
 @Database(
     entities = [EpisodeEntity::class],
-    version = 1
+    version = 2
 )
 
 abstract class EpisodeDb : RoomDatabase() {
