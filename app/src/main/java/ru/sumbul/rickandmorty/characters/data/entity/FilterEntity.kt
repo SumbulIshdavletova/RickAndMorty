@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import io.reactivex.rxjava3.annotations.NonNull
 
 data class Filter(
+    var id: Int = 1,
     var name: String? = "",
     var status: String? = "",
     var species: String? = "",
@@ -15,15 +16,17 @@ data class Filter(
 
 @Entity
 data class FilterEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
-    var name: String = "",
+    var id: Int,
+    var name: String? = null,
     var status: String? = null,
     var species: String? = null,
-    var type: String? =  null,
-    var gender: String? =  null,
+    var type: String? = null,
+    var gender: String? = null,
 ) {
     fun toDto() = Filter(
+        id,
         name,
         status, species, type,
         gender,
@@ -31,13 +34,11 @@ data class FilterEntity(
 
     companion object {
         fun fromDto(dto: Filter) =
-            dto.name?.let {
-                FilterEntity(
-                    it,
-                    dto.status, dto.species, dto.type,
-                    dto.gender
-                )
-            }
+            FilterEntity(
+                dto.id, dto.name,
+                dto.status, dto.species, dto.type,
+                dto.gender
+            )
     }
 }
 

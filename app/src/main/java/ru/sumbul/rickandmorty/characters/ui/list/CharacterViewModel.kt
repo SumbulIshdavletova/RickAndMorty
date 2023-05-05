@@ -56,10 +56,10 @@ class CharacterViewModel @Inject constructor(
 
     fun filterCharacters(
         name: String,
-        status: String,
-        species: String,
-        type: String,
-        gender: String
+        status: String?,
+        species: String?,
+        type: String?,
+        gender: String?
     ) = viewModelScope.launch {
         try {
             _dataState.value = ListModelState(refreshing = true)

@@ -109,7 +109,8 @@ class CharactersListFragment : Fragment() {
         binding.textInputEdit.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val name = binding.textInputEdit.text.toString()
-                viewModel.filterCharacters(name, "", "","","")
+                viewModel.filterCharacters(name, null, null,null,null)
+             //   adapter.notifyDataSetChanged()
                 adapter.refresh()
             }
             return@setOnEditorActionListener false
@@ -126,18 +127,20 @@ class CharactersListFragment : Fragment() {
             val species = bundle.getString("species")
             val type = bundle.getString("type")
             val gender = bundle.getString("gender")
+//            if (name != null) {
+//                if (status != null) {
+//                    if (gender != null) {
+//                        if (species != null) {
+//                            if (type != null) {
             if (name != null) {
-                if (status != null) {
-                    if (gender != null) {
-                        if (species != null) {
-                            if (type != null) {
-                                viewModel.filterCharacters(name, status, species, type, gender)
-                            }
-                        }
-                        adapter.refresh()
-                    }
-                }
+                viewModel.filterCharacters(name, status, species, type, gender)
             }
+//                            }
+//                        }
+//                        adapter.refresh()
+//                    }
+//                }
+//            }
             adapter.refresh()
         }
 

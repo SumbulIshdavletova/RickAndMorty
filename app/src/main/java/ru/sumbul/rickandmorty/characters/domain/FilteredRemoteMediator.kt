@@ -2,6 +2,7 @@ package ru.sumbul.rickandmorty.characters.domain
 
 import android.net.Uri
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState.Loading.endOfPaginationReached
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
@@ -59,26 +60,44 @@ class FilteredRemoteMediator @Inject constructor(
             }
 
 
-
             if (!result.isSuccessful) {
-                throw ApiError(result.code(), result.message())
+
+                MediatorResult.Success(
+                    endOfPaginationReached = true
+                )
+
+//                throw ApiError(result.code(), result.message())
             }
-            val body = result.body() ?: throw ApiError(
-                result.code(),
-                result.message(),
-            )
+            val body = result.body()
+            if (body == null) {
+                MediatorResult.Success(
+                    endOfPaginationReached = true
+                )
+            }
+//                ?: throw ApiError(
+//                result.code(),
+//                result.message(),
+//            )
+            if (body != null) {
+                if (body.results.isEmpty()) {
+                    emptyList<ru.sumbul.rickandmorty.characters.domain.model.Character>()
+                    characterDb.characterDao().clearAll()
+                }
+            }
             var nextPage: Any? = null
-            if (body.info.next == null) {
-                nextPage = body.info.pages
-            } else {
-                nextPage = body.info.next
+            if (body != null) {
+                if (body.info.next == null) {
+                    nextPage = body.info.pages
+                } else {
+                    nextPage = body.info.next
+                }
             }
             val uri = Uri.parse(nextPage.toString())
             val nextPageQuery = uri?.getQueryParameter("page")
             val nextPageNumber = nextPageQuery?.toInt()
 
 
-            val characters = body.results ?: emptyList()
+            val characters = body?.results ?: emptyList()
             val responseData = mutableListOf<Character>()
             responseData.addAll(characters)
 
@@ -102,12 +121,13 @@ class FilteredRemoteMediator @Inject constructor(
                 //  }
 
                 characterDb.filterDao().clear()
-                name?.let { FilterEntity(it, status, species, type, gender) }?.let {
-                    characterDb.filterDao()
-                        .upsert(it)
-                }
+               // name?.let { FilterEntity(it, status, species, type, gender) }?.let {
+                    characterDb.filterDao().upsert(FilterEntity(0,name, status, species, type, gender))
+                  //      .upsert(it)
+             //   }
 
                 characterDb.characterDao().upsertAll(mapper.mapToEntity(responseData))
+
             }
 
             MediatorResult.Success(

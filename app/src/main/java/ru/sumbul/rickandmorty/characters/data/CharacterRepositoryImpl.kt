@@ -28,6 +28,7 @@ import ru.sumbul.rickandmorty.locations.domain.model.Location
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class CharacterRepositoryImpl @Inject constructor(
@@ -59,10 +60,10 @@ class CharacterRepositoryImpl @Inject constructor(
 
     //change filter status etc
     override suspend fun filterCharacters(
-        name: String, status: String, species: String,
-        type: String, gender: String
+        name: String, status: String?, species: String?,
+        type: String?, gender: String?
     ) {
-        val body: FilterEntity = FilterEntity(name, status, species, type, gender)
+        val body: FilterEntity = FilterEntity(1, name, status, species, type, gender)
         try {
             filterDao.upsert(body)
         } catch (e: Exception) {
