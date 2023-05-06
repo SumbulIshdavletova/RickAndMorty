@@ -33,11 +33,12 @@ class LocationViewModel @Inject constructor(
 
     fun filterLocations(
         name: String?,
-        episode: String?
+        type: String?,
+        dimension: String?
     ) = viewModelScope.launch {
         try {
             _dataState.value = ListModelState(refreshing = true)
-            repository.filterEpisodes(name, episode)
+            repository.filterLocation(name, type, dimension)
             _dataState.value = ListModelState()
         } catch (e: Exception) {
             _dataState.value = ListModelState(error = true)

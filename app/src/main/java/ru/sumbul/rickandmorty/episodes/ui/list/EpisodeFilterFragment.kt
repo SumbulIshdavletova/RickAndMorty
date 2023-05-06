@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.locations.ui.list
+package ru.sumbul.rickandmorty.episodes.ui.list
 
 import android.content.Context
 import android.os.Bundle
@@ -8,12 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.application.appComponent
-import ru.sumbul.rickandmorty.databinding.FragmentLocationFilterBinding
+import ru.sumbul.rickandmorty.databinding.FragmentEpisodeFilterBinding
 
+class EpisodeFilterFragment : Fragment() {
 
-class LocationFilterFragment : Fragment() {
-
-    private val locationsListFragment: LocationsListFragment = LocationsListFragment()
+    val episodeListFragment: EpisodesListFragment = EpisodesListFragment()
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
@@ -28,7 +27,8 @@ class LocationFilterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentLocationFilterBinding.inflate(
+
+        val binding = FragmentEpisodeFilterBinding.inflate(
             inflater,
             container,
             false
@@ -42,37 +42,33 @@ class LocationFilterFragment : Fragment() {
                 "$name"
             }
 
-            var type = ""
-            type = if (binding.typeSearch.text.toString() == "") {
+            var episode = ""
+            episode = if (binding.episodeSearch.text.toString() == "") {
                 ""
             } else {
-                binding.typeSearch.text.toString()
-            }
-
-            var dimension = ""
-            dimension = if (binding.dimensionSearch.text.toString() == "") {
-                ""
-            } else {
-                binding.dimensionSearch.text.toString()
+                binding.episodeSearch.text.toString()
             }
 
 
             val bundle = Bundle()
             bundle.apply {
                 putString("name", name)
-                putString("type", type)
-                putString("dimension", dimension)
+                putString("episode", episode)
             }
-            parentFragmentManager.setFragmentResult("filterLocation", bundle)
+            parentFragmentManager.setFragmentResult("filterEpisode", bundle)
             parentFragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.frame_layout, locationsListFragment)
-                .addToBackStack("filterLocation")
+                .replace(R.id.frame_layout, episodeListFragment)
+                .addToBackStack("filterEpisode")
                 .commit()
-
         }
+
+
 
         return binding.root
     }
+
+
+
 
 }

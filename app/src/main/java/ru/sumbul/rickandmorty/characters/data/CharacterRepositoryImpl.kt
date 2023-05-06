@@ -15,7 +15,7 @@ import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.CharacterRepository
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
-import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDao
+import ru.sumbul.rickandmorty.episodes.data.local.dao.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.data.mapper.EpisodeMapper
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
 import ru.sumbul.rickandmorty.error.ApiError

@@ -1,4 +1,4 @@
-package ru.sumbul.rickandmorty.episodes.data.local
+package ru.sumbul.rickandmorty.episodes.data.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource

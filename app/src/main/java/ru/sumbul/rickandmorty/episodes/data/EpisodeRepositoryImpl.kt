@@ -1,9 +1,6 @@
 package ru.sumbul.rickandmorty.episodes.data
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -11,8 +8,11 @@ import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
-import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDao
+import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeFilterEntity
+import ru.sumbul.rickandmorty.episodes.data.local.dao.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDb
+import ru.sumbul.rickandmorty.episodes.data.local.dao.EpisodeFilterDao
+import ru.sumbul.rickandmorty.episodes.data.local.dao.EpisodeRemoteKeyDao
 import ru.sumbul.rickandmorty.episodes.data.mapper.EpisodeMapper
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.domain.EpisodeRemoteMediator
@@ -20,6 +20,7 @@ import ru.sumbul.rickandmorty.episodes.domain.EpisodeRepository
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
+import ru.sumbul.rickandmorty.locations.data.entity.LocationFilterEntity
 import java.io.IOException
 import javax.inject.Inject
 
@@ -31,19 +32,31 @@ class EpisodeRepositoryImpl @Inject constructor(
     private val db: EpisodeDb,
     private val characterDao: CharacterDao,
     private val characterMapper: CharacterMapper,
+    private val filterDao: EpisodeFilterDao,
+    private val remoteKeyDao: EpisodeRemoteKeyDao
 ) : EpisodeRepository {
 
     @OptIn(ExperimentalPagingApi::class)
     override val episodePagingFlow: Flow<PagingData<Episode>> =
         Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = EpisodeRemoteMediator(db, api, mapper),
+            remoteMediator = EpisodeRemoteMediator(db, api, mapper,remoteKeyDao, filterDao),
             pagingSourceFactory = dao::pagingSource,
         ).flow.map { pg ->
             pg.map {
                 mapper.mapToDb(it)
             }
         }
+
+    override suspend fun filterEpisodes(name: String?, episode: String?) {
+        val body = EpisodeFilterEntity(1, name, episode)
+        try {
+            filterDao.upsert(body)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
 
     override suspend fun getById(id: Int): Episode {
         var episode: Episode

@@ -36,22 +36,23 @@ class LocationRemoteMediator @Inject constructor(
         return try {
 
             val name: String? = filterDao.getName()
-            val episode: String? = filterDao.getEpisode()
+            val type: String? = filterDao.getType()
+            val dimension: String? = filterDao.getDimension()
 
             val result = when (loadType) {
                 LoadType.REFRESH -> {
-                    locationApi.getLocations(1, name, episode)
+                    locationApi.getLocations(1, name, type, dimension)
                 }
                 LoadType.PREPEND -> return MediatorResult.Success(
                     endOfPaginationReached = true
                 )
                 LoadType.APPEND -> {
                     val page = remoteKeyDao.getNextPage() ?: return MediatorResult.Success(false)
-                    locationApi.getLocations(page, name, episode)
+                    locationApi.getLocations(page, name,  type, dimension)
                 }
             }
-            if (!result.isSuccessful) {
 
+            if (!result.isSuccessful) {
                 MediatorResult.Success(
                     endOfPaginationReached = true
                 )
@@ -102,7 +103,7 @@ class LocationRemoteMediator @Inject constructor(
                 locationDb.remoteKeyDao()
                     .insert(LocationRemoteKeyEntity("query", nextPageNumber))
                 //   locationDb.filterDao().clear()
-                locationDb.filterDao().upsert(LocationFilterEntity(1, name, episode))
+                locationDb.filterDao().upsert(LocationFilterEntity(1, name,  type, dimension))
                 locationDb.locationDao().upsertAll(locationMapper.mapToListEntity(responseData))
             }
             MediatorResult.Success(

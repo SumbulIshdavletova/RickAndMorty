@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
 import kotlinx.coroutines.flow.Flow
 import ru.sumbul.rickandmorty.characters.domain.model.Character
+import ru.sumbul.rickandmorty.locations.data.entity.LocationFilterEntity
 
 interface EpisodeRepository {
 
@@ -14,5 +15,8 @@ interface EpisodeRepository {
    // val charactersData: LiveData<List<ru.sumbul.rickandmorty.characters.domain.model.Character>>
     suspend fun getCharactersForEpisode(ids: String)
     fun getData(): MutableLiveData<List<Character>?>?
+
+    suspend fun filterEpisodes(name: String?, episode: String?)
+
 
 }

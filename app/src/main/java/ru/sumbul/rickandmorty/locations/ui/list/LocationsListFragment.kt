@@ -80,7 +80,10 @@ class LocationsListFragment : Fragment() {
             header = LoadingStateAdapter { adapter.retry() },
             footer = LoadingStateAdapter { adapter.retry() })
 
-        binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.filterLocations("","","")
+            adapter.refresh()
+        }
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -94,7 +97,7 @@ class LocationsListFragment : Fragment() {
         //GO TO FILTER FRAGMENT
         val filterFragment: LocationFilterFragment = LocationFilterFragment()
         binding.filter.setOnClickListener {
-            viewModel.filterLocations("", "")
+            viewModel.filterLocations("", "","")
             parentFragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.frame_layout, filterFragment)
@@ -106,7 +109,7 @@ class LocationsListFragment : Fragment() {
         binding.textInputEdit.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val name = binding.textInputEdit.text.toString()
-                viewModel.filterLocations(name, null)
+                viewModel.filterLocations(name, null, null)
                 //   adapter.notifyDataSetChanged()
                 adapter.refresh()
             }
@@ -120,9 +123,10 @@ class LocationsListFragment : Fragment() {
         ) { _, bundle ->
             val filterRequest = bundle.getBundle("filterLocation")
             val name = bundle.getString("name")
-            val episode = bundle.getString("episode")
+            val type = bundle.getString("type")
+            val dimension = bundle.getString("dimension")
             if (name != null) {
-                viewModel.filterLocations(name, episode)
+                viewModel.filterLocations(name, type, dimension)
             }
             adapter.refresh()
         }

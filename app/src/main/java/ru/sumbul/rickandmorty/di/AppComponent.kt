@@ -12,6 +12,7 @@ import ru.sumbul.rickandmorty.characters.ui.list.CharactersListFragment
 import ru.sumbul.rickandmorty.episodes.di.DbEpisodeModule
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsFragment
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsViewModel
+import ru.sumbul.rickandmorty.episodes.ui.list.EpisodeFilterFragment
 import ru.sumbul.rickandmorty.episodes.ui.list.EpisodeViewModel
 import ru.sumbul.rickandmorty.episodes.ui.list.EpisodesListFragment
 import ru.sumbul.rickandmorty.locations.di.DbLocationModule
@@ -44,6 +45,7 @@ interface AppComponent {
     fun inject(episodesViewModel: EpisodeViewModel)
     @OptIn(ExperimentalCoroutinesApi::class)
     fun inject(episodeDetailsViewModel: EpisodeDetailsViewModel)
+    fun inject(episodeFilterFragment: EpisodeFilterFragment)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun inject(locationDetailsFragment: LocationDetailsFragment)

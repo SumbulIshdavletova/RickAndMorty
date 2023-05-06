@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,12 +22,14 @@ import ru.sumbul.rickandmorty.databinding.FragmentEpisodesListBinding
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsFragment
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
 import ru.sumbul.rickandmorty.factory.EpisodesViewModelFactory
+import ru.sumbul.rickandmorty.locations.ui.list.LocationFilterFragment
 import javax.inject.Inject
 
 class EpisodesListFragment : Fragment() {
 
     @Inject
     lateinit var factory: EpisodesViewModelFactory
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val viewModel by viewModels<EpisodeViewModel>(factoryProducer = { factory })
 
@@ -37,7 +40,7 @@ class EpisodesListFragment : Fragment() {
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         EpisodeAdapter(object : OnInteractionListenerCharacter {
             override fun onClick(episode: Episode) {
-            //    viewModel.getById(episode.id)
+                //    viewModel.getById(episode.id)
                 val bundle2 = Bundle()
                 bundle2.putSerializable("requestKey", episode)
                 parentFragmentManager.setFragmentResult("requestKey", bundle2)
@@ -74,9 +77,12 @@ class EpisodesListFragment : Fragment() {
             header = LoadingStateAdapter { adapter.retry() },
             footer = LoadingStateAdapter { adapter.retry() })
 
-        binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.filterEpisodes("", "")
+            adapter.refresh()
+        }
 
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 adapter.loadStateFlow.collectLatest { state ->
                     binding.swipeRefresh.isRefreshing = state.refresh is LoadState.Loading
@@ -84,6 +90,43 @@ class EpisodesListFragment : Fragment() {
                 }
             }
         }
+
+        //GO TO FILTER FRAGMENT
+        val filterFragment = EpisodeFilterFragment()
+        binding.filter.setOnClickListener {
+            viewModel.filterEpisodes("", "")
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.frame_layout, filterFragment)
+                .addToBackStack("toFilter")
+                .commit()
+        }
+
+        //search name
+        binding.textInputEdit.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val name = binding.textInputEdit.text.toString()
+                viewModel.filterEpisodes(name, null)
+                //   adapter.notifyDataSetChanged()
+                adapter.refresh()
+            }
+            return@setOnEditorActionListener false
+        }
+
+
+        //приходим с фрагмента с фильтрами
+        parentFragmentManager.setFragmentResultListener(
+            "filterEpisode", this
+        ) { _, bundle ->
+            val filterRequest = bundle.getBundle("filterEpisode")
+            val name = bundle.getString("name")
+            val episode = bundle.getString("episode")
+            if (name != null) {
+                viewModel.filterEpisodes(name, episode)
+            }
+            adapter.refresh()
+        }
+
 
         return binding.root
     }

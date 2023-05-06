@@ -2,10 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/common_margin"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".locations.ui.list.LocationFilterFragment"
+    android:layout_height="match_parent"
+    tools:context=".episodes.ui.list.EpisodeFilterFragment"
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputEditText
@@ -17,20 +15,12 @@
         android:hint="@string/enter_name" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/typeSearch"
+        android:id="@+id/episodeSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
         android:gravity="center_horizontal"
-        android:hint="@string/enter_type" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/dimensionSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/common_margin"
-        android:gravity="center_horizontal"
-        android:hint="@string/enter_dimension" />
+        android:hint="@string/enter_episode" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/search"
@@ -39,6 +29,5 @@
         android:layout_margin="@dimen/common_margin"
         android:gravity="center_horizontal"
         android:text="@string/search"/>
-
 
 </LinearLayout>

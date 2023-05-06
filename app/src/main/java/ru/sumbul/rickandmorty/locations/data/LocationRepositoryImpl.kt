@@ -47,8 +47,8 @@ class LocationRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun filterEpisodes(name: String?, episode: String?) {
-        val body = LocationFilterEntity(1, name, episode)
+    override suspend fun filterLocation(name: String?, type: String?, dimension: String?) {
+        val body = LocationFilterEntity(1, name, type, dimension)
         try {
             filterDao.upsert(body)
         } catch (e: Exception) {

@@ -13,8 +13,11 @@ interface LocationFilterDao {
     @Query("SELECT name FROM LocationFilterEntity")
     suspend fun getName(): String
 
-    @Query("SELECT episode FROM LocationFilterEntity")
-    suspend fun getEpisode(): String
+    @Query("SELECT type FROM LocationFilterEntity")
+    suspend fun getType(): String
+
+    @Query("SELECT dimension FROM LocationFilterEntity")
+    suspend fun getDimension(): String
 
     @Query("DELETE FROM LocationFilterEntity")
     suspend fun clear()

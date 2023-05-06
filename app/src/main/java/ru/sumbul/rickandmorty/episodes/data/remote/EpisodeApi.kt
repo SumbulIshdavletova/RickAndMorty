@@ -12,7 +12,9 @@ interface EpisodeApi {
 
     @GET("episode/")
     suspend fun getEpisodes(
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("name") name: String?,
+        @Query("episode") episode: String?,
     ): Response<ResponseApiEpisode>
 
 
