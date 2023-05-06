@@ -105,8 +105,8 @@ class FilteredRemoteMediator @Inject constructor(
 //                return MediatorResult.Success(
 //                    endOfPaginationReached = true)
 //            }
-
-            characterDb.filterDao().clear()
+//не нужно удалять фильтры потому что тогда оно начинает искать рандомные запросы
+          //  characterDb.filterDao().clear()
             characterDb.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     characterDb.remoteKeyDao().clear()
@@ -120,11 +120,10 @@ class FilteredRemoteMediator @Inject constructor(
                     .insert(RemoteKeyEntity("query", nextPageNumber))
                 //  }
 
-                characterDb.filterDao().clear()
-               // name?.let { FilterEntity(it, status, species, type, gender) }?.let {
-                    characterDb.filterDao().upsert(FilterEntity(0,name, status, species, type, gender))
-                  //      .upsert(it)
-             //   }
+       //         characterDb.filterDao().clear()
+
+        characterDb.filterDao().upsert(FilterEntity(1, name, status, species, type, gender))
+
 
                 characterDb.characterDao().upsertAll(mapper.mapToEntity(responseData))
 

@@ -1,24 +1,17 @@
 package ru.sumbul.rickandmorty.di
 
-import android.content.Context
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import ru.sumbul.rickandmorty.characters.data.entity.CharacterEntity
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.FilterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.RemoteKeyDao
 import ru.sumbul.rickandmorty.characters.data.local.db.CharacterDb
-import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
-import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
-import ru.sumbul.rickandmorty.characters.domain.FilteredRemoteMediator
 import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDb
-import ru.sumbul.rickandmorty.locations.data.local.LocationDao
+import ru.sumbul.rickandmorty.locations.data.local.dao.LocationDao
 import ru.sumbul.rickandmorty.locations.data.local.LocationDb
+import ru.sumbul.rickandmorty.locations.data.local.dao.LocationFilterDao
+import ru.sumbul.rickandmorty.locations.data.local.dao.LocationRemoteKeyDao
 import javax.inject.Singleton
 
 
@@ -46,4 +39,11 @@ object DaoModule {
     @Singleton
     fun provideRemoteKeyDao(db: CharacterDb): RemoteKeyDao = db.remoteKeyDao()
 
+    @Provides
+    @Singleton
+    fun provideLocationRemoteDao(db: LocationDb): LocationRemoteKeyDao = db.remoteKeyDao()
+
+    @Provides
+    @Singleton
+    fun provideLocationFilterDao(db: LocationDb): LocationFilterDao = db.filterDao()
 }

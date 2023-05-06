@@ -13,7 +13,9 @@ interface LocationApi {
 
     @GET("location/")
     suspend fun getLocations(
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("name") name: String?,
+        @Query("episode") episode: String?,
     ): Response<ResponseApiLocation>
 
     @GET("location/{id}")

@@ -35,4 +35,5 @@
     <string name="enter_species">Enter species</string>
     <string name="enter_type">Enter type</string>
     <string name="search">Search</string>
+    <string name="search_name">Search name</string>
 </resources>

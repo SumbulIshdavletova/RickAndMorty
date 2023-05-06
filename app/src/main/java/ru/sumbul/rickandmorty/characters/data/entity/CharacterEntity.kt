@@ -34,7 +34,8 @@ data class OriginEmbedded(
 
     @ColumnInfo(name = "origin_url")
     val url: String,
-) {
+)
+{
     fun toDto() = Origin(name, url)
 
     companion object {
@@ -50,7 +51,8 @@ data class LocationEmbedded(
 
     @ColumnInfo(name = "location_url")
     val url: String,
-) {
+)
+{
     fun toDto() = Location(name, url)
 
     companion object {

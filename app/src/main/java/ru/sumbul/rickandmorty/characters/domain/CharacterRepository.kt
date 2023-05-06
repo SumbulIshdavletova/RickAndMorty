@@ -15,7 +15,6 @@ interface CharacterRepository {
         type: String?, gender: String?
     )
 
-    //val data: LiveData<List<Episode>>
     suspend fun getEpisodes(ids: String)
     suspend fun getLocationById(url: String): Location
     suspend fun getEpisodeById(id: Int): Episode

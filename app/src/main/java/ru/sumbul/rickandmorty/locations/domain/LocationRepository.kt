@@ -9,6 +9,10 @@ import ru.sumbul.rickandmorty.locations.domain.model.Location
 
 interface LocationRepository {
     val locationPagingFlow: Flow<PagingData<Location>>
+
+    suspend fun filterEpisodes(
+        name: String?, episode: String?
+    )
     suspend fun getById(id: Int): Location
     suspend fun  getCharacters(ids: String)
     fun getData(): MutableLiveData<List<Character>?>?

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +31,7 @@ class LocationsListFragment : Fragment() {
 
     @Inject
     lateinit var factory: LocationViewModelFactory
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val viewModel by viewModels<LocationViewModel>(factoryProducer = { factory })
 
@@ -41,7 +43,6 @@ class LocationsListFragment : Fragment() {
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         LocationAdapter(object : OnInteractionListenerLocation {
             override fun onClick(location: Location) {
-         //       viewModel.getById(location.id)
                 val bundle2 = Bundle()
                 bundle2.putSerializable("requestKey1", location)
                 parentFragmentManager.setFragmentResult("requestKey1", bundle2)
@@ -90,8 +91,43 @@ class LocationsListFragment : Fragment() {
             }
         }
 
+        //GO TO FILTER FRAGMENT
+        val filterFragment: LocationFilterFragment = LocationFilterFragment()
+        binding.filter.setOnClickListener {
+            viewModel.filterLocations("", "")
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.frame_layout, filterFragment)
+                .addToBackStack("toFilter")
+                .commit()
+        }
+
+        //search name
+        binding.textInputEdit.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val name = binding.textInputEdit.text.toString()
+                viewModel.filterLocations(name, null)
+                //   adapter.notifyDataSetChanged()
+                adapter.refresh()
+            }
+            return@setOnEditorActionListener false
+        }
+
+
+        //приходим с фрагмента с фильтрами
+        parentFragmentManager.setFragmentResultListener(
+            "filterLocation", this
+        ) { _, bundle ->
+            val filterRequest = bundle.getBundle("filterLocation")
+            val name = bundle.getString("name")
+            val episode = bundle.getString("episode")
+            if (name != null) {
+                viewModel.filterLocations(name, episode)
+            }
+            adapter.refresh()
+        }
+
         return binding.root
     }
-
 
 }

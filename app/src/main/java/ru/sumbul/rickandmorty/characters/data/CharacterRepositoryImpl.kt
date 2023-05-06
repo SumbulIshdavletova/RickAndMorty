@@ -1,8 +1,6 @@
 package ru.sumbul.rickandmorty.characters.data
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,13 +20,12 @@ import ru.sumbul.rickandmorty.episodes.data.mapper.EpisodeMapper
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
-import ru.sumbul.rickandmorty.locations.data.local.LocationDao
+import ru.sumbul.rickandmorty.locations.data.local.dao.LocationDao
 import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
 import ru.sumbul.rickandmorty.locations.domain.model.Location
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.random.Random
 
 @Singleton
 class CharacterRepositoryImpl @Inject constructor(
@@ -71,8 +68,6 @@ class CharacterRepositoryImpl @Inject constructor(
         }
     }
 
-
-    // override val data: LiveData<List<Episode>> = episodeDao.getAll().map { episodeMapper.mapFromEntity(it) }
 
     private var data1: MutableLiveData<List<Episode>?>? =
         MutableLiveData<List<Episode>?>()

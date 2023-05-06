@@ -3,14 +3,8 @@ package ru.sumbul.rickandmorty.characters.ui.details
 import androidx.lifecycle.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import ru.sumbul.rickandmorty.characters.data.CharacterRepositoryImpl
-import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
-import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.domain.CharacterRepository
-import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
-import ru.sumbul.rickandmorty.episodes.data.local.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
-import ru.sumbul.rickandmorty.locations.data.local.LocationDao
 import ru.sumbul.rickandmorty.locations.domain.model.Location
 import ru.sumbul.rickandmorty.model.ListModelState
 import javax.inject.Inject

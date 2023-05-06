@@ -16,8 +16,8 @@ interface CharacterDao {
     @Upsert
     suspend fun upsertAll(character: List<CharacterEntity>)
 
-    @Query("SELECT * FROM CharacterEntity")
-    fun pagingSource(): PagingSource<Int, CharacterEntity>
+//    @Query("SELECT * FROM CharacterEntity")
+//    fun pagingSource(): PagingSource<Int, CharacterEntity>
 
     @Query("DELETE FROM CharacterEntity")
     suspend fun clearAll()

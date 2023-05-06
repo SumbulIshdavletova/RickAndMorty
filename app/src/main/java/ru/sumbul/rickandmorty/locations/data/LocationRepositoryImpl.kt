@@ -1,8 +1,6 @@
 package ru.sumbul.rickandmorty.locations.data
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -11,8 +9,11 @@ import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
 import ru.sumbul.rickandmorty.locations.data.entity.LocationEntity
-import ru.sumbul.rickandmorty.locations.data.local.LocationDao
+import ru.sumbul.rickandmorty.locations.data.entity.LocationFilterEntity
+import ru.sumbul.rickandmorty.locations.data.local.dao.LocationDao
 import ru.sumbul.rickandmorty.locations.data.local.LocationDb
+import ru.sumbul.rickandmorty.locations.data.local.dao.LocationFilterDao
+import ru.sumbul.rickandmorty.locations.data.local.dao.LocationRemoteKeyDao
 import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
 import ru.sumbul.rickandmorty.locations.data.remote.LocationApi
 import ru.sumbul.rickandmorty.locations.domain.LocationRemoteMediator
@@ -20,28 +21,40 @@ import ru.sumbul.rickandmorty.locations.domain.LocationRepository
 import ru.sumbul.rickandmorty.locations.domain.model.Location
 import java.io.IOException
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class LocationRepositoryImpl @Inject constructor(
-    pager: Pager<Int, LocationEntity>,
     private val api: LocationApi,
     private val dao: LocationDao,
     private val db: LocationDb,
     private val mapper: LocationMapper,
     private val characterMapper: CharacterMapper,
+    private val remoteKeyDao: LocationRemoteKeyDao,
+    private val filterDao: LocationFilterDao
 
-    ) : LocationRepository {
+) : LocationRepository {
 
     @OptIn(ExperimentalPagingApi::class)
     override val locationPagingFlow: Flow<PagingData<Location>> =
         Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = LocationRemoteMediator(db, api, mapper),
+            remoteMediator = LocationRemoteMediator(db, api, filterDao, remoteKeyDao, mapper),
             pagingSourceFactory = dao::pagingSource,
         ).flow.map { pg ->
             pg.map {
                 mapper.mapFromEntity(it)
             }
         }
+
+    override suspend fun filterEpisodes(name: String?, episode: String?) {
+        val body = LocationFilterEntity(1, name, episode)
+        try {
+            filterDao.upsert(body)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
 
     override suspend fun getById(id: Int): Location {
         var location: Location
@@ -66,7 +79,6 @@ class LocationRepositoryImpl @Inject constructor(
         return data
     }
 
-   // override val charactersForLocation: LiveData<List<Character>?>? = liveData { data }
 
     override suspend fun getCharacters(ids: String) {
         try {

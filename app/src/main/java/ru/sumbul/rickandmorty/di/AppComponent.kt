@@ -17,6 +17,7 @@ import ru.sumbul.rickandmorty.episodes.ui.list.EpisodesListFragment
 import ru.sumbul.rickandmorty.locations.di.DbLocationModule
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsFragment
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsViewModel
+import ru.sumbul.rickandmorty.locations.ui.list.LocationFilterFragment
 import ru.sumbul.rickandmorty.locations.ui.list.LocationViewModel
 import ru.sumbul.rickandmorty.locations.ui.list.LocationsListFragment
 import javax.inject.Singleton
@@ -51,17 +52,6 @@ interface AppComponent {
     fun inject(locationsViewModel: LocationViewModel)
     @OptIn(ExperimentalCoroutinesApi::class)
     fun inject(locationDetailViewModel: LocationDetailsViewModel)
+    fun inject(locationFilterFragment: LocationFilterFragment)
 
-//    @Component.Factory
-//    interface AppComponentFactory{
-//        fun create(@BindsInstance context: Context): AppComponent
-//    }
-
-
-    //fun getMainViewModelFactory(): MainActivityViewModelFactory
 }
-//
-//class App: Application() {
-//    // Reference to the application graph that is used across the whole app
-//    val appComponent = DaggerAppComponent.create()
-//}

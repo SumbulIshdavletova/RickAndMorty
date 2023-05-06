@@ -17,27 +17,6 @@ import ru.sumbul.rickandmorty.characters.domain.model.Origin
 import ru.sumbul.rickandmorty.model.ListModelState
 import javax.inject.Inject
 
-//var character: Character = Character(
-//    id = 0,
-//    name = "",
-//    status = "",
-//    species = "",
-//    type = "",
-//    gender = "",
-//    origin = Origin(
-//        name = "",
-//        url = ""
-//    ),
-//    location = Location(
-//        name = "",
-//        url = ""
-//    ),
-//    image = "",
-//    episode = emptyList(),
-//    url = "",
-//    created = "",
-//)
-
 
 @ExperimentalCoroutinesApi
 class CharacterViewModel @Inject constructor(
