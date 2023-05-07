@@ -62,8 +62,11 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
+
     implementation 'com.google.dagger:dagger:2.44.2'
+    annotationProcessor "com.google.dagger:dagger-compiler:2.44.2"
     kapt 'com.google.dagger:dagger-compiler:2.44.2'
+
     implementation "com.google.dagger:dagger-android:2.40"
     implementation "com.google.dagger:dagger-android-support:2.40"
     kapt "com.google.dagger:dagger-android-processor:2.40"
@@ -78,12 +81,11 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitgson_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttplogging_version"
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
 
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
-    //RxJava adapter
-    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
+
 
 
     implementation "androidx.room:room-runtime:$room_version"
@@ -94,7 +96,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"

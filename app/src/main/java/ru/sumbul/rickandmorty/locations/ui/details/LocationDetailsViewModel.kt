@@ -38,10 +38,6 @@ class LocationDetailsViewModel @Inject constructor(
         }
     }
 
-//    private var _loc = MutableLiveData<Location>()
-//    val loc: LiveData<Location>
-//        get() = _loc
-
     private var loc: MutableLiveData<Location> =
         MutableLiveData<Location>()
 

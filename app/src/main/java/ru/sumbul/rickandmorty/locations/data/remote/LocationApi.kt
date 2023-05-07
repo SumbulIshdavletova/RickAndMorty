@@ -1,5 +1,7 @@
 package ru.sumbul.rickandmorty.locations.data.remote
 
+import androidx.lifecycle.LiveData
+import io.reactivex.rxjava3.core.Observable
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -31,5 +33,5 @@ interface LocationApi {
 //    ): Response<LocationEntity>
 
     @GET("character/{ids}")
-    suspend fun getCharacters(@Path("ids") ids: String): Response<List<Character>>
+     fun getCharacters(@Path("ids") ids: String): Observable<List<Character>>
 }

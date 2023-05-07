@@ -1,17 +1,20 @@
 package ru.sumbul.rickandmorty.locations.data
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.paging.*
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
-import ru.sumbul.rickandmorty.locations.data.entity.LocationEntity
 import ru.sumbul.rickandmorty.locations.data.entity.LocationFilterEntity
-import ru.sumbul.rickandmorty.locations.data.local.dao.LocationDao
 import ru.sumbul.rickandmorty.locations.data.local.LocationDb
+import ru.sumbul.rickandmorty.locations.data.local.dao.LocationDao
 import ru.sumbul.rickandmorty.locations.data.local.dao.LocationFilterDao
 import ru.sumbul.rickandmorty.locations.data.local.dao.LocationRemoteKeyDao
 import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
@@ -20,8 +23,10 @@ import ru.sumbul.rickandmorty.locations.domain.LocationRemoteMediator
 import ru.sumbul.rickandmorty.locations.domain.LocationRepository
 import ru.sumbul.rickandmorty.locations.domain.model.Location
 import java.io.IOException
+import java.util.concurrent.Callable
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class LocationRepositoryImpl @Inject constructor(
@@ -79,22 +84,34 @@ class LocationRepositoryImpl @Inject constructor(
         return data
     }
 
+ //   private var data1: Observable<List<Character>>
 
-    override suspend fun getCharacters(ids: String) {
-        try {
-            val response = api.getCharacters(ids.toString())
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            data?.value = null
+//    override fun getData1(): Observable<List<Character>> {
+//        return data1
+//    }
 
-            val body = response.body()?.let { characterMapper.mapToEntity(it) }
 
-            data?.value = body?.let { characterMapper.mapCharactersFromDb(it) }
+    override fun getCharacters(ids: String) : Observable<List<Character>> {
 
-        } catch (e: IOException) {
-            throw NetworkError
-        }
+        return api.getCharacters(ids)
+            .map { response ->
+                return@map response
+            }.subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+//        try {
+//
+//            val response = api.getCharacters(ids)
+////            if (!response.isSuccessful) {
+////                throw ApiError(response.code(), response.message())
+////            }
+//            data?.value = null
+//
+//            //data?.value = response.
+//
+//            return response
+//
+//        } catch (e: IOException) {
+//            throw NetworkError
+//        }
     }
 
 

@@ -33,6 +33,7 @@ import ru.sumbul.rickandmorty.databinding.FragmentLocationDetailsBinding;
 import ru.sumbul.rickandmorty.episodes.ui.details.CharactersInDetailsAdapter;
 import ru.sumbul.rickandmorty.episodes.ui.details.OnInteractionListenerCharacter;
 import ru.sumbul.rickandmorty.factory.LocationDetailsViewModelFactory;
+import ru.sumbul.rickandmorty.factory.LocationDetailsViewModelJavaFactory;
 import ru.sumbul.rickandmorty.locations.domain.model.Location;
 
 
@@ -43,10 +44,14 @@ public class LocationDetailsFragment extends Fragment {
     List<String> residents = new ArrayList<>();
 
     CharacterDetailsFragment characterDetailsFragment = new CharacterDetailsFragment();
+    LocationDetailsViewModelJava viewModelJava;
     LocationDetailsViewModel viewModel;
 
     @Inject
     LocationDetailsViewModelFactory factory;
+
+    @Inject
+    LocationDetailsViewModelJavaFactory factoryJava;
 
 
     public void onAttach(@NotNull Context context) {
@@ -69,7 +74,7 @@ public class LocationDetailsFragment extends Fragment {
         RecyclerView recyclerView = binding.list;
 
         viewModel = new ViewModelProvider(this, factory).get(LocationDetailsViewModel.class);
-        //  LocationDetailsViewModel viewModel = new ViewModelProvider(requireActivity()).get(LocationDetailsViewModel.class);
+        viewModelJava = new ViewModelProvider(this, factoryJava).get(LocationDetailsViewModelJava.class);
 
         CharactersInDetailsAdapter adapter = new CharactersInDetailsAdapter((OnInteractionListenerCharacter) (new OnInteractionListenerCharacter() {
             public void onClick(@NotNull Character character) {
@@ -97,10 +102,11 @@ public class LocationDetailsFragment extends Fragment {
             binding.dimension.setText(location.getDimension());
             binding.created.setText(location.getCreated());
             residents = location.getResidents();
-            viewModel.getCharacters(residents);
+          //  viewModel.getCharacters(residents);
 
-
-            Objects.requireNonNull(viewModel.getData()).observe(getViewLifecycleOwner(), adapter::submitList);
+       viewModelJava.getCharacters(residents);
+       //     Objects.requireNonNull(viewModel.getData()).observe(getViewLifecycleOwner(), adapter::submitList);
+            viewModelJava.charactersLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
 
         });
 

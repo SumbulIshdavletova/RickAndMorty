@@ -40,7 +40,6 @@ class EpisodesListFragment : Fragment() {
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         EpisodeAdapter(object : OnInteractionListenerCharacter {
             override fun onClick(episode: Episode) {
-                //    viewModel.getById(episode.id)
                 val bundle2 = Bundle()
                 bundle2.putSerializable("requestKey", episode)
                 parentFragmentManager.setFragmentResult("requestKey", bundle2)
@@ -107,7 +106,6 @@ class EpisodesListFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val name = binding.textInputEdit.text.toString()
                 viewModel.filterEpisodes(name, null)
-                //   adapter.notifyDataSetChanged()
                 adapter.refresh()
             }
             return@setOnEditorActionListener false

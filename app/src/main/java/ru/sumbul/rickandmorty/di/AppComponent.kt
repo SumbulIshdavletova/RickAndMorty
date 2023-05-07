@@ -18,6 +18,7 @@ import ru.sumbul.rickandmorty.episodes.ui.list.EpisodesListFragment
 import ru.sumbul.rickandmorty.locations.di.DbLocationModule
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsFragment
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsViewModel
+import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsViewModelJava
 import ru.sumbul.rickandmorty.locations.ui.list.LocationFilterFragment
 import ru.sumbul.rickandmorty.locations.ui.list.LocationViewModel
 import ru.sumbul.rickandmorty.locations.ui.list.LocationsListFragment
@@ -54,6 +55,7 @@ interface AppComponent {
     fun inject(locationsViewModel: LocationViewModel)
     @OptIn(ExperimentalCoroutinesApi::class)
     fun inject(locationDetailViewModel: LocationDetailsViewModel)
+    fun inject(locationDetailsViewModelJava: LocationDetailsViewModelJava)
     fun inject(locationFilterFragment: LocationFilterFragment)
 
 }
