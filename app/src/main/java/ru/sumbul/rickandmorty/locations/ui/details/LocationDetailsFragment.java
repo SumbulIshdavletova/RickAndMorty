@@ -32,7 +32,6 @@ import ru.sumbul.rickandmorty.characters.ui.list.CharacterViewModel;
 import ru.sumbul.rickandmorty.databinding.FragmentLocationDetailsBinding;
 import ru.sumbul.rickandmorty.episodes.ui.details.CharactersInDetailsAdapter;
 import ru.sumbul.rickandmorty.episodes.ui.details.OnInteractionListenerCharacter;
-import ru.sumbul.rickandmorty.factory.LocationDetailsViewModelFactory;
 import ru.sumbul.rickandmorty.factory.LocationDetailsViewModelJavaFactory;
 import ru.sumbul.rickandmorty.locations.domain.model.Location;
 
@@ -45,10 +44,6 @@ public class LocationDetailsFragment extends Fragment {
 
     CharacterDetailsFragment characterDetailsFragment = new CharacterDetailsFragment();
     LocationDetailsViewModelJava viewModelJava;
-    LocationDetailsViewModel viewModel;
-
-    @Inject
-    LocationDetailsViewModelFactory factory;
 
     @Inject
     LocationDetailsViewModelJavaFactory factoryJava;
@@ -73,7 +68,6 @@ public class LocationDetailsFragment extends Fragment {
         View view = binding.getRoot();
         RecyclerView recyclerView = binding.list;
 
-        viewModel = new ViewModelProvider(this, factory).get(LocationDetailsViewModel.class);
         viewModelJava = new ViewModelProvider(this, factoryJava).get(LocationDetailsViewModelJava.class);
 
         CharactersInDetailsAdapter adapter = new CharactersInDetailsAdapter((OnInteractionListenerCharacter) (new OnInteractionListenerCharacter() {
@@ -102,10 +96,8 @@ public class LocationDetailsFragment extends Fragment {
             binding.dimension.setText(location.getDimension());
             binding.created.setText(location.getCreated());
             residents = location.getResidents();
-          //  viewModel.getCharacters(residents);
 
-       viewModelJava.getCharacters(residents);
-       //     Objects.requireNonNull(viewModel.getData()).observe(getViewLifecycleOwner(), adapter::submitList);
+            viewModelJava.getCharacters(residents);
             viewModelJava.charactersLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
 
         });
@@ -113,16 +105,17 @@ public class LocationDetailsFragment extends Fragment {
         getParentFragmentManager().setFragmentResultListener("originUrl", this, (requestKey, bundle) -> {
 
             String result = bundle.getString("originUrl");
-            viewModel.getLocationById(result);
-            viewModel.getLoc().observe(getViewLifecycleOwner(), origin -> {
+            viewModelJava.getLocationById(result);
+            viewModelJava.locationLiveDataTransformed().observe(getViewLifecycleOwner(), origin -> {
                 binding.id.setText(String.valueOf(origin.getId()));
                 binding.name.setText(origin.getName());
                 binding.type.setText(origin.getType());
                 binding.dimension.setText(origin.getDimension());
                 binding.created.setText(origin.getCreated());
                 residents = origin.getResidents();
-                viewModel.getCharacters(residents);
-                Objects.requireNonNull(viewModel.getData()).observe(getViewLifecycleOwner(), adapter::submitList);
+
+                viewModelJava.getCharacters(residents);
+                viewModelJava.charactersLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
             });
         });
 

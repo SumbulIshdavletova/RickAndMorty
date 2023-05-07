@@ -2,6 +2,9 @@ package ru.sumbul.rickandmorty.characters.data
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.sumbul.rickandmorty.characters.data.entity.FilterEntity
@@ -69,71 +72,30 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
 
-    private var data1: MutableLiveData<List<Episode>?>? =
-        MutableLiveData<List<Episode>?>()
-
-    override fun getData1(): MutableLiveData<List<Episode>?>? {
-        return data1
-    }
-
-    override suspend fun getEpisodes(ids: String) {
-//        ids.removeAll(ids)
-//        for (url in urls) {
-//            var result: String = url.substringAfterLast("/", "0")
-//
-//            ids.add(result.toInt())
-//
-//        }
-        try {
-            val response = api.getEpisodes(ids.toString())
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            data1?.value = null
-            val body =
-                response.body() ?: throw ApiError(response.code(), response.message())
-            episodeDao.upsertAll(episodeMapper.mapToEntity(body))
-            data1?.value = body
-
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw NetworkError
-        }
+    override fun getEpisodes(ids: String): Observable<List<Episode>> {
+        return api.getEpisodes(ids)
+            .map { response ->
+                return@map response
+            }.subscribeOn(Schedulers.io())
     }
 
 
-    override suspend fun getEpisodeById(id: Int): Episode {
-        var episode: Episode
-        try {
-            val response = episodeApi.getEpisodeById(id)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            episodeDao.upsert(body)
-            episode = episodeMapper.mapToDb(body)
-        } catch (e: Exception) {
-            episode = episodeMapper.mapToDb(episodeDao.getEpisodeById(id))
-        }
-        return episode
+    override fun getEpisodeById(id: Int): Single<Episode> {
+        return api.getEpisodeById(id)
+            .map { response ->
+                return@map response
+            }.subscribeOn(Schedulers.io())
     }
 
 
-    override suspend fun getLocationById(url: String): Location {
-        var location: Location
+    override fun getLocationById(url: String): Single<Location> {
         var result: String = url.substringAfterLast("/", "0")
         val id = result.toInt()
-        try {
-            val response = api.getLocationById(id)
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            locationDao.upsert(body)
-            location = locationMapper.mapFromEntity(body)
-        } catch (e: Exception) {
-            location = locationMapper.mapFromEntity(locationDao.getLocationById(id))
-        }
-        return location
-    }
 
+        return api.getLocationById(id)
+            .map { response ->
+                return@map response
+            }.subscribeOn(Schedulers.io())
+    }
 
 }

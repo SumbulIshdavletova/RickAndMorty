@@ -21,9 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
 import ru.sumbul.rickandmorty.R;
@@ -34,8 +32,7 @@ import ru.sumbul.rickandmorty.characters.domain.model.Origin;
 import ru.sumbul.rickandmorty.databinding.FragmentCharacterDetailsBinding;
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsFragment;
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode;
-import ru.sumbul.rickandmorty.factory.CharactersDetailsViewModelFactory;
-import ru.sumbul.rickandmorty.factory.CharactersViewModelFactory;
+import ru.sumbul.rickandmorty.factory.CharacterDetailsViewModelJavaFactory;
 import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsFragment;
 
 
@@ -45,29 +42,19 @@ public class CharacterDetailsFragment extends Fragment {
     Character character = new Character(0, "", "", "", "", "",
             new Origin("", ""), new Location("", ""), "", new ArrayList<>(), "", "");
 
-
     List<String> episodes = new ArrayList<>();
     Origin origin = new Origin("", "");
     Location location = new Location("", "");
-    ru.sumbul.rickandmorty.locations.domain.model.Location locationTOfOrigin = new ru.sumbul.rickandmorty.locations.domain.model.Location(
-            0,
-            "",
-            "",
-            "",
-            new ArrayList<>(),
-            "",
-            ""
-    );
+
     public FragmentCharacterDetailsBinding binding;
 
     public CharacterDetailsFragment() {
         super(R.layout.fragment_character_details);
     }
 
-    CharacterDetailViewModel characterDetailViewModel;
-
+    CharacterDetailsViewModelJava viewModelJava;
     @Inject
-    CharactersDetailsViewModelFactory factory;
+    CharacterDetailsViewModelJavaFactory factoryJava;
 
     public void onAttach(@NotNull Context context) {
         Intrinsics.checkNotNullParameter(context, "context");
@@ -86,14 +73,15 @@ public class CharacterDetailsFragment extends Fragment {
         binding = FragmentCharacterDetailsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        characterDetailViewModel = new ViewModelProvider(this, factory).get(CharacterDetailViewModel.class);
-        //     CharacterDetailViewModel characterDetailViewModel = new ViewModelProvider(requireActivity()).get(CharacterDetailViewModel.class);
+
+        viewModelJava = new ViewModelProvider(this, factoryJava).get(CharacterDetailsViewModelJava.class);
+
 
         RecyclerView recyclerView = binding.list;
         EpisodesInDetailsAdapter adapter = new EpisodesInDetailsAdapter((OnInteractionListenerFromCharacterToEpisode) (new OnInteractionListenerFromCharacterToEpisode() {
             public void onClick(@NotNull Episode episode) {
                 Intrinsics.checkNotNullParameter(episode, "character");
-                characterDetailViewModel.getEpisodeById(episode.getId());
+              //  viewModelJava.getEpisodeById(episode.getId()); неправильно передается парамент с айди
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("requestKey3", (Serializable) episode);
                 getParentFragmentManager().setFragmentResult("requestKey3", bundle2);
@@ -135,13 +123,12 @@ public class CharacterDetailsFragment extends Fragment {
                     .load(url)
                     .into(binding.avatar);
             episodes = character.getEpisode();
-            characterDetailViewModel.getEpisodes(episodes);
+            viewModelJava.getEpisodes(episodes);
 
             String originUrl = origin.getUrl();
             //    locationTOfOrigin = characterDetailViewModel.getLocationById(originUrl);
 
-
-            characterDetailViewModel.getEpisodes().observe(getViewLifecycleOwner(), adapter::submitList);
+            viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
 
         });
 
@@ -172,9 +159,9 @@ public class CharacterDetailsFragment extends Fragment {
             origin = character.getOrigin();
             location = character.getLocation();
             episodes = character.getEpisode();
-            characterDetailViewModel.getEpisodes(episodes);
+            viewModelJava.getEpisodes(episodes);
 
-            characterDetailViewModel.getEpisodes().observe(getViewLifecycleOwner(), adapter::submitList);
+            viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
 
         });
 
@@ -182,7 +169,7 @@ public class CharacterDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO MIGHT BE NOT EVEN NECESSARY
-                characterDetailViewModel.getLocationById(origin.getUrl());
+                viewModelJava.getLocationById(origin.getUrl());
                 String str = origin.getUrl();
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("originUrl", str);
@@ -199,7 +186,7 @@ public class CharacterDetailsFragment extends Fragment {
         binding.locationName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                characterDetailViewModel.getLocationById(location.getUrl());
+                viewModelJava.getLocationById(location.getUrl());
                 //TODO MIGHT BE NOT EVEN NECESSARY
                 String str = location.getUrl();
                 Bundle bundle2 = new Bundle();

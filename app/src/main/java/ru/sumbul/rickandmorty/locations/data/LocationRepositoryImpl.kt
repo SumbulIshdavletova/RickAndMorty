@@ -6,6 +6,8 @@ import androidx.lifecycle.map
 import androidx.paging.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
@@ -61,57 +63,18 @@ class LocationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getById(id: Int): Location {
-        var location: Location
-        try {
-            val response = api.getLocationById(id)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            dao.upsert(body)
-            location = mapper.mapFromEntity(body)
-        } catch (e: IOException) {
-            throw NetworkError
-        }
-        return location
+    override fun getById(id: Int): Single<Location> {
+        return api.getLocationById(id)
+            .map { response ->
+                return@map response
+            }.subscribeOn(Schedulers.io())
     }
-
-    private var data: MutableLiveData<List<Character>?>? =
-        MutableLiveData<List<Character>?>()
-
-    override fun getData(): MutableLiveData<List<Character>?>? {
-        return data
-    }
-
- //   private var data1: Observable<List<Character>>
-
-//    override fun getData1(): Observable<List<Character>> {
-//        return data1
-//    }
-
 
     override fun getCharacters(ids: String) : Observable<List<Character>> {
-
         return api.getCharacters(ids)
             .map { response ->
                 return@map response
             }.subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
-//        try {
-//
-//            val response = api.getCharacters(ids)
-////            if (!response.isSuccessful) {
-////                throw ApiError(response.code(), response.message())
-////            }
-//            data?.value = null
-//
-//            //data?.value = response.
-//
-//            return response
-//
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        }
     }
 
 
