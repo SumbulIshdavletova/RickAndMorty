@@ -21,7 +21,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
 import ru.sumbul.rickandmorty.R;
@@ -29,6 +31,8 @@ import ru.sumbul.rickandmorty.application.AppKt;
 import ru.sumbul.rickandmorty.characters.domain.model.Character;
 import ru.sumbul.rickandmorty.characters.domain.model.Location;
 import ru.sumbul.rickandmorty.characters.domain.model.Origin;
+import ru.sumbul.rickandmorty.characters.ui.details.adapter.EpisodeInDetailsJavaAdapter;
+import ru.sumbul.rickandmorty.characters.ui.details.adapter.OnInteractionListenerFromCharacterToEpisodeJava;
 import ru.sumbul.rickandmorty.databinding.FragmentCharacterDetailsBinding;
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsFragment;
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode;
@@ -78,10 +82,29 @@ public class CharacterDetailsFragment extends Fragment {
 
 
         RecyclerView recyclerView = binding.list;
-        EpisodesInDetailsAdapter adapter = new EpisodesInDetailsAdapter((OnInteractionListenerFromCharacterToEpisode) (new OnInteractionListenerFromCharacterToEpisode() {
+//        EpisodesInDetailsAdapter adapter = new EpisodesInDetailsAdapter((OnInteractionListenerFromCharacterToEpisode) (new OnInteractionListenerFromCharacterToEpisode() {
+//            public void onClick(@NotNull Episode episode) {
+//                Intrinsics.checkNotNullParameter(episode, "character");
+//                //  viewModelJava.getEpisodeById(episode.getId()); неправильно передается парамент с айди
+//                Bundle bundle2 = new Bundle();
+//                bundle2.putSerializable("requestKey3", (Serializable) episode);
+//                getParentFragmentManager().setFragmentResult("requestKey3", bundle2);
+//                Fragment EpisodeDetailsFragment = new EpisodeDetailsFragment();
+//                getParentFragmentManager().beginTransaction()
+//                        .setReorderingAllowed(true)
+//                        .replace(R.id.frame_layout, EpisodeDetailsFragment)
+//                        .addToBackStack("details")
+//                        .commit();
+//            }
+//        }
+//
+//        ));
+
+
+        EpisodeInDetailsJavaAdapter javaAdapter = new EpisodeInDetailsJavaAdapter((OnInteractionListenerFromCharacterToEpisodeJava) (new OnInteractionListenerFromCharacterToEpisodeJava() {
             public void onClick(@NotNull Episode episode) {
                 Intrinsics.checkNotNullParameter(episode, "character");
-              //  viewModelJava.getEpisodeById(episode.getId()); неправильно передается парамент с айди
+                //  viewModelJava.getEpisodeById(episode.getId()); неправильно передается парамент с айди
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("requestKey3", (Serializable) episode);
                 getParentFragmentManager().setFragmentResult("requestKey3", bundle2);
@@ -93,9 +116,9 @@ public class CharacterDetailsFragment extends Fragment {
                         .commit();
             }
         }
-
         ));
-        recyclerView.setAdapter(adapter);
+
+        recyclerView.setAdapter(javaAdapter);
 
         getParentFragmentManager().setFragmentResultListener("requestKey", this, (requestKey, bundle) -> {
             character = (Character) bundle.getSerializable("requestKey");
@@ -128,7 +151,7 @@ public class CharacterDetailsFragment extends Fragment {
             String originUrl = origin.getUrl();
             //    locationTOfOrigin = characterDetailViewModel.getLocationById(originUrl);
 
-            viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
+            viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), javaAdapter::submitList);
 
         });
 
@@ -161,7 +184,7 @@ public class CharacterDetailsFragment extends Fragment {
             episodes = character.getEpisode();
             viewModelJava.getEpisodes(episodes);
 
-            viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
+            viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), javaAdapter::submitList);
 
         });
 
