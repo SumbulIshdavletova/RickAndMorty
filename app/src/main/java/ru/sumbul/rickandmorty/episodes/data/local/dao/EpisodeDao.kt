@@ -5,6 +5,7 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import ru.sumbul.rickandmorty.characters.data.entity.CharacterEntity
 import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
 
 @Dao
@@ -28,5 +29,12 @@ interface EpisodeDao {
 
     @Query("SELECT * FROM EpisodeEntity WHERE id = :id")
     fun getEpisodeById(id: Int): EpisodeEntity
+
+    @Query("SELECT * FROM EpisodeEntity WHERE (:name IS NULL OR name LIKE '%' || :name || '%') " +
+            "AND (:episode IS NULL OR episode LIKE '%' || :episode || '%')")
+    fun getFilteredEpisodes(name: String?, episode: String?): List<EpisodeEntity>
+
+    @Query("SELECT * FROM EpisodeEntity WHERE id IN (:ids)")
+    fun getEpisodesByIds(ids: List<Int?>?): List<EpisodeEntity>
 
 }

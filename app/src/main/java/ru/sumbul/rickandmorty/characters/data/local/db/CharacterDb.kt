@@ -8,10 +8,12 @@ import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.FilterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.RemoteKeyDao
 import ru.sumbul.rickandmorty.characters.data.entity.RemoteKeyEntity
+import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
+import ru.sumbul.rickandmorty.locations.data.entity.LocationEntity
 
 @Database(
-    entities = [CharacterEntity::class, FilterEntity::class, RemoteKeyEntity::class],
-    version = 1
+    entities = [CharacterEntity::class, FilterEntity::class, RemoteKeyEntity::class, LocationEntity::class, EpisodeEntity::class],
+    version = 3
 )
 
 abstract class CharacterDb : RoomDatabase() {

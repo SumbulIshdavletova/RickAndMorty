@@ -24,7 +24,7 @@ class DbLocationModule {
     @Provides
     fun provideDb(
         context: Context
-    ): LocationDb = Room.databaseBuilder(context, LocationDb::class.java, "app.db")
+    ): LocationDb = Room.databaseBuilder(context, LocationDb::class.java, "location.db")
         .fallbackToDestructiveMigration()
         .build()
 

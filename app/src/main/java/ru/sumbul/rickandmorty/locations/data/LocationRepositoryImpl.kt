@@ -10,8 +10,12 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import ru.sumbul.rickandmorty.characters.data.entity.CharacterEntity
+import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.model.Character
+import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
+import ru.sumbul.rickandmorty.episodes.domain.model.Episode
 import ru.sumbul.rickandmorty.error.ApiError
 import ru.sumbul.rickandmorty.error.NetworkError
 import ru.sumbul.rickandmorty.locations.data.entity.LocationFilterEntity
@@ -36,6 +40,7 @@ class LocationRepositoryImpl @Inject constructor(
     private val dao: LocationDao,
     private val db: LocationDb,
     private val mapper: LocationMapper,
+    private val characterDao: CharacterDao,
     private val characterMapper: CharacterMapper,
     private val remoteKeyDao: LocationRemoteKeyDao,
     private val filterDao: LocationFilterDao
@@ -63,18 +68,27 @@ class LocationRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getById(id: Int): Single<Location> {
+    override fun getLocationById(id: Int): Single<Location> {
         return api.getLocationById(id)
             .map { response ->
                 return@map response
             }.subscribeOn(Schedulers.io())
+            .onErrorReturn {
+                val result: Location = mapper.mapFromEntity(dao.getLocationById(id))
+                return@onErrorReturn result
+            }
     }
 
-    override fun getCharacters(ids: String) : Observable<List<Character>> {
-        return api.getCharacters(ids)
+    override fun getCharacters(ids: List<Int>) : Observable<List<Character>> {
+        return api.getCharacters(ids.toString())
             .map { response ->
                 return@map response
             }.subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+            .onErrorReturn {
+                val list1 :  List<CharacterEntity> = characterDao.getCharactersByIdsRx(ids)
+                val list :  List<ru.sumbul.rickandmorty.characters.domain.model.Character> = characterMapper.mapCharactersFromDb(list1)
+                return@onErrorReturn list
+            }
     }
 
 

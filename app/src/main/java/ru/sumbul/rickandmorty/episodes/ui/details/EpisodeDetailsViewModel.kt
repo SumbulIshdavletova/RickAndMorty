@@ -35,7 +35,7 @@ class EpisodeDetailsViewModel @Inject constructor(
                 var result: String = url.substringAfterLast("/", "0")
                 ids.add(result.toInt())
             }
-            repository.getCharactersForEpisode(ids.toString())
+            repository.getCharactersForEpisode(ids)
         }
     }
 

@@ -17,6 +17,7 @@ import ru.sumbul.rickandmorty.characters.data.local.db.CharacterDb
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.CharacterRepository
 import ru.sumbul.rickandmorty.characters.domain.model.Character
+import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.data.local.dao.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.data.mapper.EpisodeMapper
@@ -72,30 +73,38 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
 
-    override fun getEpisodes(ids: String): Observable<List<Episode>> {
-        return api.getEpisodes(ids)
+    override fun getEpisodes(ids: List<Int> ): Observable<List<Episode>> {
+        return api.getEpisodes(ids.toString())
             .map { response ->
                 return@map response
             }.subscribeOn(Schedulers.io())
+            .onErrorReturn {
+                val list1 :  List<EpisodeEntity> = episodeDao.getEpisodesByIds(ids)
+              val list :  List<Episode> = episodeMapper.mapFromEntity(list1)
+               return@onErrorReturn list
+            }
     }
 
+    override fun getLocationById(id: Int): Single<Location> {
+        return api.getLocationById(id)
+            .map { response ->
+                return@map response
+            }.subscribeOn(Schedulers.io())
+            .onErrorReturn {
+                val result: Location = locationMapper.mapFromEntity(locationDao.getLocationById(id))
+                return@onErrorReturn result
+            }
+    }
 
     override fun getEpisodeById(id: Int): Single<Episode> {
         return api.getEpisodeById(id)
             .map { response ->
                 return@map response
             }.subscribeOn(Schedulers.io())
+            .doOnError {
+                episodeDao.getEpisodeById(id)
+            }
     }
 
-
-    override fun getLocationById(url: String): Single<Location> {
-        var result: String = url.substringAfterLast("/", "0")
-        val id = result.toInt()
-
-        return api.getLocationById(id)
-            .map { response ->
-                return@map response
-            }.subscribeOn(Schedulers.io())
-    }
 
 }

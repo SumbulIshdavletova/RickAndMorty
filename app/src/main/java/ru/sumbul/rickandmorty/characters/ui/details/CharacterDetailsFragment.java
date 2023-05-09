@@ -191,8 +191,6 @@ public class CharacterDetailsFragment extends Fragment {
         binding.originName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO MIGHT BE NOT EVEN NECESSARY
-                viewModelJava.getLocationById(origin.getUrl());
                 String str = origin.getUrl();
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("originUrl", str);
@@ -209,8 +207,6 @@ public class CharacterDetailsFragment extends Fragment {
         binding.locationName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModelJava.getLocationById(location.getUrl());
-                //TODO MIGHT BE NOT EVEN NECESSARY
                 String str = location.getUrl();
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("originUrl", str);

@@ -13,7 +13,7 @@ interface EpisodeRepository {
     val episodePagingFlow: Flow<PagingData<Episode>>
     suspend fun getById(id: Int): Episode
    // val charactersData: LiveData<List<ru.sumbul.rickandmorty.characters.domain.model.Character>>
-    suspend fun getCharactersForEpisode(ids: String)
+    suspend fun getCharactersForEpisode(ids: List<Int>)
     fun getData(): MutableLiveData<List<Character>?>?
 
     suspend fun filterEpisodes(name: String?, episode: String?)

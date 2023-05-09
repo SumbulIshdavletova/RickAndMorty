@@ -18,7 +18,7 @@ interface CharacterRepository {
         type: String?, gender: String?
     )
 
-    fun getEpisodes(ids: String): Observable<List<Episode>>
-    fun getLocationById(url: String): Single<Location>
+    fun getEpisodes(ids: List<Int> ): Observable<List<Episode>>
+    fun getLocationById(id: Int): Single<Location>
     fun getEpisodeById(id: Int): Single<Episode>
 }

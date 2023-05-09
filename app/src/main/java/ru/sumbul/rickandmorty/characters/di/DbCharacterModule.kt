@@ -24,7 +24,7 @@ class DbCharacterModule {
     @Provides
     fun provideCharacterDb(
         context: Context
-    ): CharacterDb = Room.databaseBuilder(context, CharacterDb::class.java, "app.db")
+    ): CharacterDb = Room.databaseBuilder(context, CharacterDb::class.java, "character.db")
         .fallbackToDestructiveMigration()
         .build()
 

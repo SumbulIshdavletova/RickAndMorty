@@ -16,6 +16,7 @@ import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.text.StringsKt;
+import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao;
 import ru.sumbul.rickandmorty.characters.domain.CharacterRepository;
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode;
 import ru.sumbul.rickandmorty.locations.domain.model.Location;
@@ -42,7 +43,7 @@ public class CharacterDetailsViewModelJava extends ViewModel {
         }
         String idsString = String.valueOf(ids);
 
-        repository.getEpisodes(idsString)
+        repository.getEpisodes(ids)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<List<Episode>>() {
@@ -54,6 +55,7 @@ public class CharacterDetailsViewModelJava extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                     //   dao.getEpisodesByIds(ids);
                     }
 
                     @Override
@@ -69,7 +71,9 @@ public class CharacterDetailsViewModelJava extends ViewModel {
     }
 
     public void getLocationById(@NotNull String url) {
-        repository.getLocationById(url)
+        String result  = StringsKt.substringAfterLast(url,"/", "0");
+        int id = Integer.parseInt(result);
+        repository.getLocationById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<Location>() {
@@ -80,7 +84,6 @@ public class CharacterDetailsViewModelJava extends ViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        // Handle the error
                     }
 
                 });
@@ -107,7 +110,7 @@ public class CharacterDetailsViewModelJava extends ViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        // Handle the error
+
                     }
 
                 });

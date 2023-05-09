@@ -23,7 +23,6 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 class FilteredRemoteMediator @Inject constructor(
-    // private val query: String,
     private val characterDb: CharacterDb,
     private val characterApi: CharacterApi,
     private val filterDao: FilterDao,
@@ -61,12 +60,10 @@ class FilteredRemoteMediator @Inject constructor(
 
 
             if (!result.isSuccessful) {
-
                 MediatorResult.Success(
                     endOfPaginationReached = true
                 )
 
-//                throw ApiError(result.code(), result.message())
             }
             val body = result.body()
             if (body == null) {
@@ -74,10 +71,7 @@ class FilteredRemoteMediator @Inject constructor(
                     endOfPaginationReached = true
                 )
             }
-//                ?: throw ApiError(
-//                result.code(),
-//                result.message(),
-//            )
+
             if (body != null) {
                 if (body.results.isEmpty()) {
                     emptyList<ru.sumbul.rickandmorty.characters.domain.model.Character>()
@@ -101,30 +95,19 @@ class FilteredRemoteMediator @Inject constructor(
             val responseData = mutableListOf<Character>()
             responseData.addAll(characters)
 
-//            if (characters.isEmpty()) {
-//                return MediatorResult.Success(
-//                    endOfPaginationReached = true)
-//            }
-//не нужно удалять фильтры потому что тогда оно начинает искать рандомные запросы
-          //  characterDb.filterDao().clear()
             characterDb.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    characterDb.remoteKeyDao().clear()
                     characterDb.filterDao().clear()
-                    characterDb.characterDao().clearAll()
-                    //    characterApi.getCharacters(1, "", "", "", "", "")
+                    if (name != "" || status != "" || species != "" || type != "" || gender != "") {
+                        characterDb.characterDao().clearAll()
+                    }
+                    characterDb.remoteKeyDao().clear()
+
+
                 }
 
-                //  if (nextPage != null) {
-                characterDb.remoteKeyDao()
-                    .insert(RemoteKeyEntity("query", nextPageNumber))
-                //  }
-
-       //         characterDb.filterDao().clear()
-
-        characterDb.filterDao().upsert(FilterEntity(1, name, status, species, type, gender))
-
-
+                characterDb.remoteKeyDao().insert(RemoteKeyEntity("query", nextPageNumber))
+                characterDb.filterDao().upsert(FilterEntity(1, name, status, species, type, gender))
                 characterDb.characterDao().upsertAll(mapper.mapToEntity(responseData))
 
             }

@@ -42,7 +42,7 @@ public final class LocationDetailsViewModelJava extends ViewModel {
         }
         String check = String.valueOf(ids);
 
-        repository.getCharacters(check)
+        repository.getCharacters(ids)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<List<Character>>() {
@@ -75,7 +75,7 @@ public final class LocationDetailsViewModelJava extends ViewModel {
     public void getLocationById(@NotNull String url) {
         String result = StringsKt.substringAfterLast(url, "/", "0");
         int id = Integer.parseInt(result);
-        repository.getById(id)
+        repository.getLocationById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<ru.sumbul.rickandmorty.locations.domain.model.Location>() {

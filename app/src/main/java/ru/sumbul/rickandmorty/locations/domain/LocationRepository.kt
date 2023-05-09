@@ -15,6 +15,6 @@ interface LocationRepository {
     val locationPagingFlow: Flow<PagingData<Location>>
     suspend fun filterLocation(name: String?, type: String?, dimension: String?)
 
-    fun getById(id: Int): Single<Location>
-    fun getCharacters(ids: String) : Observable<List<Character>>
+    fun getLocationById(id: Int): Single<Location>
+    fun getCharacters(ids: List<Int>) : Observable<List<Character>>
 }

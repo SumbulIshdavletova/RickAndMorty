@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import okhttp3.Response
+import ru.sumbul.rickandmorty.characters.data.entity.CharacterEntity
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
 import ru.sumbul.rickandmorty.characters.domain.model.Character
@@ -84,23 +86,32 @@ class EpisodeRepositoryImpl @Inject constructor(
         return data
     }
 
-    override suspend fun getCharactersForEpisode(ids: String) {
+    override suspend fun getCharactersForEpisode(ids: List<Int>) {
+        var result : List<ru.sumbul.rickandmorty.characters.domain.model.Character>?
         try {
-            val response = api.getCharacters(ids)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+            result = api.getCharacters(ids.toString()).body()
+
+//            try {
+//                val list1 :  List<CharacterEntity> = characterDao.getCharactersByIds(listOf(1,2))
+//                val list :  List<ru.sumbul.rickandmorty.characters.domain.model.Character> = characterMapper.mapCharactersFromDb(list1)
+//                data?.value =  list
+//                var response = api.getCharacters(ids.toString())
+//                if (!response.isSuccessful) {
+//                    val list1 :  List<CharacterEntity> = characterDao.getCharactersByIds(listOf(1,2))
+//                    val list :  List<ru.sumbul.rickandmorty.characters.domain.model.Character> = characterMapper.mapCharactersFromDb(list1)
+//                    data?.value =  list
+//                    //throw ApiError(response.code(), response.message())
+//                }
+//                data?.value = null
+//                val body =
+//                    response.body() ?: throw ApiError(response.code(), response.message())
+//                characterDao.upsertAll(characterMapper.mapToEntity(body))
+//                data?.value = body
+            data?.value = result
+            } catch (e:Exception){
+                result = characterMapper.mapCharactersFromDb(characterDao.getCharactersByIds(ids))
+            data?.value = result
             }
-            data?.value = null
-            val body =
-                response.body() ?: throw ApiError(response.code(), response.message())
-            characterDao.upsertAll(characterMapper.mapToEntity(body))
-            data?.value = body
-        } catch (e: IOException) {
-            throw NetworkError
-            //сделать вызов из БД по id список персонажей
-        } catch (e: Exception) {
-            throw NetworkError
-        }
     }
 
 
