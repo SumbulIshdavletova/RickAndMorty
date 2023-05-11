@@ -108,8 +108,6 @@ public class LocationDetailsFragment extends Fragment {
 
             viewModelJava.location = location;
 
-
-
         });
 
         if(adapter.getItemCount()==0){
