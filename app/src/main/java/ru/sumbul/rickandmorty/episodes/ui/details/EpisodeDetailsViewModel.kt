@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.episodes.data.EpisodeRepositoryImpl
 import ru.sumbul.rickandmorty.episodes.domain.EpisodeRepository
+import ru.sumbul.rickandmorty.episodes.domain.model.Episode
 import ru.sumbul.rickandmorty.model.ListModelState
 import javax.inject.Inject
 
@@ -20,6 +21,8 @@ class EpisodeDetailsViewModel @Inject constructor(
     fun getCharacters(): MutableLiveData<List<Character>?>? {
         return characters
     }
+
+    var episode: Episode? = null
 
     var ids: MutableList<Int> = mutableListOf()
 

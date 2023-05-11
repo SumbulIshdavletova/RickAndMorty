@@ -6,6 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".locations.ui.details.LocationDetailsFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary"
+        app:layout_constraintBottom_toTopOf="@id/headerTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/headerTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/min_margin"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="topBar" />
+
     <TextView
         android:id="@+id/id"
         android:layout_width="wrap_content"
@@ -13,7 +32,7 @@
         android:layout_margin="@dimen/common_margin"
         android:text="@string/id"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/headerTop" />
 
     <TextView
         android:id="@+id/name"
@@ -22,7 +41,7 @@
         android:layout_margin="@dimen/common_margin"
         android:text="@string/name"
         app:layout_constraintStart_toEndOf="@id/id"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/headerTop"  />
 
     <TextView
         android:id="@+id/type_text"
@@ -96,6 +115,17 @@
         android:layout_margin="@dimen/common_margin"
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="residents" />
+
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_residents"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/residents" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"

@@ -16,25 +16,3 @@ data class FilterEntity(
     var type: String? = null,
     var gender: String? = null,
 )
-//{
-//    fun toDto() = Filter(
-//        id,
-//        name,
-//        status, species, type,
-//        gender,
-//    )
-//
-//    companion object {
-//        fun fromDto(dto: Filter) =
-//            FilterEntity(
-//                dto.id, dto.name,
-//                dto.status, dto.species, dto.type,
-//                dto.gender
-//            )
-//    }
-//}
-//
-//
-//fun List<FilterEntity>.toDto(): List<Filter> = map(FilterEntity::toDto)
-//fun List<Filter>.toEntity(): List<FilterEntity?> =
-//    map(FilterEntity.Companion::fromDto)

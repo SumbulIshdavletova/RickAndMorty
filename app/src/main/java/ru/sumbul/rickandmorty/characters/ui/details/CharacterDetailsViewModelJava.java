@@ -18,6 +18,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.text.StringsKt;
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao;
 import ru.sumbul.rickandmorty.characters.domain.CharacterRepository;
+import ru.sumbul.rickandmorty.characters.domain.model.Character;
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode;
 import ru.sumbul.rickandmorty.locations.domain.model.Location;
 
@@ -32,6 +33,8 @@ public class CharacterDetailsViewModelJava extends ViewModel {
     private MutableLiveData<List<Episode>> episodesLiveData = new MutableLiveData<List<Episode>>();
     LiveData<List<Episode>> episodesLiveDataTransformed =
             Transformations.map(episodesLiveData, episodes -> episodes);
+
+    Character character = null;
 
     public void getEpisodes(List<String> urls) {
 

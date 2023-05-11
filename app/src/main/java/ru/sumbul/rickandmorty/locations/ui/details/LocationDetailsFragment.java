@@ -5,11 +5,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,11 +33,13 @@ import ru.sumbul.rickandmorty.application.AppKt;
 import ru.sumbul.rickandmorty.characters.domain.model.Character;
 import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment;
 import ru.sumbul.rickandmorty.characters.ui.list.CharacterViewModel;
+import ru.sumbul.rickandmorty.characters.ui.list.CharactersListFragment;
 import ru.sumbul.rickandmorty.databinding.FragmentLocationDetailsBinding;
 import ru.sumbul.rickandmorty.episodes.ui.details.CharactersInDetailsAdapter;
 import ru.sumbul.rickandmorty.episodes.ui.details.OnInteractionListenerCharacter;
 import ru.sumbul.rickandmorty.factory.LocationDetailsViewModelJavaFactory;
 import ru.sumbul.rickandmorty.locations.domain.model.Location;
+import ru.sumbul.rickandmorty.locations.ui.list.LocationsListFragment;
 
 
 @ExperimentalCoroutinesApi
@@ -100,12 +106,20 @@ public class LocationDetailsFragment extends Fragment {
             viewModelJava.getCharacters(residents);
             viewModelJava.charactersLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
 
+            viewModelJava.location = location;
+
+
+
         });
+
+        if(adapter.getItemCount()==0){
+            binding.emptyText.setVisibility(View.VISIBLE);
+        }
 
         getParentFragmentManager().setFragmentResultListener("originUrl", this, (requestKey, bundle) -> {
 
             String result = bundle.getString("originUrl");
-            viewModelJava.getLocationById(result);
+          viewModelJava.getLocationById(result);
             viewModelJava.locationLiveDataTransformed().observe(getViewLifecycleOwner(), origin -> {
                 binding.id.setText(String.valueOf(origin.getId()));
                 binding.name.setText(origin.getName());
@@ -116,9 +130,52 @@ public class LocationDetailsFragment extends Fragment {
 
                 viewModelJava.getCharacters(residents);
                 viewModelJava.charactersLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
+
+                viewModelJava.location = viewModelJava.locationLiveDataTransformed().getValue();
             });
         });
 
+        if (viewModelJava.location!=null){
+            Location location = viewModelJava.location;
+            binding.id.setText(String.valueOf(location.getId()));
+            binding.name.setText(location.getName());
+            binding.type.setText(location.getType());
+            binding.dimension.setText(location.getDimension());
+            binding.created.setText(location.getCreated());
+            residents = location.getResidents();
+
+            viewModelJava.getCharacters(residents);
+            viewModelJava.charactersLiveDataTransformed.observe(getViewLifecycleOwner(), adapter::submitList);
+        }
+
+        MenuProvider menuProvider = null;
+        if (menuProvider != null) {
+            requireActivity().removeMenuProvider(menuProvider);
+        }
+
+        MenuProvider newMenuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(Menu menu, MenuInflater inflater) {
+                inflater.inflate(R.menu.menu_back, menu);
+            }
+            @Override
+            public boolean onMenuItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.back_to_list:
+                        LocationsListFragment locationsListFragment = new LocationsListFragment();
+                        getParentFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .replace(R.id.frame_layout, locationsListFragment)
+                                .addToBackStack("list")
+                                .commit();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        };
+        requireActivity().addMenuProvider(newMenuProvider, getViewLifecycleOwner());
+        binding.topBar.addMenuProvider(newMenuProvider);
 
         return view;
     }

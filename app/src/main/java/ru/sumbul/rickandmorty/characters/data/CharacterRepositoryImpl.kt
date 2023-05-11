@@ -12,10 +12,13 @@ import ru.sumbul.rickandmorty.characters.domain.FilteredRemoteMediator
 import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.FilterDao
+import ru.sumbul.rickandmorty.characters.data.local.dao.FilteredCharactersDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.RemoteKeyDao
 import ru.sumbul.rickandmorty.characters.data.local.db.CharacterDb
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
+import ru.sumbul.rickandmorty.characters.data.mapper.FilterChMapper
 import ru.sumbul.rickandmorty.characters.domain.CharacterRepository
+import ru.sumbul.rickandmorty.characters.domain.SecondRemoteMediator
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
@@ -43,7 +46,9 @@ class CharacterRepositoryImpl @Inject constructor(
     private val episodeApi: EpisodeApi,
     private val mapper: CharacterMapper,
     private val episodeMapper: EpisodeMapper,
-    private val locationMapper: LocationMapper
+    private val locationMapper: LocationMapper,
+    private val filteredCharactersDao: FilteredCharactersDao,
+    private val filterChMapper: FilterChMapper,
 ) : CharacterRepository {
 
 
@@ -59,6 +64,29 @@ class CharacterRepositoryImpl @Inject constructor(
             }
         }
 
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getFilteredCharacters(): Flow<PagingData<ru.sumbul.rickandmorty.characters.domain.model.Character>> {
+        val characters: Flow<PagingData<ru.sumbul.rickandmorty.characters.domain.model.Character>> =
+            Pager(
+                config = PagingConfig(pageSize = 90),
+                remoteMediator = SecondRemoteMediator(
+                    appDb,
+                    api,
+                    filterDao,
+                    remoteKeyDao,
+                    mapper,
+                    filteredCharactersDao,
+                    filterChMapper
+                ),
+                pagingSourceFactory = filteredCharactersDao::getPagingSource,
+            ).flow.map { pagingData ->
+                pagingData.map {
+                    filterChMapper.mapToDb(it)
+                }
+            }
+        return characters
+    }
+
     //change filter status etc
     override suspend fun filterCharacters(
         name: String, status: String?, species: String?,
@@ -73,15 +101,15 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
 
-    override fun getEpisodes(ids: List<Int> ): Observable<List<Episode>> {
+    override fun getEpisodes(ids: List<Int>): Observable<List<Episode>> {
         return api.getEpisodes(ids.toString())
             .map { response ->
                 return@map response
             }.subscribeOn(Schedulers.io())
             .onErrorReturn {
-                val list1 :  List<EpisodeEntity> = episodeDao.getEpisodesByIds(ids)
-              val list :  List<Episode> = episodeMapper.mapFromEntity(list1)
-               return@onErrorReturn list
+                val list1: List<EpisodeEntity> = episodeDao.getEpisodesByIds(ids)
+                val list: List<Episode> = episodeMapper.mapFromEntity(list1)
+                return@onErrorReturn list
             }
     }
 

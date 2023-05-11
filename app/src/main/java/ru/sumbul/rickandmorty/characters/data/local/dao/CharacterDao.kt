@@ -27,13 +27,19 @@ interface CharacterDao {
     @Query("SELECT * FROM CharacterEntity WHERE id = :id")
     suspend fun getCharacterById(id: Int): CharacterEntity
 
-    @Query("SELECT * FROM CharacterEntity WHERE (:name IS NULL OR name LIKE '%' || :name || '%')" +
-            "AND (:status IS NULL OR status LIKE :status)" +
-            "AND (:species IS NULL OR species LIKE '%' || :species || '%')" +
-            "AND (:type IS NULL OR type LIKE '%' || :type || '%')" +
-            "AND (:gender IS NULL OR gender LIKE :gender)")
-    suspend fun getFilteredCharacters(name: String?, status: String?, species: String?,
-                              type: String?, gender: String?): List<CharacterEntity>
+    @Query(
+        "SELECT * FROM CharacterEntity " +
+                "WHERE (name LIKE '%' || :name || '%' OR :name IS NULL) " +
+                "AND (status = :status OR :status IS NULL) " +
+                "AND (species = :species OR :species IS NULL) " +
+                "AND (type = :type OR :type IS NULL) " +
+                "AND (gender = :gender OR :gender IS NULL)"
+    )
+    suspend fun getFilteredCharacters(name: String?,
+                                       status: String?, species: String?,
+                               type: String?, gender: String?
+    )
+    : List<CharacterEntity>
 
     @Query("SELECT * FROM CharacterEntity WHERE id IN (:ids)")
     suspend fun getCharactersByIds(ids: List<Int>): List<CharacterEntity>

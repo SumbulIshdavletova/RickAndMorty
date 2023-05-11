@@ -12,7 +12,7 @@
     <string name="species">species</string>
     <string name="gender">gender</string>
     <string name="empty_list">There are no data. Check your internet connection</string>
-
+    <string name="filter">There are no matching elements.</string>
     <string name="error_loading">Error loading data</string>
     <string name="retry_loading">Retry</string>
     <string name="episode">Episode</string>
@@ -38,4 +38,7 @@
     <string name="search_name">Search name</string>
     <string name="enter_dimension">Enter dimension</string>
     <string name="enter_episode">Enter episode</string>
+    <string name="back">Back</string>
+    <string name="there_are_no_residents">There are no residents</string>
+    <string name="no_residents">There are no residents in this location</string>
 </resources>

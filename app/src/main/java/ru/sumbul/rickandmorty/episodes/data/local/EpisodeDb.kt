@@ -14,7 +14,7 @@ import ru.sumbul.rickandmorty.locations.data.local.dao.LocationRemoteKeyDao
 
 @Database(
     entities = [EpisodeEntity::class, EpisodeFilterEntity::class, EpisodeRemoteKeyEntity::class, CharacterEntity::class],
-    version = 4
+    version = 2
 )
 
 abstract class EpisodeDb : RoomDatabase() {

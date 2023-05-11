@@ -4,7 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".characters.details.ui.CharacterDetailsFragment">
+    tools:context=".characters.ui.details.CharacterDetailsFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary"
+        app:layout_constraintBottom_toTopOf="@id/headerTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/headerTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/min_margin"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="topBar" />
+
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        android:id="@+id/group"
+        android:visibility="visible"
+        app:constraint_referenced_ids="avatar,id,name,species,status,gender,type_view, type, created, created_view,origin_name, origin_view,location_name,location" />
 
     <ImageView
         android:id="@+id/avatar"
@@ -12,7 +39,7 @@
         android:layout_height="@dimen/avatar_size"
         android:layout_margin="@dimen/common_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/headerTop" />
 
     <TextView
         android:id="@+id/id"
@@ -23,7 +50,7 @@
         android:layout_marginBottom="@dimen/min_margin"
         android:text="@string/id"
         app:layout_constraintStart_toEndOf="@id/avatar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/headerTop"  />
 
     <TextView
         android:id="@+id/name"
@@ -34,7 +61,7 @@
         android:layout_marginBottom="@dimen/min_margin"
         android:text="@string/name"
         app:layout_constraintStart_toEndOf="@id/id"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/headerTop"  />
 
     <TextView
         android:id="@+id/species"
@@ -161,7 +188,6 @@
         android:layout_margin="@dimen/min_margin"
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="location_name" />
-
 
 
         <androidx.recyclerview.widget.RecyclerView

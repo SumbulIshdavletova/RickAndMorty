@@ -2,23 +2,20 @@ package ru.sumbul.rickandmorty.episodes.ui.details
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.application.appComponent
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment
-import ru.sumbul.rickandmorty.characters.ui.list.CharacterViewModel
+import ru.sumbul.rickandmorty.characters.ui.list.CharactersListFragment
 import ru.sumbul.rickandmorty.databinding.FragmentEpisodeDetailsBinding
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
-import ru.sumbul.rickandmorty.episodes.ui.list.EpisodeViewModel
+import ru.sumbul.rickandmorty.episodes.ui.list.EpisodesListFragment
 import ru.sumbul.rickandmorty.factory.EpisodeDetailsViewModelFactory
-import ru.sumbul.rickandmorty.factory.EpisodesViewModelFactory
 import javax.inject.Inject
 
 
@@ -42,6 +39,7 @@ class EpisodeDetailsFragment : Fragment() {
     val characterDetailsFragment: CharacterDetailsFragment =
         CharacterDetailsFragment()
 
+    //val episodesListFragment: EpisodesListFragment = EpisodesListFragment()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
@@ -90,6 +88,8 @@ class EpisodeDetailsFragment : Fragment() {
                 adapter.submitList(characters)
             }
 
+            viewModel.episode = episode;
+
         }
 
 
@@ -110,8 +110,55 @@ class EpisodeDetailsFragment : Fragment() {
                 adapter.submitList(characters)
             }
 
+
+            viewModel.episode = episode
         }
 
+        if (viewModel.episode!=null) {
+            var episode = viewModel.episode
+            binding.id.text = episode?.id.toString()
+            binding.name.text = episode?.name
+            binding.airDate.text = episode?.air_date
+            binding.created.text = episode?.created
+            binding.episode.text = episode?.episode
+
+            val charactersUrls: List<String> = episode?.characters ?: emptyList()
+
+            viewModel.getCharacters(charactersUrls)
+            viewModel.getCharacters()?.observe(viewLifecycleOwner) { characters ->
+                adapter.submitList(characters)
+            }
+        }
+
+
+        val menuProvider: MenuProvider? = null
+        if (menuProvider != null) {
+            requireActivity().removeMenuProvider(menuProvider)
+        }
+
+        val newMenuProvider: MenuProvider = object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+                inflater.inflate(R.menu.menu_back, menu)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                return when (item.itemId) {
+                    R.id.back_to_list -> {
+                        val episodeListFragment = EpisodesListFragment()
+                        parentFragmentManager.beginTransaction()
+                            .setReorderingAllowed(true)
+                            .replace(R.id.frame_layout, episodeListFragment)
+                            .addToBackStack("list")
+                            .commit()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+
+        requireActivity().addMenuProvider(newMenuProvider, viewLifecycleOwner)
+        binding.topBar.addMenuProvider(newMenuProvider)
 
         return binding.root
     }

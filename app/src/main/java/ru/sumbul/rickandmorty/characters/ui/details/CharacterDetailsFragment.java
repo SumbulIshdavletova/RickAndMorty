@@ -2,15 +2,19 @@ package ru.sumbul.rickandmorty.characters.ui.details;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,6 +37,7 @@ import ru.sumbul.rickandmorty.characters.domain.model.Location;
 import ru.sumbul.rickandmorty.characters.domain.model.Origin;
 import ru.sumbul.rickandmorty.characters.ui.details.adapter.EpisodeInDetailsJavaAdapter;
 import ru.sumbul.rickandmorty.characters.ui.details.adapter.OnInteractionListenerFromCharacterToEpisodeJava;
+import ru.sumbul.rickandmorty.characters.ui.list.CharactersListFragment;
 import ru.sumbul.rickandmorty.databinding.FragmentCharacterDetailsBinding;
 import ru.sumbul.rickandmorty.episodes.ui.details.EpisodeDetailsFragment;
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode;
@@ -42,6 +47,7 @@ import ru.sumbul.rickandmorty.locations.ui.details.LocationDetailsFragment;
 
 @ExperimentalCoroutinesApi
 public class CharacterDetailsFragment extends Fragment {
+
 
     Character character = new Character(0, "", "", "", "", "",
             new Origin("", ""), new Location("", ""), "", new ArrayList<>(), "", "");
@@ -66,6 +72,7 @@ public class CharacterDetailsFragment extends Fragment {
         super.onAttach(context);
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,29 +84,9 @@ public class CharacterDetailsFragment extends Fragment {
         binding = FragmentCharacterDetailsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-
         viewModelJava = new ViewModelProvider(this, factoryJava).get(CharacterDetailsViewModelJava.class);
 
-
         RecyclerView recyclerView = binding.list;
-//        EpisodesInDetailsAdapter adapter = new EpisodesInDetailsAdapter((OnInteractionListenerFromCharacterToEpisode) (new OnInteractionListenerFromCharacterToEpisode() {
-//            public void onClick(@NotNull Episode episode) {
-//                Intrinsics.checkNotNullParameter(episode, "character");
-//                //  viewModelJava.getEpisodeById(episode.getId()); неправильно передается парамент с айди
-//                Bundle bundle2 = new Bundle();
-//                bundle2.putSerializable("requestKey3", (Serializable) episode);
-//                getParentFragmentManager().setFragmentResult("requestKey3", bundle2);
-//                Fragment EpisodeDetailsFragment = new EpisodeDetailsFragment();
-//                getParentFragmentManager().beginTransaction()
-//                        .setReorderingAllowed(true)
-//                        .replace(R.id.frame_layout, EpisodeDetailsFragment)
-//                        .addToBackStack("details")
-//                        .commit();
-//            }
-//        }
-//
-//        ));
-
 
         EpisodeInDetailsJavaAdapter javaAdapter = new EpisodeInDetailsJavaAdapter((OnInteractionListenerFromCharacterToEpisodeJava) (new OnInteractionListenerFromCharacterToEpisodeJava() {
             public void onClick(@NotNull Episode episode) {
@@ -152,7 +139,7 @@ public class CharacterDetailsFragment extends Fragment {
             //    locationTOfOrigin = characterDetailViewModel.getLocationById(originUrl);
 
             viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), javaAdapter::submitList);
-
+            viewModelJava.character = character;
         });
 
         getParentFragmentManager().setFragmentResultListener("requestKey2", this, (requestKey, bundle) -> {
@@ -186,7 +173,44 @@ public class CharacterDetailsFragment extends Fragment {
 
             viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), javaAdapter::submitList);
 
+            viewModelJava.character = character;
+
         });
+
+        if(viewModelJava.character!=null) {
+            Character character = viewModelJava.character;
+            int id = character.getId();
+            String name = character.getName();
+            binding.id.setText(String.valueOf(id));
+
+            binding.name.setText(name);
+            binding.species.setText(character.getSpecies());
+            binding.status.setText(character.getStatus());
+            binding.gender.setText(character.getGender());
+            String type = character.getType();
+            if (type.equals("")) {
+                binding.type.setText("unknown");
+            } else {
+                binding.type.setText(character.getType());
+            }
+            binding.created.setText(character.getCreated());
+            origin = character.getOrigin();
+            location = character.getLocation();
+            binding.originName.setText(character.getOrigin().getName());
+            binding.locationName.setText(character.getLocation().getName());
+            String url = character.getImage();
+            Glide.with(this)
+                    .load(url)
+                    .into(binding.avatar);
+            episodes = character.getEpisode();
+            viewModelJava.getEpisodes(episodes);
+
+            String originUrl = origin.getUrl();
+            //    locationTOfOrigin = characterDetailViewModel.getLocationById(originUrl);
+
+            viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), javaAdapter::submitList);
+
+        }
 
         binding.originName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,6 +243,38 @@ public class CharacterDetailsFragment extends Fragment {
                         .commit();
             }
         });
+
+
+        MenuProvider menuProvider = null;
+        if (menuProvider != null) {
+            requireActivity().removeMenuProvider(menuProvider);
+        }
+
+        MenuProvider newMenuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(Menu menu, MenuInflater inflater) {
+                inflater.inflate(R.menu.menu_back, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.back_to_list:
+                        CharactersListFragment charactersListFragment = new CharactersListFragment();
+                        getParentFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .replace(R.id.frame_layout, charactersListFragment)
+                                .addToBackStack("list")
+                                .commit();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        };
+
+        requireActivity().addMenuProvider(newMenuProvider, getViewLifecycleOwner());
+        binding.topBar.addMenuProvider(newMenuProvider);
 
         return view;
     }

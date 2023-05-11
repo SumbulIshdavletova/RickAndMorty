@@ -6,8 +6,6 @@ import ru.sumbul.rickandmorty.characters.data.entity.RemoteKeyEntity
 @Dao
 interface RemoteKeyDao {
 
-    //@Insert(onConflict = OnConflictStrategy.REPLACE)
-
     @Upsert
     suspend fun insert(remoteKey: RemoteKeyEntity)
 

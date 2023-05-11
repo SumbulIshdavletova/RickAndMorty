@@ -1,7 +1,5 @@
 package ru.sumbul.rickandmorty.characters.domain
 
-
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -17,6 +15,8 @@ interface CharacterRepository {
         name: String, status: String?, species: String?,
         type: String?, gender: String?
     )
+
+    fun getFilteredCharacters(): Flow<PagingData<ru.sumbul.rickandmorty.characters.domain.model.Character>>
 
     fun getEpisodes(ids: List<Int> ): Observable<List<Episode>>
     fun getLocationById(id: Int): Single<Location>

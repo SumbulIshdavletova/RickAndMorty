@@ -45,9 +45,9 @@ class FilteredRemoteMediator @Inject constructor(
 
             val result = when (loadType) {
                 LoadType.REFRESH -> {
-                    characterApi.getCharacters(
-                        1, name, status, species, type, gender
-                    )
+                        characterApi.getCharacters(
+                            1, name, status, species, type, gender
+                        )
                 }
                 LoadType.PREPEND -> return MediatorResult.Success(
                     endOfPaginationReached = true
@@ -97,15 +97,11 @@ class FilteredRemoteMediator @Inject constructor(
 
             characterDb.withTransaction {
                 if (loadType == LoadType.REFRESH) {
+                   characterDb.characterDao().clearAll()
                     characterDb.filterDao().clear()
-                    if (name != "" || status != "" || species != "" || type != "" || gender != "") {
-                        characterDb.characterDao().clearAll()
-                    }
                     characterDb.remoteKeyDao().clear()
 
-
                 }
-
                 characterDb.remoteKeyDao().insert(RemoteKeyEntity("query", nextPageNumber))
                 characterDb.filterDao().upsert(FilterEntity(1, name, status, species, type, gender))
                 characterDb.characterDao().upsertAll(mapper.mapToEntity(responseData))

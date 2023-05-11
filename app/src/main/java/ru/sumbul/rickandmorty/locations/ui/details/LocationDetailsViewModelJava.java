@@ -32,6 +32,8 @@ public final class LocationDetailsViewModelJava extends ViewModel {
     LiveData<List<Character>> charactersLiveDataTransformed =
             Transformations.map(charactersLiveData, characters -> characters);
 
+    Location location = null;
+
     public void getCharacters(@NotNull List<String> urls) {
 
         ArrayList<Integer> ids = new ArrayList<>();

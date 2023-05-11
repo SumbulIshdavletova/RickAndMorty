@@ -29,6 +29,12 @@ class CharacterViewModel @Inject constructor(
 
     val characterPagingFlow: Flow<PagingData<Character>> = cached
 
+    private val cached2 = repository
+        .getFilteredCharacters()
+        .cachedIn(viewModelScope)
+
+  val filterPagingFlow : Flow<PagingData<Character>> = cached2
+
     private val _dataState = MutableLiveData<ListModelState>()
     val dataState: LiveData<ListModelState>
         get() = _dataState

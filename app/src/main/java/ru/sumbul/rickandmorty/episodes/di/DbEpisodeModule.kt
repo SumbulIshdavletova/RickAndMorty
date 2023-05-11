@@ -25,7 +25,7 @@ class DbEpisodeModule {
     @Provides
     fun provideDb(
         context: Context
-    ): EpisodeDb = Room.databaseBuilder(context, EpisodeDb::class.java, "episodes.db")
+    ): EpisodeDb = Room.databaseBuilder(context, EpisodeDb::class.java, "episode.db")
         .fallbackToDestructiveMigration()
         .build()
 
