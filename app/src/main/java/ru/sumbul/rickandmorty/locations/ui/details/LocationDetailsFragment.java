@@ -39,6 +39,8 @@ import ru.sumbul.rickandmorty.episodes.ui.details.CharactersInDetailsAdapter;
 import ru.sumbul.rickandmorty.episodes.ui.details.OnInteractionListenerCharacter;
 import ru.sumbul.rickandmorty.factory.LocationDetailsViewModelJavaFactory;
 import ru.sumbul.rickandmorty.locations.domain.model.Location;
+import ru.sumbul.rickandmorty.locations.ui.details.adapter.OnClickListenerFromLocationToCharacter;
+import ru.sumbul.rickandmorty.locations.ui.details.adapter.ResidentsAdapter;
 import ru.sumbul.rickandmorty.locations.ui.list.LocationsListFragment;
 
 
@@ -76,7 +78,21 @@ public class LocationDetailsFragment extends Fragment {
 
         viewModelJava = new ViewModelProvider(this, factoryJava).get(LocationDetailsViewModelJava.class);
 
-        CharactersInDetailsAdapter adapter = new CharactersInDetailsAdapter((OnInteractionListenerCharacter) (new OnInteractionListenerCharacter() {
+//        CharactersInDetailsAdapter adapter = new CharactersInDetailsAdapter((OnInteractionListenerCharacter) (new OnInteractionListenerCharacter() {
+//            public void onClick(@NotNull Character character) {
+//                Bundle bundle2 = new Bundle();
+//                bundle2.putSerializable("requestKey2", (Serializable) character);
+//                getParentFragmentManager().setFragmentResult("requestKey2", bundle2);
+//                getParentFragmentManager().beginTransaction()
+//                        .setReorderingAllowed(true)
+//                        .replace(R.id.frame_layout, characterDetailsFragment)
+//                        .addToBackStack("details")
+//                        .commit();
+//            }
+//        }
+//
+//        ));
+        ResidentsAdapter adapter = new ResidentsAdapter((OnClickListenerFromLocationToCharacter) (new OnClickListenerFromLocationToCharacter() {
             public void onClick(@NotNull Character character) {
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("requestKey2", (Serializable) character);

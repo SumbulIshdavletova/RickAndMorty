@@ -2,15 +2,8 @@ package ru.sumbul.rickandmorty.characters.ui.details.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-
-import ru.sumbul.rickandmorty.characters.ui.details.DetailsEpisodeDiffCallback;
-import ru.sumbul.rickandmorty.characters.ui.details.adapter.EpisodesViewHolderJava;
-import ru.sumbul.rickandmorty.characters.ui.details.adapter.OnInteractionListenerFromCharacterToEpisodeJava;
 import ru.sumbul.rickandmorty.databinding.CardEpisodeBinding;
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode;
 

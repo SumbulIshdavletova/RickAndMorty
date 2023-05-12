@@ -91,7 +91,6 @@ public class CharacterDetailsFragment extends Fragment {
         EpisodeInDetailsJavaAdapter javaAdapter = new EpisodeInDetailsJavaAdapter((OnInteractionListenerFromCharacterToEpisodeJava) (new OnInteractionListenerFromCharacterToEpisodeJava() {
             public void onClick(@NotNull Episode episode) {
                 Intrinsics.checkNotNullParameter(episode, "character");
-                //  viewModelJava.getEpisodeById(episode.getId()); неправильно передается парамент с айди
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("requestKey3", (Serializable) episode);
                 getParentFragmentManager().setFragmentResult("requestKey3", bundle2);
