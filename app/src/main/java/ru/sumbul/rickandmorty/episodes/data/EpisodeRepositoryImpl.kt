@@ -71,7 +71,7 @@ class EpisodeRepositoryImpl @Inject constructor(
             dao.upsert(body)
             episode = mapper.mapToDb(body)
         } catch (e: Exception) {
-            episode = mapper.mapToDb(dao.getEpisodeById(id))
+            episode = mapper.mapToDb(dao.getEpisodeByIdSuspend(id))
         }
         return episode
     }
@@ -90,23 +90,6 @@ class EpisodeRepositoryImpl @Inject constructor(
         var result : List<ru.sumbul.rickandmorty.characters.domain.model.Character>?
         try {
             result = api.getCharacters(ids.toString()).body()
-
-//            try {
-//                val list1 :  List<CharacterEntity> = characterDao.getCharactersByIds(listOf(1,2))
-//                val list :  List<ru.sumbul.rickandmorty.characters.domain.model.Character> = characterMapper.mapCharactersFromDb(list1)
-//                data?.value =  list
-//                var response = api.getCharacters(ids.toString())
-//                if (!response.isSuccessful) {
-//                    val list1 :  List<CharacterEntity> = characterDao.getCharactersByIds(listOf(1,2))
-//                    val list :  List<ru.sumbul.rickandmorty.characters.domain.model.Character> = characterMapper.mapCharactersFromDb(list1)
-//                    data?.value =  list
-//                    //throw ApiError(response.code(), response.message())
-//                }
-//                data?.value = null
-//                val body =
-//                    response.body() ?: throw ApiError(response.code(), response.message())
-//                characterDao.upsertAll(characterMapper.mapToEntity(body))
-//                data?.value = body
             data?.value = result
             } catch (e:Exception){
                 result = characterMapper.mapCharactersFromDb(characterDao.getCharactersByIds(ids))

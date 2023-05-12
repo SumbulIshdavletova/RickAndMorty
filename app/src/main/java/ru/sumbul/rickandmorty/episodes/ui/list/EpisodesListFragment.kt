@@ -40,8 +40,9 @@ class EpisodesListFragment : Fragment() {
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         EpisodeAdapter(object : OnInteractionListenerCharacter {
             override fun onClick(episode: Episode) {
+                val episodeId = episode.id;
                 val bundle2 = Bundle()
-                bundle2.putSerializable("requestKey", episode)
+                bundle2.putInt("requestKey", episodeId)
                 parentFragmentManager.setFragmentResult("requestKey", bundle2)
                 parentFragmentManager.beginTransaction()
                     .setReorderingAllowed(true)

@@ -1,12 +1,15 @@
 package ru.sumbul.rickandmorty.episodes.ui.details
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ru.sumbul.rickandmorty.characters.domain.model.Character
-import ru.sumbul.rickandmorty.episodes.data.EpisodeRepositoryImpl
 import ru.sumbul.rickandmorty.episodes.domain.EpisodeRepository
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
+import ru.sumbul.rickandmorty.locations.domain.model.Location
 import ru.sumbul.rickandmorty.model.ListModelState
 import javax.inject.Inject
 
@@ -39,6 +42,19 @@ class EpisodeDetailsViewModel @Inject constructor(
                 ids.add(result.toInt())
             }
             repository.getCharactersForEpisode(ids)
+        }
+    }
+
+    private val getEpisode = MutableLiveData<Episode>()
+
+    fun episodeLiveDataTransformed(): LiveData<Episode>? {
+        return getEpisode
+    }
+
+    fun getEpisodeById(id: Int) {
+        _dataState.value = ListModelState(loading = true)
+        viewModelScope.launch {
+            getEpisode.value = repository.getById(id)
         }
     }
 

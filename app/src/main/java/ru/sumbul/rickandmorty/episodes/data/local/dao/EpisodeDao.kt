@@ -30,6 +30,9 @@ interface EpisodeDao {
     @Query("SELECT * FROM EpisodeEntity WHERE id = :id")
     fun getEpisodeById(id: Int): EpisodeEntity
 
+    @Query("SELECT * FROM EpisodeEntity WHERE id = :id")
+    suspend fun getEpisodeByIdSuspend(id: Int): EpisodeEntity
+
     @Query("SELECT * FROM EpisodeEntity WHERE (:name IS NULL OR name LIKE '%' || :name || '%') " +
             "AND (:episode IS NULL OR episode LIKE '%' || :episode || '%')")
     fun getFilteredEpisodes(name: String?, episode: String?): List<EpisodeEntity>

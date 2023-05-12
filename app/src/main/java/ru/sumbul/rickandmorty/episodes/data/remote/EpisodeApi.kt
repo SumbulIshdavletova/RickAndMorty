@@ -18,7 +18,7 @@ interface EpisodeApi {
     ): Response<ResponseApiEpisode>
 
 
-    @GET("episode/")
+    @GET("episode/{id}")
     suspend fun getEpisodeById(
         @Query("id") id: Int
     ): Response<EpisodeEntity>

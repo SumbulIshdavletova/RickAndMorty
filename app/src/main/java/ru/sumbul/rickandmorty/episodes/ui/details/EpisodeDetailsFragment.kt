@@ -6,6 +6,7 @@ import android.view.*
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.application.appComponent
@@ -74,21 +75,23 @@ class EpisodeDetailsFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener(
             "requestKey", this
         ) { _, bundle ->
-            val episode: Episode = bundle.getSerializable("requestKey") as Episode
-            binding.id.text = episode.id.toString()
-            binding.name.text = episode.name
-            binding.airDate.text = episode.air_date
-            binding.created.text = episode.created
-            binding.episode.text = episode.episode
+            val episodeId : Int = bundle.getInt("requestKey")
+            viewModel.getEpisodeById(episodeId)
+            viewModel.episodeLiveDataTransformed()?.observe(viewLifecycleOwner) { episode ->
+                binding.id.text = episodeId.toString()
+                binding.name.text = episode?.name
+                binding.airDate.text = episode?.air_date
+                binding.created.text = episode?.created
+                binding.episode.text = episode?.episode
 
-            val charactersUrls: List<String> = episode.characters
+                val charactersUrls: List<String> = episode?.characters ?: emptyList()
 
-            viewModel.getCharacters(charactersUrls)
-            viewModel.getCharacters()?.observe(viewLifecycleOwner) { characters ->
-                adapter.submitList(characters)
+                viewModel.getCharacters(charactersUrls)
+                viewModel.getCharacters()?.observe(viewLifecycleOwner) { characters ->
+                    adapter.submitList(characters)
+                }
+                viewModel.episode = episode;
             }
-
-            viewModel.episode = episode;
 
         }
 
@@ -96,22 +99,23 @@ class EpisodeDetailsFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener(
             "requestKey3", this
         ) { _, bundle ->
-            val episode: Episode = bundle.getSerializable("requestKey3") as Episode
-            binding.id.text = episode.id.toString()
-            binding.name.text = episode.name
-            binding.airDate.text = episode.air_date
-            binding.created.text = episode.created
-            binding.episode.text = episode.episode
+            val episodeId = bundle.getInt("requestKey3")
+            viewModel.getEpisodeById(episodeId)
+            viewModel.episodeLiveDataTransformed()?.observe(viewLifecycleOwner) { episode ->
+                binding.id.text = episodeId.toString()
+                binding.name.text = episode?.name
+                binding.airDate.text = episode?.air_date
+                binding.created.text = episode?.created
+                binding.episode.text = episode?.episode
 
-            val charactersUrls: List<String> = episode.characters
+                val charactersUrls: List<String> = episode?.characters ?: emptyList()
 
-            viewModel.getCharacters(charactersUrls)
-            viewModel.getCharacters()?.observe(viewLifecycleOwner) { characters ->
-                adapter.submitList(characters)
+                viewModel.getCharacters(charactersUrls)
+                viewModel.getCharacters()?.observe(viewLifecycleOwner) { characters ->
+                    adapter.submitList(characters)
+                }
+                viewModel.episode = episode;
             }
-
-
-            viewModel.episode = episode
         }
 
         if (viewModel.episode!=null) {

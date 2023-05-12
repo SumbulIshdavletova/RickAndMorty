@@ -92,7 +92,7 @@ public class CharacterDetailsFragment extends Fragment {
             public void onClick(@NotNull Episode episode) {
                 Intrinsics.checkNotNullParameter(episode, "character");
                 Bundle bundle2 = new Bundle();
-                bundle2.putSerializable("requestKey3", (Serializable) episode);
+                bundle2.putInt("requestKey3", episode.getId());
                 getParentFragmentManager().setFragmentResult("requestKey3", bundle2);
                 Fragment EpisodeDetailsFragment = new EpisodeDetailsFragment();
                 getParentFragmentManager().beginTransaction()
@@ -135,7 +135,6 @@ public class CharacterDetailsFragment extends Fragment {
             viewModelJava.getEpisodes(episodes);
 
             String originUrl = origin.getUrl();
-            //    locationTOfOrigin = characterDetailViewModel.getLocationById(originUrl);
 
             viewModelJava.episodesLiveDataTransformed.observe(getViewLifecycleOwner(), javaAdapter::submitList);
             viewModelJava.character = character;
