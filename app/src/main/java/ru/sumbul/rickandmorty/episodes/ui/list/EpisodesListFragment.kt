@@ -1,6 +1,9 @@
 package ru.sumbul.rickandmorty.episodes.ui.list
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -79,6 +83,7 @@ class EpisodesListFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.filterEpisodes("", "")
+           // viewModel.filterEpisodesOffline("","")
             adapter.refresh()
         }
 
@@ -102,12 +107,34 @@ class EpisodesListFragment : Fragment() {
                 .commit()
         }
 
+
         //search name
         binding.textInputEdit.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val name = binding.textInputEdit.text.toString()
-                viewModel.filterEpisodes(name, null)
+
+                var isOnline = context?.let { checkForInternet(it) }
+                if (isOnline == false) {
+                    lifecycleScope.launch {
+                        viewModel.filterEpisodesOffline(name, null)
+                            .collect() { pagingData ->
+                                adapter.submitData(pagingData)
+                            }
+                    }
+                } else {
+                    viewModel.filterEpisodes(name, null)
+                }
                 adapter.refresh()
+                if (adapter.itemCount == 0) {
+                    context?.let {
+                        MaterialAlertDialogBuilder(
+                            it,
+                            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
+                        )
+                            .setMessage(resources.getString(R.string.filter))
+                            .show()
+                    }
+                }
             }
             return@setOnEditorActionListener false
         }
@@ -120,14 +147,53 @@ class EpisodesListFragment : Fragment() {
             val filterRequest = bundle.getBundle("filterEpisode")
             val name = bundle.getString("name")
             val episode = bundle.getString("episode")
-            if (name != null) {
-                viewModel.filterEpisodes(name, episode)
+
+            var isOnline = context?.let { checkForInternet(it) }
+            if (isOnline == true) {
+                if (name != null) {
+                    viewModel.filterEpisodes(name, episode)
+                }
+            } else {
+                lifecycleScope.launch {
+                    viewModel.filterEpisodesOffline(name, episode)
+                        .collect() { pagingData ->
+                            adapter.submitData(pagingData)
+                        }
+                }
             }
             adapter.refresh()
+            if (adapter.itemCount == 0) {
+                context?.let {
+                    MaterialAlertDialogBuilder(
+                        it,
+                        R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
+                    )
+                        .setMessage(resources.getString(R.string.filter))
+                        .show()
+                }
+            }
         }
 
-
         return binding.root
+    }
+
+    private fun checkForInternet(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            @Suppress("DEPRECATION") val networkInfo =
+                connectivityManager.activeNetworkInfo ?: return false
+            @Suppress("DEPRECATION")
+            return networkInfo.isConnected
+        }
     }
 
 }

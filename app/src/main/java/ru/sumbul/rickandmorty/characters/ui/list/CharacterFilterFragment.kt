@@ -21,13 +21,6 @@ import javax.inject.Inject
 
 class CharacterFilterFragment : Fragment() {
 
-    companion object {
-        var Bundle.nameA: String? by StringArg
-        var Bundle.statusA: String? by StringArg
-        var Bundle.typeA: String? by StringArg
-        var Bundle.speciesA: String? by StringArg
-        var Bundle.genderA: String? by StringArg
-    }
 
     val charactersListFragment: CharactersListFragment = CharactersListFragment()
 
@@ -44,10 +37,9 @@ class CharacterFilterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-     //   showsDialog = true
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -117,23 +109,13 @@ class CharacterFilterFragment : Fragment() {
                 putString("gender", gender)
                 putString("type", type)
             }
-//
-//            Bundle().apply {
-//                nameA = name
-//                statusA = status
-//                typeA = type
-//                speciesA = species
-//                genderA = gender
-//            }
 
-        //    viewModel.filterCharactersOffline(name, status, species, type, gender)
             parentFragmentManager.setFragmentResult("filter", bundle)
             parentFragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.frame_layout, charactersListFragment)
                 .addToBackStack("filter")
                 .commit()
-        //    dialog?.dismiss()
         }
 
         return binding.root

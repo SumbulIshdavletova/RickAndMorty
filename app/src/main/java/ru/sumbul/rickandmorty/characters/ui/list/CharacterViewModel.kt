@@ -29,17 +29,6 @@ class CharacterViewModel @Inject constructor(
 
     val characterPagingFlow: Flow<PagingData<Character>> = cached
 
-    var cachedCharacterPagingFlow: Flow<PagingData<Character>> = cached
-
- //val cachedCharacters: Flow<PagingData<Character>> = filterCharactersOffline() // filter by name "rick" and status "alive"
-
-
-//    private val cached2 = repository
-//        .getFilteredCharacters()
-//        .cachedIn(viewModelScope)
-
-//  val filterPagingFlow : Flow<PagingData<Character>> = cached2
-
     private val _dataState = MutableLiveData<ListModelState>()
     val dataState: LiveData<ListModelState>
         get() = _dataState
@@ -68,7 +57,6 @@ class CharacterViewModel @Inject constructor(
         val characters: Flow<PagingData<Character>> = repository
             .characterPagingFlow
             .cachedIn(viewModelScope)
-       // val characters: Flow<PagingData<Character>> = cached
         return characters.map { pd ->
             pd.filter { character ->
                 (name == null || character.name.contains(name, ignoreCase = true)) &&

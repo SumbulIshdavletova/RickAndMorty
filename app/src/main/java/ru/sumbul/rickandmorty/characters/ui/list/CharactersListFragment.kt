@@ -25,11 +25,6 @@ import ru.sumbul.rickandmorty.application.appComponent
 import ru.sumbul.rickandmorty.ui.LoadingStateAdapter
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment
-import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.genderA
-import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.nameA
-import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.speciesA
-import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.statusA
-import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.typeA
 import ru.sumbul.rickandmorty.databinding.FragmentCharactersListBinding
 import ru.sumbul.rickandmorty.factory.CharactersViewModelFactory
 import ru.sumbul.rickandmorty.util.StringArg
@@ -37,7 +32,6 @@ import javax.inject.Inject
 
 
 class CharactersListFragment : Fragment() {
-
 
     @Inject
     lateinit var factory: CharactersViewModelFactory
@@ -81,8 +75,7 @@ class CharactersListFragment : Fragment() {
             false
         )
         binding.list.adapter = adapter
-        var isOnline = context?.let { checkForInternet(it) }
-
+     //   var isOnline = context?.let { checkForInternet(it) }
         lifecycleScope.launch {
             viewModel.characterPagingFlow.collect() { pagingData ->
                 adapter.submitData(pagingData)
@@ -90,8 +83,8 @@ class CharactersListFragment : Fragment() {
         }
 
 
-        binding.list.adapter =
-            adapter.withLoadStateHeaderAndFooter(header = LoadingStateAdapter { adapter.retry() },
+        binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = LoadingStateAdapter { adapter.retry() },
                 footer = LoadingStateAdapter { adapter.retry() })
 
         binding.swipeRefresh.setOnRefreshListener {
