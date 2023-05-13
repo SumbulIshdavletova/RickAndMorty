@@ -54,7 +54,7 @@ dependencies of the app.
 * Dagger2
 * MVVM, Clean architecture
 
-#### API
+#### API:
 
 All of the data and images presented in this app are sourced
 from [The Rick and Morty API](https://rickandmortyapi.com/).
