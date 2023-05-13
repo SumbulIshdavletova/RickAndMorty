@@ -9,9 +9,9 @@ character, episode or location.
 * [General info](#general-info)
 * [Screenshots](#screenshots)
 * [Technologies](#technologies)
-* [Setup](#setup)
+* [API](#API)
 
-#### GENERAL INFO
+#### General info:
 
 When the application is opened, SplashScreenActivity is displayed. App contains a bottom navigation
 with 3 tabs: Characters, Episodes, Locations. All tabs support Pull-to-Refresh. The pages of data
@@ -41,7 +41,7 @@ dependencies of the app.
 
 </p>
 
-#### Technologies
+#### Technologies:
 
 * Kotlin
 * Java
@@ -49,12 +49,12 @@ dependencies of the app.
 * Coroutines
 * RxJava
 * Retrofit
-* Pagging3
+* Pagging 3
 * Room
 * Dagger2
 * MVVM, Clean architecture
 
-## API
+#### API
 
 All of the data and images presented in this app are sourced
 from [The Rick and Morty API](https://rickandmortyapi.com/).
