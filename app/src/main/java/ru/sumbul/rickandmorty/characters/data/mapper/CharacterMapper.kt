@@ -91,8 +91,4 @@ class CharacterMapper @Inject constructor() {
             )
         }
     }
-//
-//    fun List<CharacterEntity>.toDto(): List<ru.sumbul.rickandmorty.characters.domain.model.Character> = map(CharacterMapper::mapToDb)
-//    fun List<ru.sumbul.rickandmorty.characters.domain.model.Character>.toEntity(): List<CharacterEntity> =
-//        map(CharacterEntity::mapFromDb)
 }

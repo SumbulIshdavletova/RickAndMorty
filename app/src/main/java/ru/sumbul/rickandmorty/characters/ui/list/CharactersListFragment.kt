@@ -1,21 +1,17 @@
 package ru.sumbul.rickandmorty.characters.ui.list
 
 import android.content.Context
-import android.content.SharedPreferences.Editor
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.paging.LoadState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
@@ -27,7 +23,6 @@ import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment
 import ru.sumbul.rickandmorty.databinding.FragmentCharactersListBinding
 import ru.sumbul.rickandmorty.factory.CharactersViewModelFactory
-import ru.sumbul.rickandmorty.util.StringArg
 import javax.inject.Inject
 
 
@@ -77,7 +72,7 @@ class CharactersListFragment : Fragment() {
         binding.list.adapter = adapter
      //   var isOnline = context?.let { checkForInternet(it) }
         lifecycleScope.launch {
-            viewModel.characterPagingFlow.collect() { pagingData ->
+            viewModel.characterPagingFlow.collect { pagingData ->
                 adapter.submitData(pagingData)
             }
         }
@@ -102,7 +97,7 @@ class CharactersListFragment : Fragment() {
         }
 
         //GO TO FILTER FRAGMENT
-        val filterFragment: CharacterFilterFragment = CharacterFilterFragment()
+        val filterFragment = CharacterFilterFragment()
         binding.filter.setOnClickListener {
             viewModel.filterCharacters("", "", "", "", "")
             parentFragmentManager.beginTransaction()
@@ -122,7 +117,7 @@ class CharactersListFragment : Fragment() {
                 if (isOnline == false) {
                     lifecycleScope.launch {
                         viewModel.filterCharactersOffline(name, null, null, null, null)
-                            .collect() { pagingData ->
+                            .collect { pagingData ->
                                 adapter.submitData(pagingData)
                             }
                     }
@@ -150,7 +145,7 @@ class CharactersListFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener(
             "filter", this
         ) { _, bundle ->
-            val filterRequest = bundle.getBundle("filter")
+           // val filterRequest = bundle.getBundle("filter")
             val name = bundle.getString("name")
             val status = bundle.getString("status")
             val species = bundle.getString("species")

@@ -16,8 +16,6 @@ interface CharacterRepository {
         type: String?, gender: String?
     )
 
-    fun getFilteredCharacters(): Flow<PagingData<ru.sumbul.rickandmorty.characters.domain.model.Character>>
-
     fun getEpisodes(ids: List<Int> ): Observable<List<Episode>>
     fun getLocationById(id: Int): Single<Location>
     fun getEpisodeById(id: Int): Single<Episode>

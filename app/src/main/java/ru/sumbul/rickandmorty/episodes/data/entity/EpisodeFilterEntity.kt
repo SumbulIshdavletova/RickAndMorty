@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import io.reactivex.rxjava3.annotations.NonNull
 
 @Entity
-class EpisodeFilterEntity
+data class EpisodeFilterEntity
     (
     @PrimaryKey(autoGenerate = true)
     @NonNull

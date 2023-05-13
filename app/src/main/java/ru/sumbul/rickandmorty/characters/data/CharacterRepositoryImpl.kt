@@ -1,6 +1,5 @@
 package ru.sumbul.rickandmorty.characters.data
 
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -12,25 +11,19 @@ import ru.sumbul.rickandmorty.characters.domain.FilteredRemoteMediator
 import ru.sumbul.rickandmorty.characters.data.remote.CharacterApi
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.FilterDao
-import ru.sumbul.rickandmorty.characters.data.local.dao.FilteredCharactersDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.RemoteKeyDao
 import ru.sumbul.rickandmorty.characters.data.local.db.CharacterDb
 import ru.sumbul.rickandmorty.characters.data.mapper.CharacterMapper
-import ru.sumbul.rickandmorty.characters.data.mapper.FilterChMapper
 import ru.sumbul.rickandmorty.characters.domain.CharacterRepository
-import ru.sumbul.rickandmorty.characters.domain.SecondRemoteMediator
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.episodes.data.entity.EpisodeEntity
 import ru.sumbul.rickandmorty.episodes.data.remote.EpisodeApi
 import ru.sumbul.rickandmorty.episodes.data.local.dao.EpisodeDao
 import ru.sumbul.rickandmorty.episodes.data.mapper.EpisodeMapper
 import ru.sumbul.rickandmorty.episodes.domain.model.Episode
-import ru.sumbul.rickandmorty.error.ApiError
-import ru.sumbul.rickandmorty.error.NetworkError
 import ru.sumbul.rickandmorty.locations.data.local.dao.LocationDao
 import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
 import ru.sumbul.rickandmorty.locations.domain.model.Location
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -46,9 +39,7 @@ class CharacterRepositoryImpl @Inject constructor(
     private val episodeApi: EpisodeApi,
     private val mapper: CharacterMapper,
     private val episodeMapper: EpisodeMapper,
-    private val locationMapper: LocationMapper,
-    private val filteredCharactersDao: FilteredCharactersDao,
-    private val filterChMapper: FilterChMapper,
+    private val locationMapper: LocationMapper
 ) : CharacterRepository {
 
 
@@ -63,29 +54,6 @@ class CharacterRepositoryImpl @Inject constructor(
                 mapper.mapToDb(it)
             }
         }
-
-    @OptIn(ExperimentalPagingApi::class)
-    override fun getFilteredCharacters(): Flow<PagingData<ru.sumbul.rickandmorty.characters.domain.model.Character>> {
-        val characters: Flow<PagingData<ru.sumbul.rickandmorty.characters.domain.model.Character>> =
-            Pager(
-                config = PagingConfig(pageSize = 90),
-                remoteMediator = SecondRemoteMediator(
-                    appDb,
-                    api,
-                    filterDao,
-                    remoteKeyDao,
-                    mapper,
-                    filteredCharactersDao,
-                    filterChMapper
-                ),
-                pagingSourceFactory = filteredCharactersDao::getPagingSource,
-            ).flow.map { pagingData ->
-                pagingData.map {
-                    filterChMapper.mapToDb(it)
-                }
-            }
-        return characters
-    }
 
     //change filter status etc
     override suspend fun filterCharacters(

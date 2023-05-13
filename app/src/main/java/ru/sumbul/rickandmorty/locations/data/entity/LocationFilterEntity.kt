@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import io.reactivex.rxjava3.annotations.NonNull
 
 @Entity
-class LocationFilterEntity(
+data class LocationFilterEntity(
     @PrimaryKey(autoGenerate = true)
     @NonNull
     var id: Int,

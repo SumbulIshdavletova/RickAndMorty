@@ -7,7 +7,7 @@ import ru.sumbul.rickandmorty.episodes.domain.model.Episode
 import ru.sumbul.rickandmorty.util.StringListTypeConverter
 
 @Entity
-class EpisodeEntity(
+data class EpisodeEntity(
     @PrimaryKey
     val id: Int = 0,
     val name: String,

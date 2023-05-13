@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-class LocationRemoteKeyEntity(
+data class LocationRemoteKeyEntity(
     @PrimaryKey
     val label: String,
     val nextPage: Int?

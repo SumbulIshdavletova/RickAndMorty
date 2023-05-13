@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import ru.sumbul.rickandmorty.characters.data.local.dao.CharacterDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.FilterDao
-import ru.sumbul.rickandmorty.characters.data.local.dao.FilteredCharactersDao
 import ru.sumbul.rickandmorty.characters.data.local.dao.RemoteKeyDao
 import ru.sumbul.rickandmorty.characters.data.local.db.CharacterDb
 import ru.sumbul.rickandmorty.episodes.data.local.dao.EpisodeDao
@@ -20,7 +19,6 @@ import javax.inject.Singleton
 
 @Module
 object DaoModule {
-
 
     @Provides
     @Singleton
@@ -59,7 +57,4 @@ object DaoModule {
     @Singleton
     fun provideEpisodeFilterDao(db: EpisodeDb): EpisodeFilterDao = db.filterDao()
 
-    @Provides
-    @Singleton
-    fun provideFilterCharacterDao(db: CharacterDb): FilteredCharactersDao = db.filterCharacterDao()
 }

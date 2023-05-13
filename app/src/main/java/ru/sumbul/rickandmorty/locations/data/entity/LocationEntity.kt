@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import ru.sumbul.rickandmorty.util.StringListTypeConverter
 
 @Entity
-class LocationEntity (
+data class LocationEntity (
     @PrimaryKey
     val id: Int = 0,
     val name: String,
