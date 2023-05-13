@@ -25,12 +25,19 @@ import ru.sumbul.rickandmorty.application.appComponent
 import ru.sumbul.rickandmorty.ui.LoadingStateAdapter
 import ru.sumbul.rickandmorty.characters.domain.model.Character
 import ru.sumbul.rickandmorty.characters.ui.details.CharacterDetailsFragment
+import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.genderA
+import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.nameA
+import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.speciesA
+import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.statusA
+import ru.sumbul.rickandmorty.characters.ui.list.CharacterFilterFragment.Companion.typeA
 import ru.sumbul.rickandmorty.databinding.FragmentCharactersListBinding
 import ru.sumbul.rickandmorty.factory.CharactersViewModelFactory
+import ru.sumbul.rickandmorty.util.StringArg
 import javax.inject.Inject
 
 
 class CharactersListFragment : Fragment() {
+
 
     @Inject
     lateinit var factory: CharactersViewModelFactory
@@ -41,6 +48,7 @@ class CharactersListFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
     val characterDetailsFragment: CharacterDetailsFragment =
         CharacterDetailsFragment()
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
@@ -74,40 +82,46 @@ class CharactersListFragment : Fragment() {
         )
         binding.list.adapter = adapter
         var isOnline = context?.let { checkForInternet(it) }
-      //  if (isOnline==true) {
-            lifecycleScope.launch {
-                viewModel.characterPagingFlow.collect() { pagingData ->
-                    adapter.submitData(pagingData)
-                }
+
+        lifecycleScope.launch {
+            viewModel.characterPagingFlow.collect() { pagingData ->
+                adapter.submitData(pagingData)
             }
-//        } else {
-//            lifecycleScope.launch {
-//                viewModel.filterPagingFlow.collect() { pagingData ->
-//                    adapter.submitData(pagingData)
-//                }
-//            }
-//        }
+        }
+
+        var filterName: String? = arguments?.nameA
+        var filterStatus: String? = arguments?.statusA
+        var filterType: String? = arguments?.speciesA
+        var filterGender: String? = arguments?.typeA
+        var filterSpecies: String? = arguments?.genderA
+
+        if (isOnline == false) {
+            lifecycleScope.launch {
+                viewModel.filterCharactersOffline(
+                    filterName, filterStatus, filterSpecies, filterType, filterGender
+                )
+                    .collect() { pagingData ->
+                        adapter.submitData(pagingData)
+                    }
+            }
+        }
+
 
         binding.list.adapter =
             adapter.withLoadStateHeaderAndFooter(header = LoadingStateAdapter { adapter.retry() },
                 footer = LoadingStateAdapter { adapter.retry() })
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.filterCharacters("", "", "","","")
+            viewModel.filterCharacters("", "", "", "", "")
             var isOnline = context?.let { checkForInternet(it) }
-           if (isOnline==true) {
+            if (isOnline == true) {
                 lifecycleScope.launch {
                     viewModel.characterPagingFlow.collect() { pagingData ->
                         adapter.submitData(pagingData)
                     }
                 }
-            } else {
-                lifecycleScope.launch {
-                    viewModel.filterPagingFlow.collect() { pagingData ->
-                        adapter.submitData(pagingData)
-                    }
-                }
             }
+
             adapter.refresh()
         }
 
@@ -121,28 +135,55 @@ class CharactersListFragment : Fragment() {
         }
 
         //GO TO FILTER FRAGMENT
-        val filterFragment: CharacterFilterFragment = CharacterFilterFragment()
-        binding.filter.setOnClickListener {
-            viewModel.filterCharacters("", "", "","","")
-            parentFragmentManager.beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.frame_layout, filterFragment)
-                .addToBackStack("toFilter")
-                .commit()
-        }
+//        val filterFragment: CharacterFilterFragment = CharacterFilterFragment()
+//        binding.filter.setOnClickListener {
+//            viewModel.filterCharacters("", "", "", "", "")
+//            parentFragmentManager.beginTransaction()
+//                .setReorderingAllowed(true)
+//                .replace(R.id.frame_layout, filterFragment)
+//                .addToBackStack("toFilter")
+//                .commit()
+//        }
 
+        binding.filter.setOnClickListener {
+            val dialog = CharacterFilterFragment()
+            dialog.show(childFragmentManager, "dialog")
+
+            if (isOnline == false) {
+                lifecycleScope.launch {
+                    viewModel.filterCharactersOffline(
+                        arguments?.nameA,
+                        arguments?.statusA,
+                        arguments?.speciesA,
+                        arguments?.typeA,
+                        arguments?.genderA
+                    )
+                        .collect() { pagingData ->
+                            adapter.submitData(pagingData)
+                        }
+                }
+            }
+
+            adapter.refresh()
+            // viewModel.filterCharactersOffline()
+        }
 //search name
         binding.textInputEdit.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val name = binding.textInputEdit.text.toString()
-                viewModel.filterCharacters(name, null, null,null,null)
-             //   adapter.notifyDataSetChanged()
-                lifecycleScope.launch {
-                    viewModel.filterPagingFlow.collect() { pagingData ->
-                        adapter.submitData(pagingData)
+
+                var isOnline = context?.let { checkForInternet(it) }
+                if (isOnline == false) {
+                    lifecycleScope.launch {
+                        viewModel.filterCharactersOffline(name, null, null, null, null)
+                            .collect() { pagingData ->
+                                adapter.submitData(pagingData)
+                            }
                     }
+                } else {
+                    viewModel.filterCharacters(name, null, null, null, null)
                 }
-          adapter.refresh()
+                adapter.refresh()
                 if (adapter.itemCount == 0) {
                     context?.let {
                         MaterialAlertDialogBuilder(
@@ -169,16 +210,36 @@ class CharactersListFragment : Fragment() {
             val species = bundle.getString("species")
             val type = bundle.getString("type")
             val gender = bundle.getString("gender")
-            if (name != null) {
-                viewModel.filterCharacters(name, status, species, type, gender)
+//            filterName = name
+//            filterGender = gender
+//            filterSpecies = species
+//            filterStatus = status
+//            filterType = type
+
+            lifecycleScope.launch {
+                viewModel.filterCharactersOffline(name, status, species, type, gender)
+                    .collect() { pagingData ->
+                        adapter.submitData(pagingData)
+                    }
+
+                // adapter.refresh()
+                //   } else {
+                if (name != null) {
+                    viewModel.filterCharacters(name, status, species, type, gender)
+                }
             }
-//            lifecycleScope.launch {
-//                viewModel.filterPagingFlow.collect() { pagingData ->
-//                    adapter.submitData(pagingData)
+//обновление адаптера вызовом функции
+
+//            if (adapter.itemCount == 0) {
+//                context?.let {
+//                    MaterialAlertDialogBuilder(
+//                        it,
+//                        R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
+//                    )
+//                        .setMessage(resources.getString(R.string.filter))
+//                        .show()
 //                }
 //            }
-//обновление адаптера вызовом функции
-            adapter.refresh()
         }
 
 
@@ -187,7 +248,8 @@ class CharactersListFragment : Fragment() {
     }
 
     private fun checkForInternet(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val network = connectivityManager.activeNetwork ?: return false
             val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false

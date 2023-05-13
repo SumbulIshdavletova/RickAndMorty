@@ -2,9 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="Characters"
-        android:id="@+id/characters"/>
+        android:id="@+id/characters"
+        android:icon="@drawable/ic_baseline_people_outline_24"/>
     <item android:title="Episodes"
-        android:id="@+id/episodes"/>
+        android:id="@+id/episodes"
+        android:icon="@drawable/ic_baseline_live_tv_24"/>
     <item android:title="Locations"
+        android:icon="@drawable/ic_baseline_location_on_24"
         android:id="@+id/locations"/>
 </menu>
