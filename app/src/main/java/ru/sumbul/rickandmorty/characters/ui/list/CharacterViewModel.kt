@@ -29,6 +29,8 @@ class CharacterViewModel @Inject constructor(
 
     val characterPagingFlow: Flow<PagingData<Character>> = cached
 
+    var cachedCharacterPagingFlow: Flow<PagingData<Character>> = cached
+
  //val cachedCharacters: Flow<PagingData<Character>> = filterCharactersOffline() // filter by name "rick" and status "alive"
 
 
@@ -63,14 +65,17 @@ class CharacterViewModel @Inject constructor(
         name: String?, status: String?, species: String?, type: String?,
         gender: String?
     ): Flow<PagingData<Character>> {
-        val characters: Flow<PagingData<Character>> = cached
+        val characters: Flow<PagingData<Character>> = repository
+            .characterPagingFlow
+            .cachedIn(viewModelScope)
+       // val characters: Flow<PagingData<Character>> = cached
         return characters.map { pd ->
             pd.filter { character ->
                 (name == null || character.name.contains(name, ignoreCase = true)) &&
-                        (status == null || character.status == status) &&
-                        (species == null || character.species == species) &&
-                        (type == null || character.type == type) &&
-                        (gender == null || character.gender == gender)
+                        (status == null || character.status.contains(status, ignoreCase = true)) &&
+                        (species == null || character.species.contains(species, ignoreCase = true)) &&
+                        (type == null || character.type.contains(type, ignoreCase = true)) &&
+                        (gender == null || character.gender.contains(gender, ignoreCase = true))
             }
         }
     }

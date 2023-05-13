@@ -19,8 +19,7 @@ import ru.sumbul.rickandmorty.util.StringArg
 import javax.inject.Inject
 
 
-class CharacterFilterFragment : DialogFragment() {
-    //Fragment() {
+class CharacterFilterFragment : Fragment() {
 
     companion object {
         var Bundle.nameA: String? by StringArg
@@ -45,7 +44,7 @@ class CharacterFilterFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        showsDialog = true
+     //   showsDialog = true
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -62,28 +61,28 @@ class CharacterFilterFragment : DialogFragment() {
 
         var gender = ""
         binding.female.setOnClickListener {
-            gender = "Female"
+            gender = "female"
         }
         binding.male.setOnClickListener {
-            gender = "Male"
+            gender = "male"
         }
         binding.genderless.setOnClickListener {
-            gender = "Genderless"
+            gender = "genderless"
         }
         binding.unknownGender.setOnClickListener {
-            gender = "Unknown"
+            gender = "unknown"
         }
 
 
         var status = ""
         binding.alive.setOnClickListener {
-            status = "Alive"
+            status = "alive"
         }
         binding.dead.setOnClickListener {
-            status = "Dead"
+            status = "dead"
         }
         binding.unknown.setOnClickListener {
-            status = "Unknown"
+            status = "unknown"
         }
 
 
@@ -118,23 +117,23 @@ class CharacterFilterFragment : DialogFragment() {
                 putString("gender", gender)
                 putString("type", type)
             }
+//
+//            Bundle().apply {
+//                nameA = name
+//                statusA = status
+//                typeA = type
+//                speciesA = species
+//                genderA = gender
+//            }
 
-            Bundle().apply {
-                nameA = name
-                statusA = status
-                typeA = type
-                speciesA = species
-                genderA = gender
-            }
-
-            viewModel.filterCharactersOffline(name, status, species, type, gender)
-//            parentFragmentManager.setFragmentResult("filter", bundle)
-//            parentFragmentManager.beginTransaction()
-//                .setReorderingAllowed(true)
-//                .replace(R.id.frame_layout, charactersListFragment)
-//                .addToBackStack("filter")
-//                .commit()
-            dialog?.dismiss()
+        //    viewModel.filterCharactersOffline(name, status, species, type, gender)
+            parentFragmentManager.setFragmentResult("filter", bundle)
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.frame_layout, charactersListFragment)
+                .addToBackStack("filter")
+                .commit()
+        //    dialog?.dismiss()
         }
 
         return binding.root

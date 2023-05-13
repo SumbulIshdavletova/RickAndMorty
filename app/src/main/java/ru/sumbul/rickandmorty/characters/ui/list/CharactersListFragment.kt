@@ -89,23 +89,6 @@ class CharactersListFragment : Fragment() {
             }
         }
 
-        var filterName: String? = arguments?.nameA
-        var filterStatus: String? = arguments?.statusA
-        var filterType: String? = arguments?.speciesA
-        var filterGender: String? = arguments?.typeA
-        var filterSpecies: String? = arguments?.genderA
-
-        if (isOnline == false) {
-            lifecycleScope.launch {
-                viewModel.filterCharactersOffline(
-                    filterName, filterStatus, filterSpecies, filterType, filterGender
-                )
-                    .collect() { pagingData ->
-                        adapter.submitData(pagingData)
-                    }
-            }
-        }
-
 
         binding.list.adapter =
             adapter.withLoadStateHeaderAndFooter(header = LoadingStateAdapter { adapter.retry() },
@@ -113,15 +96,6 @@ class CharactersListFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.filterCharacters("", "", "", "", "")
-            var isOnline = context?.let { checkForInternet(it) }
-            if (isOnline == true) {
-                lifecycleScope.launch {
-                    viewModel.characterPagingFlow.collect() { pagingData ->
-                        adapter.submitData(pagingData)
-                    }
-                }
-            }
-
             adapter.refresh()
         }
 
@@ -135,39 +109,18 @@ class CharactersListFragment : Fragment() {
         }
 
         //GO TO FILTER FRAGMENT
-//        val filterFragment: CharacterFilterFragment = CharacterFilterFragment()
-//        binding.filter.setOnClickListener {
-//            viewModel.filterCharacters("", "", "", "", "")
-//            parentFragmentManager.beginTransaction()
-//                .setReorderingAllowed(true)
-//                .replace(R.id.frame_layout, filterFragment)
-//                .addToBackStack("toFilter")
-//                .commit()
-//        }
-
+        val filterFragment: CharacterFilterFragment = CharacterFilterFragment()
         binding.filter.setOnClickListener {
-            val dialog = CharacterFilterFragment()
-            dialog.show(childFragmentManager, "dialog")
-
-            if (isOnline == false) {
-                lifecycleScope.launch {
-                    viewModel.filterCharactersOffline(
-                        arguments?.nameA,
-                        arguments?.statusA,
-                        arguments?.speciesA,
-                        arguments?.typeA,
-                        arguments?.genderA
-                    )
-                        .collect() { pagingData ->
-                            adapter.submitData(pagingData)
-                        }
-                }
-            }
-
-            adapter.refresh()
-            // viewModel.filterCharactersOffline()
+            viewModel.filterCharacters("", "", "", "", "")
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.frame_layout, filterFragment)
+                .addToBackStack("toFilter")
+                .commit()
         }
-//search name
+
+
+        //search name
         binding.textInputEdit.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val name = binding.textInputEdit.text.toString()
@@ -210,40 +163,33 @@ class CharactersListFragment : Fragment() {
             val species = bundle.getString("species")
             val type = bundle.getString("type")
             val gender = bundle.getString("gender")
-//            filterName = name
-//            filterGender = gender
-//            filterSpecies = species
-//            filterStatus = status
-//            filterType = type
 
-            lifecycleScope.launch {
-                viewModel.filterCharactersOffline(name, status, species, type, gender)
-                    .collect() { pagingData ->
-                        adapter.submitData(pagingData)
-                    }
-
-                // adapter.refresh()
-                //   } else {
+            var isOnline = context?.let { checkForInternet(it) }
+            if (isOnline == true) {
                 if (name != null) {
                     viewModel.filterCharacters(name, status, species, type, gender)
                 }
+            } else {
+                lifecycleScope.launch {
+                    viewModel.filterCharactersOffline(name, status, species, type, gender)
+                        .collect() { pagingData ->
+                            adapter.submitData(pagingData)
+                        }
+                }
             }
-//обновление адаптера вызовом функции
+            adapter.refresh()
+            if (adapter.itemCount == 0) {
+                context?.let {
+                    MaterialAlertDialogBuilder(
+                        it,
+                        R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
+                    )
+                        .setMessage(resources.getString(R.string.filter))
+                        .show()
+                }
+            }
 
-//            if (adapter.itemCount == 0) {
-//                context?.let {
-//                    MaterialAlertDialogBuilder(
-//                        it,
-//                        R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
-//                    )
-//                        .setMessage(resources.getString(R.string.filter))
-//                        .show()
-//                }
-//            }
         }
-
-
-
         return binding.root
     }
 
