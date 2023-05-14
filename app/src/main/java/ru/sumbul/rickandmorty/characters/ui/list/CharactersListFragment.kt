@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import ru.sumbul.rickandmorty.R
 import ru.sumbul.rickandmorty.application.appComponent
@@ -70,7 +72,7 @@ class CharactersListFragment : Fragment() {
             false
         )
         binding.list.adapter = adapter
-     //   var isOnline = context?.let { checkForInternet(it) }
+        //   var isOnline = context?.let { checkForInternet(it) }
         lifecycleScope.launch {
             viewModel.characterPagingFlow.collect { pagingData ->
                 adapter.submitData(pagingData)
@@ -79,8 +81,8 @@ class CharactersListFragment : Fragment() {
 
 
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
-                header = LoadingStateAdapter { adapter.retry() },
-                footer = LoadingStateAdapter { adapter.retry() })
+            header = LoadingStateAdapter { adapter.retry() },
+            footer = LoadingStateAdapter { adapter.retry() })
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.filterCharacters("", "", "", "", "")
@@ -119,22 +121,29 @@ class CharactersListFragment : Fragment() {
                         viewModel.filterCharactersOffline(name, null, null, null, null)
                             .collect { pagingData ->
                                 adapter.submitData(pagingData)
+                                if (adapter.snapshot().isEmpty()) {
+                                    Toast.makeText(
+                                        context,
+                                        "There's no matching characters",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                     }
                 } else {
                     viewModel.filterCharacters(name, null, null, null, null)
                 }
                 adapter.refresh()
-                if (adapter.itemCount == 0) {
-                    context?.let {
-                        MaterialAlertDialogBuilder(
-                            it,
-                            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
-                        )
-                            .setMessage(resources.getString(R.string.filter))
-                            .show()
-                    }
-                }
+//                if (adapter.itemCount == 0) {
+//                    context?.let {
+//                        MaterialAlertDialogBuilder(
+//                            it,
+//                            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
+//                        )
+//                            .setMessage(resources.getString(R.string.filter))
+//                            .show()
+//                    }
+//                }
 
             }
             return@setOnEditorActionListener false
@@ -145,7 +154,7 @@ class CharactersListFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener(
             "filter", this
         ) { _, bundle ->
-           // val filterRequest = bundle.getBundle("filter")
+            // val filterRequest = bundle.getBundle("filter")
             val name = bundle.getString("name")
             val status = bundle.getString("status")
             val species = bundle.getString("species")

@@ -8,8 +8,17 @@ import ru.sumbul.rickandmorty.locations.data.mapper.LocationMapper
 
 class LocationMapperTest {
 
-    var location = mockk<ru.sumbul.rickandmorty.locations.domain.model.Location>()
-    var locationEntity = mockk<LocationEntity>()
+    var location = ru.sumbul.rickandmorty.locations.domain.model.Location(
+        1, "Earth",
+        "Planet", "Dimention", listOf("1st", "2nd"), "url",
+        "created"
+    )
+
+    var locationEntity = LocationEntity(
+        1, "Earth",
+        "Planet", "Dimention", listOf("1st", "2nd"), "url",
+        "created"
+    )
 
     var locations = mockk<List<ru.sumbul.rickandmorty.locations.domain.model.Location>>()
     var locationsEntity = mockk<List<LocationEntity>>()
@@ -18,34 +27,23 @@ class LocationMapperTest {
 
     @Test
     fun returnLocationFromLocationEntity() {
-        location = ru.sumbul.rickandmorty.locations.domain.model.Location(
-            1, "Earth",
-            "Planet", "Dimention", listOf("1st", "2nd"), "url",
-            "created"
-        )
-
-        locationEntity = LocationEntity(
-            1, "Earth",
-            "Planet", "Dimention", listOf("1st", "2nd"), "url",
-            "created"
-        )
 
         assertEquals(location, mapper.mapFromEntity(locationEntity))
     }
 
     @Test
     fun returnLocationEntityFromLocation() {
-        location = ru.sumbul.rickandmorty.locations.domain.model.Location(
-            1, "Earth",
-            "Planet", "Dimention", listOf("1st", "2nd"), "url",
-            "created"
-        )
-
-        locationEntity = LocationEntity(
-            1, "Earth",
-            "Planet", "Dimention", listOf("1st", "2nd"), "url",
-            "created"
-        )
+//        location = ru.sumbul.rickandmorty.locations.domain.model.Location(
+//            1, "Earth",
+//            "Planet", "Dimention", listOf("1st", "2nd"), "url",
+//            "created"
+//        )
+//
+//        locationEntity = LocationEntity(
+//            1, "Earth",
+//            "Planet", "Dimention", listOf("1st", "2nd"), "url",
+//            "created"
+//        )
 
         assertEquals(locationEntity, mapper.mapToEntity(location))
     }

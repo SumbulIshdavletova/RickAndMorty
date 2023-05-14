@@ -1,36 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/common_margin"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".locations.ui.list.LocationFilterFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".locations.ui.list.LocationFilterFragment">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/nameSearch"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:gravity="center_horizontal"
-        android:hint="@string/enter_name" />
+        android:hint="@string/enter_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/typeSearch"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:gravity="center_horizontal"
-        android:hint="@string/enter_type" />
+        android:hint="@string/enter_type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textField2">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/dimensionSearch"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/typeSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:gravity="center_horizontal"
-        android:hint="@string/enter_dimension" />
+        android:hint="@string/enter_dimension"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textField2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dimensionSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/search"
@@ -38,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
         android:gravity="center_horizontal"
-        android:text="@string/search"/>
+        android:text="@string/search" />
 
 
 </LinearLayout>

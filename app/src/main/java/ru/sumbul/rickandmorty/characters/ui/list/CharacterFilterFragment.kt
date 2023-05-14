@@ -52,32 +52,25 @@ class CharacterFilterFragment : Fragment() {
         )
 
         var gender = ""
-        binding.female.setOnClickListener {
-            gender = "female"
+        binding.toggleGender.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            when (checkedId) {
+                R.id.female -> gender = "female"
+                R.id.male -> gender = "male"
+                R.id.genderless -> gender = "genderless"
+                R.id.unknown -> gender = "unknown"
+            }
         }
-        binding.male.setOnClickListener {
-            gender = "male"
-        }
-        binding.genderless.setOnClickListener {
-            gender = "genderless"
-        }
-        binding.unknownGender.setOnClickListener {
-            gender = "unknown"
-        }
-
 
         var status = ""
-        binding.alive.setOnClickListener {
-            status = "alive"
+        binding.toggleButton.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            when (checkedId) {
+                R.id.alive -> status = "alive"
+                R.id.dead -> status = "dead"
+                R.id.unknown -> status = "unknown"
+            }
         }
-        binding.dead.setOnClickListener {
-            status = "dead"
-        }
-        binding.unknown.setOnClickListener {
-            status = "unknown"
-        }
-
-
 
         binding.search.setOnClickListener {
             var name = binding.nameSearch.text.toString()

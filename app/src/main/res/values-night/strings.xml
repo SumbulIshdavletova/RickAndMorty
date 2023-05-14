@@ -36,4 +36,9 @@
     <string name="back">Back</string>
     <string name="there_are_no_residents">There are no residents</string>
     <string name="no_residents">There are no residents in this location</string>
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
+    <string name="genderless">Genderless</string>
+    <string name="male">Male</string>
+    <string name="female">female</string>
 </resources>

@@ -6,120 +6,130 @@
     android:layout_height="match_parent"
     tools:context=".characters.ui.list.CharacterFilterFragment">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/nameSearch"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:gravity="center_horizontal"
         android:hint="@string/enter_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/alive"
-        style="@style/Widget.AppTheme.IconButton"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:visibility="visible"
-        app:icon="@drawable/ic_baseline_monitor_heart_24"
-        app:iconSize="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nameSearch" />
+        app:layout_constraintTop_toBottomOf="@id/textField">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/dead"
-        style="@style/Widget.AppTheme.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/common_margin"
-        android:visibility="visible"
-        app:icon="@drawable/ic_baseline_cancel_24"
-        app:iconSize="32dp"
-        app:layout_constraintStart_toEndOf="@id/alive"
-        app:layout_constraintTop_toBottomOf="@id/nameSearch" />
+        <Button
+            android:id="@+id/alive"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alive" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/unknown"
-        style="@style/Widget.AppTheme.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/common_margin"
-        android:visibility="visible"
-        app:icon="@drawable/ic_baseline_call_split_24"
-        app:iconSize="32dp"
-        app:layout_constraintStart_toEndOf="@id/dead"
-        app:layout_constraintTop_toBottomOf="@id/nameSearch" />
+        <Button
+            android:id="@+id/dead"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dead" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/speciesSearch"
+        <Button
+            android:id="@+id/unknown"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unknown" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:gravity="center_horizontal"
         android:hint="@string/enter_species"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dead" />
+        app:layout_constraintTop_toBottomOf="@id/toggleButton">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/typeSearch"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/speciesSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:gravity="center_horizontal"
         android:hint="@string/enter_type"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/speciesSearch" />
+        app:layout_constraintTop_toBottomOf="@id/textField2">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/female"
-        style="@style/Widget.AppTheme.IconButton"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/typeSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:visibility="visible"
-        app:icon="@drawable/ic_baseline_female_24"
-        app:iconSize="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeSearch" />
+        app:layout_constraintTop_toBottomOf="@id/textField3">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/male"
-        style="@style/Widget.AppTheme.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/common_margin"
-        android:visibility="visible"
-        app:icon="@drawable/ic_baseline_male_24"
-        app:iconSize="32dp"
-        app:layout_constraintStart_toEndOf="@id/female"
-        app:layout_constraintTop_toBottomOf="@id/typeSearch" />
+        <Button
+            android:id="@+id/female"
+            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_baseline_female_24" />
 
+        <Button
+            android:id="@+id/male"
+            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_baseline_male_24" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/genderless"
-        style="@style/Widget.AppTheme.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/common_margin"
-        android:visibility="visible"
-        app:icon="@drawable/ic_baseline_panorama_fish_eye_24"
-        app:iconSize="32dp"
-        app:layout_constraintStart_toEndOf="@id/male"
-        app:layout_constraintTop_toBottomOf="@id/typeSearch" />
+        <Button
+            android:id="@+id/genderless"
+            style="@style/Widget.App.Button.OutlinedButton.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/genderless"
+            app:layout_constraintStart_toEndOf="@id/male"
+            app:layout_constraintTop_toBottomOf="@id/typeSearch" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/unknownGender"
-        style="@style/Widget.AppTheme.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/common_margin"
-        android:visibility="visible"
-        app:icon="@drawable/ic_baseline_call_split_24"
-        app:iconSize="32dp"
-        app:layout_constraintStart_toEndOf="@id/genderless"
-        app:layout_constraintTop_toBottomOf="@id/typeSearch" />
+        <Button
+            android:id="@+id/unknownGender"
+            style="@style/Widget.App.Button.OutlinedButton.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unknown"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/female" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/search"
@@ -130,6 +140,6 @@
         android:text="@string/search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/unknownGender" />
+        app:layout_constraintTop_toBottomOf="@id/toggleGender" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
