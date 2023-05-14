@@ -72,7 +72,6 @@ class CharactersListFragment : Fragment() {
             false
         )
         binding.list.adapter = adapter
-        //   var isOnline = context?.let { checkForInternet(it) }
         lifecycleScope.launch {
             viewModel.characterPagingFlow.collect { pagingData ->
                 adapter.submitData(pagingData)
@@ -121,29 +120,12 @@ class CharactersListFragment : Fragment() {
                         viewModel.filterCharactersOffline(name, null, null, null, null)
                             .collect { pagingData ->
                                 adapter.submitData(pagingData)
-                                if (adapter.snapshot().isEmpty()) {
-                                    Toast.makeText(
-                                        context,
-                                        "There's no matching characters",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
                             }
                     }
                 } else {
                     viewModel.filterCharacters(name, null, null, null, null)
                 }
                 adapter.refresh()
-//                if (adapter.itemCount == 0) {
-//                    context?.let {
-//                        MaterialAlertDialogBuilder(
-//                            it,
-//                            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
-//                        )
-//                            .setMessage(resources.getString(R.string.filter))
-//                            .show()
-//                    }
-//                }
 
             }
             return@setOnEditorActionListener false
@@ -175,16 +157,6 @@ class CharactersListFragment : Fragment() {
                 }
             }
             adapter.refresh()
-            if (adapter.itemCount == 0) {
-                context?.let {
-                    MaterialAlertDialogBuilder(
-                        it,
-                        R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
-                    )
-                        .setMessage(resources.getString(R.string.filter))
-                        .show()
-                }
-            }
 
         }
         return binding.root

@@ -122,16 +122,6 @@ class LocationsListFragment : Fragment() {
                                 adapter.submitData(pagingData)
                             }
                     }
-                    if (adapter.itemCount == 0) {
-                        context?.let {
-                            MaterialAlertDialogBuilder(
-                                it,
-                                R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
-                            )
-                                .setMessage(resources.getString(R.string.filter))
-                                .show()
-                        }
-                    }
                 } else {
                     viewModel.filterLocations(name, null, null)
                     if (adapter.itemCount == 0) {
@@ -166,32 +156,12 @@ class LocationsListFragment : Fragment() {
                 if (name != null) {
                     viewModel.filterLocations(name, type, dimension)
                 }
-                if (adapter.itemCount == 0) {
-                    context?.let {
-                        MaterialAlertDialogBuilder(
-                            it,
-                            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
-                        )
-                            .setMessage(resources.getString(R.string.filter))
-                            .show()
-                    }
-                }
             } else {
                 lifecycleScope.launch {
                     viewModel.filterLocationsOffline(name, type, dimension)
                         .collect() { pagingData ->
                             adapter.submitData(pagingData)
                         }
-                }
-                if (adapter.itemCount == 0) {
-                    context?.let {
-                        MaterialAlertDialogBuilder(
-                            it,
-                            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert
-                        )
-                            .setMessage(resources.getString(R.string.filter))
-                            .show()
-                    }
                 }
             }
             adapter.refresh()
